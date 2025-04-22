@@ -7,9 +7,17 @@
     xmlns:pages="clr-namespace:Project.Pages">
 
     <Shell.FlyoutHeader>
-        <Label Text="Project" FontSize="24" FontAttributes="Bold" Padding="10" />
+        <StackLayout>
+            <Label Text="Freshmart" FontSize="24" FontAttributes="Bold" Padding="10" />
+            <Label x:Name="UsernameLabel" FontSize="18" FontAttributes="Italic" />
+        </StackLayout>
     </Shell.FlyoutHeader>
     <ShellContent Route="login" ContentTemplate="{DataTemplate pages:LoginPage}" Title="Login" />
     <ShellContent Route="register" ContentTemplate="{DataTemplate pages:RegisterPage}" Title="Register" />
+    <Shell.FlyoutFooter>
+        <Button Text="Logout" Clicked="OnLogoutButtonClicked" />
+    </Shell.FlyoutFooter>
+    
+
 
 </Shell>

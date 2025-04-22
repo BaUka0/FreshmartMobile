@@ -1,13 +1,16 @@
 
 using Project.Models;
+using Project.Services;
 namespace Project.Pages;
 
 public partial class LoginPage : ContentPage
 {
-	public LoginPage()
+    private readonly AuthService _authService;
+    public LoginPage(AuthService authService)
 	{
 		InitializeComponent();
-	}
+        _authService = authService;
+    }
 
 	private async void LoginButton_Clicked(object sender, EventArgs e)
     {
@@ -24,12 +27,14 @@ public partial class LoginPage : ContentPage
                 return;
             }
 
-            var user = await App.DatabaseService.GetUserByCredentialsAsync(usernameEntry.Text, passwordEntry.Text);
+            var success = await _authService.LoginAsync(usernameEntry.Text, passwordEntry.Text);
 
-            if (user != null)
+            if (success)
             {
-                App.currentUser = user;
-
+                if (Application.Current.MainPage is AppShell appShell)
+                {
+                    appShell.UpdateUsername();
+                }
                 await DisplayAlert("”спех", "¬ход выполнен успешно!", "OK");
                 await Shell.Current.GoToAsync("//books");
             }

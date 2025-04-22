@@ -1,3 +1,6 @@
+using Project.Services;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Project.Pages;
 
 public partial class SplashPage : ContentPage
@@ -12,6 +15,9 @@ public partial class SplashPage : ContentPage
 	{
         await Task.Delay(1000);
 
-        Application.Current.MainPage = new NavigationPage(new LoginPage());
+        var appShell = Application.Current.Handler.MauiContext.Services.GetService<AppShell>();
+
+
+        Application.Current.MainPage = appShell; 
     }
 }

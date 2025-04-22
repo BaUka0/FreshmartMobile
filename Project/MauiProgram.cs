@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Project.Pages;
+using Project.Services;
 
 namespace Project;
 
@@ -19,7 +21,18 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+        // Dependency Injection Services
+        builder.Services.AddSingleton<DatabaseService>();
+		builder.Services.AddSingleton<AuthService>();
 
-		return builder.Build();
+        // Registering Pages
+        builder.Services.AddSingleton<SplashPage>();
+        builder.Services.AddSingleton<AppShell>();
+        builder.Services.AddTransient<LoginPage>();
+		builder.Services.AddTransient<RegisterPage>();
+
+
+
+        return builder.Build();
 	}
 }

@@ -1,13 +1,16 @@
 using Project.Models;
+using Project.Services;
 
 namespace Project.Pages;
 
 public partial class RegisterPage : ContentPage
 {
-	public RegisterPage()
+    private readonly AuthService _authService;
+    public RegisterPage(AuthService authService)
 	{
 		InitializeComponent();
-	}
+        _authService = authService;
+    }
     private async void RegisterButton_Clicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
@@ -17,21 +20,24 @@ public partial class RegisterPage : ContentPage
 
         try
         {
-            var user = new User
-            {
-                username = usernameEntry.Text,
-                password = passwordEntry.Text
-            };
 
-            if (string.IsNullOrWhiteSpace(user.username) || string.IsNullOrWhiteSpace(user.password))
+            if (string.IsNullOrWhiteSpace(usernameEntry.Text) || string.IsNullOrWhiteSpace(passwordEntry.Text))
             {
                 await DisplayAlert("Ошибка", "Имя пользователя и пароль не могут быть пустыми.", "OK");
                 return;
             }
 
-            await App.DatabaseService.AddUserAsync(user);
+            var result = await _authService.RegisterAsync(usernameEntry.Text, passwordEntry.Text);
+            if(result)
+            {
+                await DisplayAlert("Успех", "Регистрация прошла успешно!", "OK");
+            }
+            else
+            {
+                await DisplayAlert("Ошибка", "Пользователь с таким именем уже существует.", "OK");
+                return;
+            }
 
-            await DisplayAlert("Успех", "Пользователь успешно зарегистрирован!", "OK");
             await Shell.Current.GoToAsync("//login");
         }
         catch (Exception ex)

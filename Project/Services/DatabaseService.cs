@@ -29,15 +29,8 @@ namespace Project.Services
         public async Task<User> GetUserAsync(int id) => await _database.Table<User>().Where(i => i.Id == id).FirstOrDefaultAsync();
         public async Task<User> GetUserByCredentialsAsync(string username, string password) => await _database.Table<User>().FirstOrDefaultAsync(u => u.username == username && u.password == password);
         public async Task<int> AddUserAsync(User user) => await _database.InsertAsync(user);
-        public async Task<int> ChangeUserRoleAsync(int id, string newRole)
-        {
-            var user = await GetUserAsync(id);
-            if (user != null)
-            {
-                user.role = newRole;
-                return await _database.UpdateAsync(user);
-            }
-            return 0;
-        }
+        public async Task<int> UpdateUserAsync(User user) => await _database.UpdateAsync(user);
+        public async Task<int> DeleteUserAsync(User user) => await _database.DeleteAsync(user);
+
     }
 }

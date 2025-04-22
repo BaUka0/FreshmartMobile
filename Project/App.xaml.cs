@@ -6,25 +6,28 @@ namespace Project
 {
     public partial class App : Application
     {
-        public static User currentUser {  get; set; }
-        public static DatabaseService DatabaseService { get; private set; }
-        public App()
+        private readonly DatabaseService _databaseService;
+        public App(DatabaseService databaseService)
         {
             InitializeComponent();
-            DatabaseService = new DatabaseService();
+            _databaseService = databaseService;
             MainPage = new SplashPage();
         }
 
         protected override async void OnStart()
         {
-            await DatabaseService.InitAsync();
+            await _databaseService.InitAsync();
 
-            await DatabaseService.AddUserAsync(new User
+            var user = await _databaseService.GetUserByCredentialsAsync("admin", "admin");
+            if(user == null)
             {
-                username = "admin",
-                password = "admin",
-                role = "admin"
-            });
+                await _databaseService.AddUserAsync(new User
+                {
+                    username = "admin",
+                    password = "admin",
+                    role = "admin"
+                });
+            }
         }
     }
 }
