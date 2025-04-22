@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project.Pages.LoginPage"
+             Title="Login">
+    <VerticalStackLayout Padding="30" Spacing="20">
+        <Entry x:Name="usernameEntry" Placeholder="Login"/>
+        <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True"/>
+        <Button Text="Login" Clicked="LoginButton_Clicked"/>
+        <Button Text="Register" Clicked="OnRegisterButtonClicked"/>
+    </VerticalStackLayout>
+</ContentPage>

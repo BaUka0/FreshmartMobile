@@ -1,0 +1,20 @@
+﻿using SQLite;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project.Models
+{
+    public class User
+    {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+        [Unique]
+        public string username { get; set; }
+        public string password { get; set; }
+
+        public string role { get; set; } = "user"; // "admin", "sales" or "user"
+    }
+}
