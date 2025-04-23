@@ -13,6 +13,7 @@ namespace Project.Models
         public int Id { get; set; }
         [Unique]
         public string username { get; set; }
+        public string email { get; set; }
         public string password { get; set; }
 
         public string role { get; set; } = "user"; // "admin", "sales" or "user"

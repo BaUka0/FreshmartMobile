@@ -4,7 +4,10 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Project"
-    xmlns:pages="clr-namespace:Project.Pages">
+    xmlns:pages="clr-namespace:Project.Pages"
+    xmlns:pages_admin="clr-namespace:Project.Pages.Admin">
+    
+    
 
     <Shell.FlyoutHeader>
         <StackLayout>
@@ -14,6 +17,9 @@
     </Shell.FlyoutHeader>
     <ShellContent Route="login" ContentTemplate="{DataTemplate pages:LoginPage}" Title="Login" />
     <ShellContent Route="register" ContentTemplate="{DataTemplate pages:RegisterPage}" Title="Register" />
+    <ShellItem Route="admin" Title="Admin">
+        <ShellContent Route="userlist" ContentTemplate="{DataTemplate pages_admin:UserListPage}" Title="User List" />
+    </ShellItem>
     <Shell.FlyoutFooter>
         <Button Text="Logout" Clicked="OnLogoutButtonClicked" />
     </Shell.FlyoutFooter>
