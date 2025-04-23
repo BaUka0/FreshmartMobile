@@ -2,11 +2,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.LoginPage"
-             Title="Login">
-    <VerticalStackLayout Padding="30" Spacing="20">
-        <Entry x:Name="usernameEntry" Placeholder="Login"/>
-        <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True"/>
-        <Button Text="Login" Clicked="LoginButton_Clicked"/>
-        <Button Text="Register" Clicked="OnRegisterButtonClicked"/>
+             Title="Вход">
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label Text="Кіру" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center" />
+
+        <Entry x:Name="entryEmail" Placeholder="Email" Keyboard="Email" />
+        <Entry x:Name="entryPassword" Placeholder="Құпия сөз" IsPassword="True" />
+
+        <Button Text="Кіру" Clicked="OnLoginClicked" BackgroundColor="#2196F3" TextColor="White" CornerRadius="10" />
+        <Label x:Name="lblMessage" TextColor="Red" IsVisible="False" />
+
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Аккаунтыңыз жоқ па? " />
+                    <Span Text="Тіркелу" TextColor="Blue" GestureRecognizers="{TapGestureRecognizer Tapped='OnRegisterTapped'}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
     </VerticalStackLayout>
 </ContentPage>

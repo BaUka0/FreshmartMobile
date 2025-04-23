@@ -12,7 +12,7 @@ public partial class LoginPage : ContentPage
         _authService = authService;
     }
 
-	private async void LoginButton_Clicked(object sender, EventArgs e)
+	private async void OnLoginClicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
 
@@ -21,13 +21,13 @@ public partial class LoginPage : ContentPage
 
         try
         {
-            if (string.IsNullOrWhiteSpace(usernameEntry.Text) || string.IsNullOrWhiteSpace(passwordEntry.Text))
+            if (string.IsNullOrWhiteSpace(entryEmail.Text) || string.IsNullOrWhiteSpace(entryPassword.Text))
             {
                 await DisplayAlert("Ошибка", "Имя пользователя и пароль не могут быть пустыми.", "OK");
                 return;
             }
 
-            var success = await _authService.LoginAsync(usernameEntry.Text, passwordEntry.Text);
+            var success = await _authService.LoginAsync(entryEmail.Text, entryPassword.Text);
 
             if (success)
             {
@@ -49,7 +49,7 @@ public partial class LoginPage : ContentPage
             await DisplayAlert("Ошибка", "Произошла ошибка при входе. Попробуйте еще раз.", "OK");
         }
     }
-    private async void OnRegisterButtonClicked(object sender, EventArgs e)
+    private async void OnRegisterTapped(object sender, EventArgs e)
 	{
         var button = (Button)sender;
 

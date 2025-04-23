@@ -11,7 +11,7 @@ public partial class RegisterPage : ContentPage
 		InitializeComponent();
         _authService = authService;
     }
-    private async void RegisterButton_Clicked(object sender, EventArgs e)
+    private async void OnRegisterClicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
 
@@ -21,14 +21,17 @@ public partial class RegisterPage : ContentPage
         try
         {
 
-            if (string.IsNullOrWhiteSpace(usernameEntry.Text) || string.IsNullOrWhiteSpace(passwordEntry.Text))
+            if (string.IsNullOrWhiteSpace(entryUsername.Text) || string.IsNullOrWhiteSpace(entryPassword.Text) || string.IsNullOrWhiteSpace(entryEmail.Text))
             {
                 await DisplayAlert("Ошибка", "Имя пользователя и пароль не могут быть пустыми.", "OK");
                 return;
             }
 
-            var result = await _authService.RegisterAsync(usernameEntry.Text, passwordEntry.Text);
-            if(result)
+            var result = await _authService.RegisterAsync(entryUsername.Text, entryEmail.Text, entryPassword.Text);
+
+            string role = radioClient.IsChecked ? "client" : "seller";
+
+            if (result)
             {
                 await DisplayAlert("Успех", "Регистрация прошла успешно!", "OK");
             }

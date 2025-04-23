@@ -3,9 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.RegisterPage"
              Title="RegisterPage">
-    <VerticalStackLayout Padding="30" Spacing="20">
-        <Entry x:Name="usernameEntry" Placeholder="Login"/>
-        <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True"/>
-        <Button Text="Register" Clicked="RegisterButton_Clicked"/>
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Тіркелу" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <Entry x:Name="entryUsername" Placeholder="Атыңыз" />
+            <Entry x:Name="entryEmail" Placeholder="Email" Keyboard="Email" />
+            <Entry x:Name="entryPassword" Placeholder="Құпия сөз" IsPassword="True" />
+
+            <Label Text="Рөлді таңдаңыз:" FontAttributes="Bold" />
+
+            <HorizontalStackLayout>
+                <RadioButton x:Name="radioClient" Content="Клиент" GroupName="role" IsChecked="True" />
+                <RadioButton x:Name="radioSeller" Content="Сатушы" GroupName="role" />
+            </HorizontalStackLayout>
+
+            <Button Text="Тіркелу" Clicked="OnRegisterClicked" BackgroundColor="#4CAF50" TextColor="White" CornerRadius="10" />
+
+            <Label x:Name="lblMessage" TextColor="Red" IsVisible="False" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

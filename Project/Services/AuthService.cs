@@ -22,6 +22,12 @@ namespace Project.Services
         public async Task<bool> LoginAsync(string username, string password)
         {
             var user = await _databaseService.GetUserByCredentialsAsync(username, password);
+
+            if (user == null)
+            {
+                user = await _databaseService.GetUserByEmailAsync(username, password);
+            }
+
             if (user != null)
             {
                 _currentUser = user;
@@ -29,21 +35,29 @@ namespace Project.Services
             }
             return false;
         }
-        public async Task<bool> RegisterAsync(string username, string password)
+        public async Task<bool> RegisterAsync(string username, string email, string password)
         {
             var existingUser = await _databaseService.GetUserByCredentialsAsync(username, password);
-            if (existingUser != null)
+
+            if (existingUser == null)
             {
-                return false;
+                existingUser = await _databaseService.GetUserByEmailAsync(email, password);
+
+                if (existingUser != null)
+                {
+                    return false;
+                }
+                var newUser = new User
+                {
+                    username = username,
+                    password = password,
+                    role = "user"
+                };
+                await _databaseService.AddUserAsync(newUser);
+                return true;
             }
-            var newUser = new User
-            {
-                username = username,
-                password = password,
-                role = "user"
-            };
-            await _databaseService.AddUserAsync(newUser);
-            return true;
+
+            return false;
         }
 
         public bool IsAdmin() => _currentUser.role != "admin";
