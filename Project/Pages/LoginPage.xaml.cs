@@ -51,11 +51,6 @@ public partial class LoginPage : ContentPage
     }
     private async void OnRegisterTapped(object sender, EventArgs e)
 	{
-        var button = (Button)sender;
-
-        await button.ScaleTo(0.9, 100);
-        await button.ScaleTo(1.0, 100);
-
         await Shell.Current.GoToAsync("//register");
     }
 }
