@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project.Pages.Admin.SellerApplicationsPage"
+             Title="SellerApplicationsPage">
+    <VerticalStackLayout Padding="10" Spacing="10">
+        <Label Text="Заявки на роль продавца"
+               FontSize="Title"
+               FontAttributes="Bold"
+               HorizontalOptions="Center" />
+
+        <!-- Используем CollectionView для отображения списка заявок -->
+        <CollectionView x:Name="ApplicationsCollectionView"
+                        ItemsSource="{Binding Applications}">
+            <CollectionView.EmptyView>
+                <Label Text="Новых заявок нет."
+                       HorizontalOptions="Center"
+                       VerticalOptions="CenterAndExpand" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border StrokeShape="RoundRectangle 5"
+                            Stroke="{AppThemeBinding Light=LightGray, Dark=Gray}"
+                            Padding="10"
+                            Margin="0,5"
+                            BackgroundColor="{AppThemeBinding Light=WhiteSmoke, Dark= #333}">
+                        <VerticalStackLayout Spacing="5">
+                            <!-- Отображаем информацию о пользователе из связанного объекта User -->
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Пользователь: " FontAttributes="Bold"/>
+                                        <Span Text="{Binding User.username}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Email: " FontAttributes="Bold"/>
+                                        <Span Text="{Binding User.email}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Текущая роль: " FontAttributes="Bold"/>
+                                        <Span Text="{Binding User.role}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Статус заявки: " FontAttributes="Bold"/>
+                                        <Span Text="{Binding Status}" TextColor="Blue"/>
+                                        <!-- Отображаем статус заявки -->
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+
+                            <!-- Кнопки для действий: Принять или Отклонить -->
+                            <!-- Видимы только если статус заявки "Pending" (используем свойство IsPending из модели) -->
+                            <HorizontalStackLayout Spacing="10" HorizontalOptions="End" IsVisible="{Binding IsPending}">
+                                <Button Text="Принять"
+                                        BackgroundColor="Green"
+                                        TextColor="White"
+                                        WidthRequest="100"
+                                        Clicked="OnAcceptButtonClicked"/>
+                                <Button Text="Отклонить"
+                                        BackgroundColor="Red"
+                                        TextColor="White"
+                                        WidthRequest="100"
+                                        Clicked="OnRejectButtonClicked" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

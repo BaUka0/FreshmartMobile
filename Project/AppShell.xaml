@@ -20,6 +20,9 @@
     <ShellItem Route="admin" Title="Admin">
         <ShellContent Route="userlist" ContentTemplate="{DataTemplate pages_admin:UserListPage}" Title="User List" />
     </ShellItem>
+    <ShellItem Route="Application List" Title="Admin">
+        <ShellContent Route="sellerapplication" ContentTemplate="{DataTemplate pages_admin:SellerApplicationsPage}" Title="User List" />
+    </ShellItem>
     <Shell.FlyoutFooter>
         <Button Text="Logout" Clicked="OnLogoutButtonClicked" />
     </Shell.FlyoutFooter>

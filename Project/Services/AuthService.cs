@@ -51,6 +51,7 @@ namespace Project.Services
                 {
                     username = username,
                     password = password,
+                    email = email,
                     role = "user"
                 };
                 await _databaseService.AddUserAsync(newUser);

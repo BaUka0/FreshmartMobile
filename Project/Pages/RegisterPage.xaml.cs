@@ -6,10 +6,12 @@ namespace Project.Pages;
 public partial class RegisterPage : ContentPage
 {
     private readonly AuthService _authService;
-    public RegisterPage(AuthService authService)
-	{
-		InitializeComponent();
+    private readonly DatabaseService _databaseService;
+    public RegisterPage(AuthService authService, DatabaseService databaseService)
+    {
+        InitializeComponent();
         _authService = authService;
+        _databaseService = databaseService;
     }
     private async void OnRegisterClicked(object sender, EventArgs e)
     {
@@ -34,6 +36,17 @@ public partial class RegisterPage : ContentPage
             if (result)
             {
                 await DisplayAlert("Успех", "Регистрация прошла успешно!", "OK");
+            }
+            if (role == "seller")
+            {
+                var user = await _databaseService.GetUserByCredentialsAsync(entryUsername.Text, entryPassword.Text);
+                var application = new SellerApplication
+                {
+                    UserId = user.Id,
+                    Status = "Pending"
+                };
+                await _databaseService.CreateSellerApplicationAsync(application);
+                await DisplayAlert("Успех", "Заявка на продавца отправлена на рассмотрение.", "OK");
             }
             else
             {
