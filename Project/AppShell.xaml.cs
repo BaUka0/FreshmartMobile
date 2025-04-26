@@ -1,5 +1,6 @@
 ﻿using Project.Pages;
 using Project.Pages.Admin;
+using Project.Pages.Client;
 using Project.Services;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace Project
             Routing.RegisterRoute("login", typeof(LoginPage));
             Routing.RegisterRoute("register", typeof(RegisterPage));
             Routing.RegisterRoute("admin/userlist", typeof(UserListPage));
+            Routing.RegisterRoute("home", typeof(HomePage));
         }
         public void UpdateUsername()
         {

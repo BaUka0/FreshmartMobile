@@ -1,0 +1,136 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project.Pages.Client.HomePage"
+             Title="Главная">
+
+    <Grid BackgroundColor="White"
+          Padding="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Текст "Добро пожаловать" -->
+            <RowDefinition Height="*"/>
+            <!-- Пустота -->
+            <RowDefinition Height="Auto"/>
+            <!-- Кнопки -->
+        </Grid.RowDefinitions>
+
+        <Label Text="Добро пожаловать!"
+               FontSize="24"
+               FontAttributes="Bold"
+               Grid.Row="0"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"/>
+
+        <Border Grid.Row="2"
+        StrokeThickness="1"
+        BackgroundColor="LightGray"
+        HorizontalOptions="Fill"
+        VerticalOptions="Start"
+        Margin="0,-10,0,10"
+        HeightRequest="0.5">
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                Opacity="0.2"
+                Offset="0,2"
+                Radius="4"/>
+            </Border.Shadow>
+        </Border>
+
+        <!-- Кнопки -->
+        <Grid Grid.Row="2"
+              ColumnSpacing="30"
+              HorizontalOptions="Center">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Домой -->
+            <StackLayout Grid.Column="0" Spacing="5" HorizontalOptions="Center">
+                <ImageButton x:Name="btnHome"
+                             Source="home_gray.png"
+                             Clicked="OnHomeClicked"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"/>
+                <Label x:Name="lblHome"
+                       Text="Главная"
+                       FontSize="12"
+                       TextColor="Gray"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+
+            <!-- Каталог -->
+            <StackLayout Grid.Column="1" Spacing="5" HorizontalOptions="Center">
+                <ImageButton x:Name="btnCatalog"
+                             Source="catalog_gray.png"
+                             Clicked="OnCatalogClicked"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"/>
+                <Label x:Name="lblCatalog"
+                       Text="Каталог"
+                       FontSize="12"
+                       TextColor="Gray"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+
+            <!-- Избранное -->
+            <StackLayout Grid.Column="2" Spacing="5" HorizontalOptions="Center">
+                <ImageButton x:Name="btnFavourite"
+                             Source="favourite_grey.png"
+                             Clicked="OnFavouriteClicked"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"/>
+                <Label x:Name="lblFavourite"
+                       Text="Избранное"
+                       FontSize="12"
+                       TextColor="Gray"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+
+            <!-- Корзина -->
+            <StackLayout Grid.Column="3" Spacing="5" HorizontalOptions="Center">
+                <ImageButton x:Name="btnBasket"
+                             Source="basket_grey.png"
+                             Clicked="OnBasketClicked"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"/>
+                <Label x:Name="lblBasket"
+                       Text="Корзина"
+                       FontSize="12"
+                       TextColor="Gray"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+
+            <!-- Профиль -->
+            <StackLayout Grid.Column="4" Spacing="5" HorizontalOptions="Center">
+                <ImageButton x:Name="btnProfile"
+                             Source="profile_grey.png"
+                             Clicked="OnProfileClicked"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"/>
+                <Label x:Name="lblProfile"
+                       Text="Профиль"
+                       FontSize="12"
+                       TextColor="Gray"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

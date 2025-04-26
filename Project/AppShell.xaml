@@ -5,9 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Project"
     xmlns:pages="clr-namespace:Project.Pages"
-    xmlns:pages_admin="clr-namespace:Project.Pages.Admin">
+    xmlns:pages_admin="clr-namespace:Project.Pages.Admin"
+    xmlns:pages_client="clr-namespace:Project.Pages.Client">
+
     
-    
+
+
 
     <Shell.FlyoutHeader>
         <StackLayout>
@@ -20,10 +23,16 @@
     <ShellItem Route="admin" Title="Admin">
         <ShellContent Route="userlist" ContentTemplate="{DataTemplate pages_admin:UserListPage}" Title="User List" />
     </ShellItem>
+    <ShellItem Route="Application List" Title="Admin">
+        <ShellContent Route="sellerapplication" ContentTemplate="{DataTemplate pages_admin:SellerApplicationsPage}" Title="User List" />
+    </ShellItem>
+    <ShellItem Route="home" Title="Home">
+        <ShellContent Route="homepage" ContentTemplate="{DataTemplate pages_client:HomePage}" Title="Home" />
+    </ShellItem>
     <Shell.FlyoutFooter>
         <Button Text="Logout" Clicked="OnLogoutButtonClicked" />
     </Shell.FlyoutFooter>
-    
+
 
 
 </Shell>

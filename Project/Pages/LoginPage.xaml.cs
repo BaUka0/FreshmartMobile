@@ -1,6 +1,7 @@
 
 using Project.Models;
 using Project.Services;
+using Project.Pages.Client;
 namespace Project.Pages;
 
 public partial class LoginPage : ContentPage
@@ -36,7 +37,7 @@ public partial class LoginPage : ContentPage
                     appShell.UpdateUsername();
                 }
                 await DisplayAlert("”спех", "¬ход выполнен успешно!", "OK");
-                await Shell.Current.GoToAsync("//books");
+                await Shell.Current.GoToAsync("//home");
             }
             else
             {
