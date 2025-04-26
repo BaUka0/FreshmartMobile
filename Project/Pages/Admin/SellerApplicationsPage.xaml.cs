@@ -115,4 +115,8 @@ public partial class SellerApplicationsPage : ContentPage
             }
         }
     }
+    private async void OnViewHistoryButtonClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new SellerApplicationHistoryPage(_databaseService));
+    }
 }

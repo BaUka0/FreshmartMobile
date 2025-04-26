@@ -75,7 +75,7 @@
 	  <MauiXaml Update="Pages\Admin\EditUserPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Admin\SellerApplicationsPage.xaml">
+	  <MauiXaml Update="Pages\Admin\SellerApplicationHistoryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Admin\UserListPage.xaml">

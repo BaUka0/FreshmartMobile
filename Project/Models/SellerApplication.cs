@@ -12,6 +12,7 @@ namespace Project.Models
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         public int UserId { get; set; }
+        public DateTime ApplicationDate { get; set; }
         public string Status { get; set; } // "Pending", "Approved", "Rejected"
         [Ignore]
         public User User { get; set; }

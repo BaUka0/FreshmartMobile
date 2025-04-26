@@ -43,6 +43,7 @@ public partial class RegisterPage : ContentPage
                 var application = new SellerApplication
                 {
                     UserId = user.Id,
+                    ApplicationDate = DateTime.UtcNow,
                     Status = "Pending"
                 };
                 await _databaseService.CreateSellerApplicationAsync(application);

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Project.Pages.Admin.SellerApplicationsPage"
-             Title="SellerApplicationsPage">
+             x:Class="Project.Pages.Admin.SellerApplicationHistoryPage"
+             Title="SellerApplicationHistoryPage">
     <VerticalStackLayout Padding="10" Spacing="10">
-        <Label Text="Заявки на роль продавца"
+        <Label Text="История заявок на роль продавца"
                FontSize="Title"
                FontAttributes="Bold"
                HorizontalOptions="Center" />
 
         <!-- Используем CollectionView для отображения списка заявок -->
-        <CollectionView x:Name="ApplicationsCollectionView"
-                        ItemsSource="{Binding Applications}">
+        <CollectionView x:Name="ApplicationsHistoryCollectionView"
+                        ItemsSource="{Binding ApplicationsHistory}">
             <CollectionView.EmptyView>
-                <Label Text="Новых заявок нет."
+                <Label Text="Нет записей в истории заявок."
                        HorizontalOptions="Center"
                        VerticalOptions="CenterAndExpand" />
             </CollectionView.EmptyView>
@@ -25,7 +25,7 @@
                             Margin="0,5"
                             BackgroundColor="{AppThemeBinding Light=WhiteSmoke, Dark= #333}">
                         <VerticalStackLayout Spacing="5">
-                            <!-- Отображаем информацию о пользователе из связанного объекта User -->
+                            <!-- Отображаем информацию о пользователе -->
                             <Label>
                                 <Label.FormattedText>
                                     <FormattedString>
@@ -45,8 +45,9 @@
                             <Label>
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="Текущая роль: " FontAttributes="Bold"/>
-                                        <Span Text="{Binding User.role}"/>
+                                        <Span Text="Дата заявки: " FontAttributes="Bold"/>
+                                        <!-- Указываем формат даты/времени -->
+                                        <Span Text="{Binding ApplicationDate, StringFormat='{0:dd.MM.yyyy HH:mm}'}"/>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
@@ -54,35 +55,27 @@
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="Статус заявки: " FontAttributes="Bold"/>
-                                        <Span Text="{Binding Status}" TextColor="Blue"/>
-                                        <!-- Отображаем статус заявки -->
+                                        <!-- Выбираем цвет текста в зависимости от статуса -->
+                                        <Span Text="{Binding Status}">
+                                            <Span.TextColor>
+                                                <MultiBinding Converter="{StaticResource StatusToColorConverter}">
+                                                    <Binding Path="Status"/>
+                                                    <Binding Source="{AppThemeBinding Light=Green, Dark=LightGreen}"/>
+                                                    <!-- Цвет для Accepted в светлой/темной теме -->
+                                                    <Binding Source="{AppThemeBinding Light=Red, Dark=Salmon}"/>
+                                                    <!-- Цвет для Rejected в светлой/темной теме -->
+                                                    <Binding Source="{AppThemeBinding Light=Blue, Dark=LightBlue}"/>
+                                                    <!-- Цвет для Pending в светлой/темной теме -->
+                                                </MultiBinding>
+                                            </Span.TextColor>
+                                        </Span>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-
-
-                            <!-- Кнопки для действий: Принять или Отклонить -->
-                            <!-- Видимы только если статус заявки "Pending" (используем свойство IsPending из модели) -->
-                            <HorizontalStackLayout Spacing="10" HorizontalOptions="End" IsVisible="{Binding IsPending}">
-                                <Button Text="Принять"
-                                        BackgroundColor="Green"
-                                        TextColor="White"
-                                        WidthRequest="100"
-                                        Clicked="OnAcceptButtonClicked"/>
-                                <Button Text="Отклонить"
-                                        BackgroundColor="Red"
-                                        TextColor="White"
-                                        WidthRequest="100"
-                                        Clicked="OnRejectButtonClicked" />
-                            </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Button Text="Посмотреть историю заявок"
-                Clicked="OnViewHistoryButtonClicked"
-                HorizontalOptions="End" />
-                
     </VerticalStackLayout>
 </ContentPage>
