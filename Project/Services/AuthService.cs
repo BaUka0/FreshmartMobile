@@ -52,7 +52,7 @@ namespace Project.Services
                     username = username,
                     password = password,
                     email = email,
-                    role = "user"
+                    role = "client"
                 };
                 await _databaseService.AddUserAsync(newUser);
                 return true;
@@ -61,7 +61,14 @@ namespace Project.Services
             return false;
         }
 
-        public bool IsAdmin() => _currentUser.role != "admin";
+        public string GetCurrentUserRole()
+        {
+            if (_currentUser != null)
+            {
+                return _currentUser.role;
+            }
+            return "guest";
+        }
         public void Logout() => _currentUser = null;
     }
 }

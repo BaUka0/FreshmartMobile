@@ -104,4 +104,9 @@
 	  </PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Pages\Client\" />
+	  <Folder Include="Pages\Seller\" />
+	</ItemGroup>
+
 </Project>

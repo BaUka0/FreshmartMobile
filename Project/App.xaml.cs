@@ -7,11 +7,13 @@ namespace Project
     public partial class App : Application
     {
         private readonly DatabaseService _databaseService;
-        public App(DatabaseService databaseService)
+        private readonly AuthService _authService;
+        public App(DatabaseService databaseService, AuthService authService)
         {
             InitializeComponent();
             _databaseService = databaseService;
-            MainPage = new SplashPage();
+            _authService = authService;
+            MainPage = new SplashPage(_authService);
         }
 
         protected override async void OnStart()

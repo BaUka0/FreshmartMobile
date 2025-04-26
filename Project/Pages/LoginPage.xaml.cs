@@ -33,10 +33,10 @@ public partial class LoginPage : ContentPage
             {
                 if (Application.Current.MainPage is AppShell appShell)
                 {
-                    //appShell.UpdateUsername();
+                    appShell.OnUserLoggedIn();
                 }
                 await DisplayAlert("”спех", "¬ход выполнен успешно!", "OK");
-                await Shell.Current.GoToAsync("//books");
+                //await Shell.Current.GoToAsync("/home");
             }
             else
             {
@@ -51,6 +51,6 @@ public partial class LoginPage : ContentPage
     }
     private async void OnRegisterTapped(object sender, EventArgs e)
 	{
-        await Shell.Current.GoToAsync("//register");
+        await Shell.Current.GoToAsync("register");
     }
 }

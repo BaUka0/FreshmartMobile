@@ -5,19 +5,18 @@ namespace Project.Pages;
 
 public partial class SplashPage : ContentPage
 {
-	public SplashPage()
+	private readonly AuthService _authService;
+	public SplashPage(AuthService authService)
 	{
 		InitializeComponent();
 		Animate();
-	}
+        _authService = authService;
+    }
 
 	private async void Animate()
 	{
         await Task.Delay(1000);
 
-        var appShell = Application.Current.Handler.MauiContext.Services.GetService<AppShell>();
-
-
-        Application.Current.MainPage = appShell; 
+        Application.Current.MainPage = new AppShell(_authService); 
     }
 }

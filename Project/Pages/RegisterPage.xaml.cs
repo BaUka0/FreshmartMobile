@@ -36,18 +36,18 @@ public partial class RegisterPage : ContentPage
             if (result)
             {
                 await DisplayAlert("Успех", "Регистрация прошла успешно!", "OK");
-            }
-            if (role == "seller")
-            {
-                var user = await _databaseService.GetUserByCredentialsAsync(entryUsername.Text, entryPassword.Text);
-                var application = new SellerApplication
+                if (role == "seller")
                 {
-                    UserId = user.Id,
-                    ApplicationDate = DateTime.UtcNow,
-                    Status = "Pending"
-                };
-                await _databaseService.CreateSellerApplicationAsync(application);
-                await DisplayAlert("Успех", "Заявка на продавца отправлена на рассмотрение.", "OK");
+                    var user = await _databaseService.GetUserByCredentialsAsync(entryUsername.Text, entryPassword.Text);
+                    var application = new SellerApplication
+                    {
+                        UserId = user.Id,
+                        ApplicationDate = DateTime.UtcNow,
+                        Status = "Pending"
+                    };
+                    await _databaseService.CreateSellerApplicationAsync(application);
+                    await DisplayAlert("Успех", "Заявка на продавца отправлена на рассмотрение.", "OK");
+                }
             }
             else
             {
@@ -55,7 +55,7 @@ public partial class RegisterPage : ContentPage
                 return;
             }
 
-            await Shell.Current.GoToAsync("//login");
+            await Shell.Current.GoToAsync("///login");
         }
         catch (Exception ex)
         {
