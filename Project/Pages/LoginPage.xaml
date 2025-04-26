@@ -3,22 +3,57 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.LoginPage"
              Title="Вход">
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Кіру" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center" />
+    <Grid>
+    <!-- Фоновое изображение -->
+    <Image Source="background1.png"
+               Aspect="AspectFill"
+               Opacity="0.3"
+               Grid.RowSpan="1" />
 
-        <Entry x:Name="entryEmail" Placeholder="Email" Keyboard="Email" />
-        <Entry x:Name="entryPassword" Placeholder="Құпия сөз" IsPassword="True" />
+    <!-- Основной контент -->
+    <ScrollView>
+        <VerticalStackLayout 
+                Padding="20" 
+                Spacing="15" 
+                HorizontalOptions="Center"
+                VerticalOptions="Start"
+                WidthRequest="410"
+                >
 
-        <Button Text="Кіру" Clicked="OnLoginClicked" BackgroundColor="#2196F3" TextColor="White" CornerRadius="10" />
-        <Label x:Name="lblMessage" TextColor="Red" IsVisible="False" />
+            <!-- Логотип -->
+            <Image Source="logo.png" HeightRequest="100" Margin="0,10" HorizontalOptions="Center" />
 
-        <Label>
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text="Аккаунтыңыз жоқ па? " />
-                    <Span Text="Тіркелу" TextColor="Blue" GestureRecognizers="{TapGestureRecognizer Tapped='OnRegisterTapped'}" />
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
-    </VerticalStackLayout>
+            <!-- Заголовок -->
+            <Label Text="Кіру"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+
+            <!-- Поля ввода -->
+            <Entry x:Name="entryEmail" Placeholder="Email" Keyboard="Email" />
+            <Entry x:Name="entryPassword" Placeholder="Құпия сөз" IsPassword="True" />
+
+            <!-- Кнопка входа -->
+            <Button Text="Кіру" Clicked="OnLoginClicked" BackgroundColor="#009c00" TextColor="White" CornerRadius="10" />
+
+            <!-- Сообщение об ошибке -->
+            <Label x:Name="lblMessage" TextColor="Red" IsVisible="False" HorizontalOptions="Center" />
+
+            <!-- Ссылка на регистрацию -->
+            <Label HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Аккаунтыңыз жоқ па? " />
+                        <Span Text="Тіркелу" TextColor="Blue">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnRegisterTapped" />
+                            </Span.GestureRecognizers>
+                        </Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </VerticalStackLayout>
+    </ScrollView>
+    </Grid>
 </ContentPage>

@@ -3,26 +3,79 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.RegisterPage"
              Title="RegisterPage">
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+    <Grid>
+        <!-- Фоновое изображение -->
+        <Image Source="background1.png"
+           Aspect="AspectFill"
+           Opacity="0.3"
+           Grid.RowSpan="1" />
 
-            <Label Text="Тіркелу" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center" />
+        <!-- Основной контент -->
+        <ScrollView>
+            <Grid>
+                <VerticalStackLayout Padding="20" Spacing="15"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Start"
+                                 WidthRequest="410">
 
-            <Entry x:Name="entryUsername" Placeholder="Атыңыз" />
-            <Entry x:Name="entryEmail" Placeholder="Email" Keyboard="Email" />
-            <Entry x:Name="entryPassword" Placeholder="Құпия сөз" IsPassword="True" />
+                    <!-- Логотип -->
+                    <Image Source="logo.png"
+                       HeightRequest="100"
+                       Margin="0,10"
+                       HorizontalOptions="Center" />
 
-            <Label Text="Рөлді таңдаңыз:" FontAttributes="Bold" />
+                    <!-- Заголовок -->
+                    <Label Text="Регистрация"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
 
-            <HorizontalStackLayout>
-                <RadioButton x:Name="radioClient" Content="Клиент" GroupName="role" IsChecked="True" />
-                <RadioButton x:Name="radioSeller" Content="Сатушы" GroupName="role" />
-            </HorizontalStackLayout>
+                    <!-- Поля ввода -->
+                    <Entry x:Name="entryUsername"
+                       Placeholder="Имя пользователя"
+                       HorizontalOptions="Fill" />
 
-            <Button Text="Тіркелу" Clicked="OnRegisterClicked" BackgroundColor="#4CAF50" TextColor="White" CornerRadius="10" />
+                    <Entry x:Name="entryEmail"
+                       Placeholder="Email"
+                       Keyboard="Email"
+                       HorizontalOptions="Fill" />
 
-            <Label x:Name="lblMessage" TextColor="Red" IsVisible="False" />
+                    <Entry x:Name="entryPassword"
+                       Placeholder="Пароль"
+                       IsPassword="True"
+                       HorizontalOptions="Fill" />
 
-        </VerticalStackLayout>
-    </ScrollView>
+                    <!-- Выбор роли -->
+                    <Label Text="Выберите роль:"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Start" />
+
+                    <HorizontalStackLayout HorizontalOptions="Center">
+                        <RadioButton x:Name="radioClient"
+                                 Content="Клиент"
+                                 GroupName="role"
+                                 IsChecked="True" />
+                        <RadioButton x:Name="radioSeller"
+                                 Content="Продавец"
+                                 GroupName="role" />
+                    </HorizontalStackLayout>
+
+                    <!-- Кнопка регистрации -->
+                    <Button Text="Регистрация"
+                        Clicked="OnRegisterClicked"
+                        BackgroundColor="#4CAF50"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HorizontalOptions="Fill" />
+
+                    <!-- Сообщение об ошибке -->
+                    <Label x:Name="lblMessage"
+                       TextColor="Red"
+                       IsVisible="False"
+                       HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Grid>
+        </ScrollView>
+    </Grid>
 </ContentPage>
