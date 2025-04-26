@@ -33,7 +33,7 @@ public partial class LoginPage : ContentPage
             {
                 if (Application.Current.MainPage is AppShell appShell)
                 {
-                    appShell.UpdateUsername();
+                    //appShell.UpdateUsername();
                 }
                 await DisplayAlert("”спех", "¬ход выполнен успешно!", "OK");
                 await Shell.Current.GoToAsync("//books");

@@ -17,13 +17,13 @@ namespace Project
             Routing.RegisterRoute("register", typeof(RegisterPage));
             Routing.RegisterRoute("admin/userlist", typeof(UserListPage));
         }
-        public void UpdateUsername()
-        {
-            if (_authService.CurrentUser != null)
-            {
-                UsernameLabel.Text = _authService.CurrentUser.username;
-            }
-        }
+        //public void UpdateUsername()
+        //{
+        //    if (_authService.CurrentUser != null)
+        //    {
+        //        UsernameLabel.Text = _authService.CurrentUser.username;
+        //    }
+        //}
         public async void OnLogoutButtonClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
@@ -34,7 +34,7 @@ namespace Project
             
             await DisplayAlert("Выход", "Вы вышли!", "OK");
 
-            UsernameLabel.Text = string.Empty;
+            //UsernameLabel.Text = string.Empty;
             await Shell.Current.GoToAsync("//login");
         }
     }
