@@ -47,14 +47,17 @@
             x:Name="profileTab"
             Title="Профиль"
             Icon="profile_grey.png"/>
+        
         <ShellContent
             x:Name="userList"
             Title="Пользователи"
-            
+            Icon="users_green.png"
             ContentTemplate="{DataTemplate pages_admin:UserListPage}" />
-            <ShellContent 
+        
+        <ShellContent 
                 x:Name="applicationList"
                 Title="Заявки"
+                Icon="mail_green.png"
                 ContentTemplate="{DataTemplate pages_admin:SellerApplicationsPage}"/>
 
     </TabBar>

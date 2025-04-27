@@ -24,15 +24,15 @@
             <Image Source="logo.png" HeightRequest="100" Margin="0,10" HorizontalOptions="Center" />
 
             <!-- Заголовок -->
-            <Label Text="Кіру"
+            <Label Text="Вход"
                        FontSize="32"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center" />
 
             <!-- Поля ввода -->
-            <Entry x:Name="entryEmail" Placeholder="Email" Keyboard="Email" />
-            <Entry x:Name="entryPassword" Placeholder="Құпия сөз" IsPassword="True" />
+            <Entry x:Name="entryEmail" Placeholder="Имя пользователя" Keyboard="Email" />
+            <Entry x:Name="entryPassword" Placeholder="Пароль" IsPassword="True" />
 
             <!-- Кнопка входа -->
             <Button Text="Кіру" Clicked="OnLoginClicked" BackgroundColor="#009c00" TextColor="White" CornerRadius="10" />

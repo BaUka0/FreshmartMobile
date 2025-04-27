@@ -3,10 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.CatalogPage"
              Title="CatalogPage">
-    <VerticalStackLayout>
+
+    <VerticalStackLayout Padding="10">
+
         <Label 
-            Text="CATALOG PAGE"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            Text="Категории товаров"
+            FontSize="24"
+            HorizontalOptions="Center"
+            Margin="0,20,0,10"
+            TextColor="Green"/>
+        <!-- Установили зеленый цвет для заголовка -->
+
+        <!-- CollectionView с GridItemsLayout для отображения в 2 колонки -->
+        <CollectionView ItemsSource="{Binding Categories}">
+            <CollectionView.ItemsLayout>
+                <!-- Используем GridItemsLayout с 2 колонками -->
+                <GridItemsLayout Span="2" Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="LightGray" CornerRadius="15" Padding="10" Margin="5" HasShadow="True">
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                            <!-- Иконка -->
+                            <Image Source="{Binding Icon}" WidthRequest="40" HeightRequest="40" 
+                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                            <!-- Текст -->
+                            <Label Text="{Binding Name}" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Green"/>
+                            <!-- Зеленый цвет для текста -->
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
     </VerticalStackLayout>
+
 </ContentPage>
