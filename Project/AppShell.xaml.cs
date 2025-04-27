@@ -46,6 +46,12 @@ namespace Project
                     tabBar.Items.Add(cartTab);
                     tabBar.Items.Add(profileTab);
                     break;
+                case "seller":
+                    tabBar.Items.Add(homeTab);
+                    tabBar.Items.Add(catalogTab);
+                    tabBar.Items.Add(dashboardTab);
+                    tabBar.Items.Add(profileTab);
+                    break;
 
                 case "admin":
                     tabBar.Items.Add(homeTab);

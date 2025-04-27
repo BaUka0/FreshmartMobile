@@ -5,7 +5,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Project"
     xmlns:pages="clr-namespace:Project.Pages"
-
     xmlns:pages_admin="clr-namespace:Project.Pages.Admin"
     Shell.TabBarBackgroundColor="{AppThemeBinding Light=LightGray, Dark=#333333}"
     Shell.TabBarForegroundColor="Green"
@@ -56,6 +55,11 @@
                 x:Name="applicationList"
                 Title="Заявки"
                 ContentTemplate="{DataTemplate pages_admin:SellerApplicationsPage}"/>
+        <ShellContent
+            x:Name="dashboardTab"
+            Title="Дэшбоард"
+            Icon="catalog_gray.png"
+            ContentTemplate="{DataTemplate local:CatalogPage}" />
 
     </TabBar>
 
