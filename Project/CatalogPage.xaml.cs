@@ -1,4 +1,8 @@
+using Project.Pages;
+using System.Windows.Input;
+
 namespace Project;
+
 public class Category
 {
     public string Name { get; set; }
@@ -8,6 +12,7 @@ public class Category
 public partial class CatalogPage : ContentPage
 {
     public List<Category> Categories { get; set; }
+    public ICommand CategoryCommand { get; set; }
 
     public CatalogPage()
     {
@@ -25,6 +30,28 @@ public partial class CatalogPage : ContentPage
             new Category { Name = "«амороженные продукты", Icon = "frozen_icon.png" }
         };
 
+        // —оздаем команду дл€ обработки нажати€ на категорию
+        CategoryCommand = new Command<Category>(OnCategorySelected);
+
         BindingContext = this;
     }
+
+    private async void OnCategorySelected(Category selectedCategory)
+    {
+        if (selectedCategory == null) return;
+
+        // ѕереход на страницу ProductList с выбранной категорией
+        await Navigation.PushAsync(new ProductList(selectedCategory));
+    }
+    private async void OnCategoryTapped(object sender, EventArgs e)
+    {
+        var frame = sender as Frame;
+        if (frame != null)
+        {
+            // јнимаци€ уменьшени€ и увеличени€
+            await frame.ScaleTo(0.9, 100, Easing.CubicIn);
+            await frame.ScaleTo(1, 100, Easing.CubicOut);
+        }
+    }
 }
+

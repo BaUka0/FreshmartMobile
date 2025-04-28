@@ -50,8 +50,7 @@ namespace Project
                 case "seller":
                     tabBar.Items.Add(homeTab);
                     tabBar.Items.Add(catalogTab);
-                    tabBar.Items.Add(favouriteTab);
-                    tabBar.Items.Add(cartTab);
+                    tabBar.Items.Add(dashboard);
                     tabBar.Items.Add(profileTab);
                     break;
 

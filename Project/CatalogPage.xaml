@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Project"
              x:Class="Project.CatalogPage"
-             Title="CatalogPage">
+             Title="Каталог товаров">
 
     <VerticalStackLayout Padding="10">
 
@@ -12,31 +13,52 @@
             HorizontalOptions="Center"
             Margin="0,20,0,10"
             TextColor="Green"/>
-        <!-- Установили зеленый цвет для заголовка -->
 
-        <!-- CollectionView с GridItemsLayout для отображения в 2 колонки -->
-        <CollectionView ItemsSource="{Binding Categories}">
+        <CollectionView ItemsSource="{Binding Categories}" 
+                        SelectionMode="None"
+                        Margin="10">
             <CollectionView.ItemsLayout>
-                <!-- Используем GridItemsLayout с 2 колонками -->
                 <GridItemsLayout Span="2" Orientation="Vertical"/>
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame BorderColor="LightGray" CornerRadius="15" Padding="10" Margin="5" HasShadow="True">
-                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                            <!-- Иконка -->
-                            <Image Source="{Binding Icon}" WidthRequest="40" HeightRequest="40" 
-                                   HorizontalOptions="Center" VerticalOptions="Center" />
-                            <!-- Текст -->
-                            <Label Text="{Binding Name}" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Green"/>
-                            <!-- Зеленый цвет для текста -->
+                    <Frame 
+                        BorderColor="LightGray" 
+                        CornerRadius="15" 
+                        Padding="0"
+                        Margin="5"
+                        HasShadow="True"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand">
+
+                        <!-- GestureRecognizers для клика -->
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:CatalogPage}}, Path=CategoryCommand}"
+                                CommandParameter="{Binding .}"
+                                Tapped="OnCategoryTapped"/>
+                        </Frame.GestureRecognizers>
+
+                        <!-- Вложенный StackLayout -->
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="10">
+                            <Image 
+                                Source="{Binding Icon}" 
+                                WidthRequest="60" 
+                                HeightRequest="60" 
+                                HorizontalOptions="Center" 
+                                VerticalOptions="Center" 
+                                Aspect="AspectFit"/>
+                            <Label 
+                                Text="{Binding Name}" 
+                                FontSize="18" 
+                                HorizontalOptions="Center" 
+                                VerticalOptions="Center" 
+                                TextColor="Green"/>
                         </StackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
     </VerticalStackLayout>
-
 </ContentPage>

@@ -60,6 +60,11 @@
                 Icon="mail_green.png"
                 ContentTemplate="{DataTemplate pages_admin:SellerApplicationsPage}"/>
 
+        <ShellContent
+            x:Name="dashboard"
+            Title="Дэшборд"
+            Icon="dashboard_green.png"/>
+
     </TabBar>
 
     <!-- Боковая панель
