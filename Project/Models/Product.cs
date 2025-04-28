@@ -12,6 +12,8 @@ namespace Project.Models
         public string Description { get; set; }
         public string Price { get; set; }
         public string Image { get; set; } // Путь к изображению
+        public int Quantity { get; set; } = 1;
+
     }
 
 }

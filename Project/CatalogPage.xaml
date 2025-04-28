@@ -4,11 +4,11 @@
              xmlns:local="clr-namespace:Project"
              x:Class="Project.CatalogPage"
              Title="Каталог товаров">
-
-    <VerticalStackLayout Padding="10">
+    <ScrollView>
+        <VerticalStackLayout Padding="10">
 
         <Label 
-            Text="Категории товаров"
+            Text="Каталог товаров"
             FontSize="24"
             HorizontalOptions="Center"
             Margin="0,20,0,10"
@@ -61,4 +61,5 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

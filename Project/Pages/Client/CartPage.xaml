@@ -1,0 +1,85 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project.Pages.CartPage"
+             Title="Корзина">
+
+    <Grid RowDefinitions="*,Auto" Padding="20">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="15">
+
+                <Label x:Name="EmptyCartLabel"
+                       Text="Ваша корзина пуста. Добавьте товары!"
+                       FontSize="22"
+                       TextColor="Gray"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       IsVisible="False" />
+
+                <CollectionView x:Name="CartCollectionView" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BorderColor="LightGray" CornerRadius="10" Padding="15" Margin="0,5">
+                                <VerticalStackLayout>
+
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="22"
+                                           TextColor="Black" />
+
+                                    <Label Text="{Binding Price}" 
+                                           FontSize="18"
+                                           TextColor="Green" />
+
+                                    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+
+                                        <Button Text="-" 
+                                                Clicked="OnDecreaseQuantityClicked"
+                                                BackgroundColor="LightGray" />
+
+                                        <Label Text="{Binding Quantity}" 
+                                               FontSize="18"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center" />
+
+                                        <Button Text="+" 
+                                                Clicked="OnIncreaseQuantityClicked"
+                                                BackgroundColor="LightGray" />
+
+                                        <Button Text="Удалить"
+                                                Clicked="OnDeleteItemClicked"
+                                                BackgroundColor="Red"
+                                                TextColor="White"
+                                                HorizontalOptions="EndAndExpand" />
+                                    </HorizontalStackLayout>
+
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Блок итогов + кнопка заказать -->
+        <VerticalStackLayout Grid.Row="1" Spacing="10">
+
+            <!-- Итого -->
+            <Label x:Name="SummaryLabel"
+                   Text="Товаров: 0 | Итого: 0 ₸"
+                   FontSize="18"
+                   HorizontalOptions="Center"
+                   TextColor="Black" />
+
+            <!-- Кнопка заказать -->
+            <Button Text="Заказать"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    HeightRequest="50"
+                    Clicked="OnOrderClicked"
+                    Margin="0,10,0,0" />
+
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

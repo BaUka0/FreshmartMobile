@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project.Pages.Client.FavouritePage"
+             Title="Избранное">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="10" Spacing="10">
+
+            <CollectionView x:Name="FavouritesCollectionView" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" HasShadow="True">
+
+                            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+
+                                <!-- Картинка товара -->
+                                <Image Source="defaultProduct.png"
+                                       WidthRequest="80"
+                                       HeightRequest="80"
+                                       Aspect="AspectFit" />
+
+                                <!-- Информация о товаре -->
+                                <VerticalStackLayout Spacing="5" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding Name}"
+                                           FontSize="18"
+                                           TextColor="Black"
+                                           HorizontalOptions="Start" />
+                                    <Label Text="{Binding Price}"
+                                           FontSize="16"
+                                           TextColor="Green"
+                                           HorizontalOptions="Start" />
+                                </VerticalStackLayout>
+
+                                <!-- Кнопки "лайк" и "в корзину" справа -->
+                                <HorizontalStackLayout Spacing="20" HorizontalOptions="End" VerticalOptions="Center">
+                                    <ImageButton Source="favourite_grey.png"
+                                                 Clicked="OnLikeClicked"
+                                                 WidthRequest="40"
+                                                 HeightRequest="40"
+                                                 BackgroundColor="Transparent" />
+                                    <ImageButton Source="basket_grey.png"
+                                                 Clicked="OnAddToCartClicked"
+                                                 WidthRequest="40"
+                                                 HeightRequest="40"
+                                                 BackgroundColor="Transparent" />
+                                </HorizontalStackLayout>
+
+                            </HorizontalStackLayout>
+
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
