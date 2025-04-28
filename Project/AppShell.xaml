@@ -24,13 +24,13 @@
             Route="home"
             Title="Главная"
             Icon="home_gray.png"
-            ContentTemplate="{DataTemplate local:HomePage}" />
+            ContentTemplate="{DataTemplate pages:HomePage}" />
 
         <ShellContent
             x:Name="catalogTab"
             Title="Каталог"
             Icon="catalog_gray.png"
-            ContentTemplate="{DataTemplate local:CatalogPage}" />
+            ContentTemplate="{DataTemplate pages:CatalogPage}" />
         
         <ShellContent
             x:Name="favouriteTab"

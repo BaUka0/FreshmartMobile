@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project.Pages.ProductListPage"
+             Title="Список товаров">
+    
+    <VerticalStackLayout Padding="10">
+
+        <Label x:Name="CategoryNameLabel"
+           FontSize="24"
+           HorizontalOptions="Center"
+           Margin="0,20,0,10"
+           TextColor="Green"/>
+
+        <CollectionView x:Name="ProductsCollectionView">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Span="2" Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" Margin="5" HasShadow="True">
+                        <Grid HorizontalOptions="Center" VerticalOptions="Center">
+                            <!-- Определение строк и колонок -->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Изображение продукта -->
+                            <Image Source="defaultProduct.png"
+                               WidthRequest="60"
+                               HeightRequest="60"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Aspect="AspectFit" 
+                               Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                            <!-- Название продукта -->
+                            <Label Text="{Binding Name}"
+                               FontSize="18"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Grid.Row="1" Grid.Column="0"
+                               TextColor="Black"/>
+
+                            <!-- Описание продукта -->
+                            <Label Text="{Binding Description}"
+                               FontSize="14"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Grid.Row="2" Grid.Column="0"
+                               TextColor="Gray"/>
+
+                            <!-- Цена продукта -->
+                            <Label Text="{Binding Price}"
+                               FontSize="16"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Grid.Row="3" Grid.Column="0"
+                               TextColor="Green"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>
