@@ -27,7 +27,7 @@
 
                         <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
 
-                            <Image Source="defaultProduct.png"
+                            <Image Source="default_product.png"
                                    WidthRequest="80"
                                    HeightRequest="80"
                                    HorizontalOptions="Center"

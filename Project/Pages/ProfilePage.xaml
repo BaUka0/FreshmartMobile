@@ -8,7 +8,7 @@
         <VerticalStackLayout Padding="20" Spacing="20" HorizontalOptions="Center">
 
             <!-- Фото профиля -->
-            <Image Source="defaultprofile.png"
+            <Image Source="default_profile.png"
                    WidthRequest="120"
                    HeightRequest="120"
                    Aspect="AspectFill"

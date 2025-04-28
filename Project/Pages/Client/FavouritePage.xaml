@@ -15,7 +15,7 @@
                             <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
 
                                 <!-- Картинка товара -->
-                                <Image Source="defaultProduct.png"
+                                <Image Source="default_product.png"
                                        WidthRequest="80"
                                        HeightRequest="80"
                                        Aspect="AspectFit" />

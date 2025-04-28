@@ -21,8 +21,8 @@ public partial class ProductList : ContentPage
     {
         Products = new List<Product>
         {
-            new Product { Name = "Продукт 1", Description = "Описание 1", Price = "$10.00", Image = "product1.png" },
-            new Product { Name = "Продукт 2", Description = "Описание 2", Price = "$20.00", Image = "product2.png" },
+            new Product { Name = "Продукт 1", Description = "Описание 1", Price = "$10.00", Image = "default_product.png" },
+            new Product { Name = "Продукт 2", Description = "Описание 2", Price = "$20.00", Image = "default_product.png" },
             // Добавьте ещё товары
         };
 
