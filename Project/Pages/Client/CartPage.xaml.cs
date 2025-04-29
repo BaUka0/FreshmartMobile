@@ -1,4 +1,5 @@
 ﻿using Project.Models;
+using Project.Pages.Client;
 using System.Collections.ObjectModel;
 
 namespace Project.Pages;
@@ -66,7 +67,8 @@ public partial class CartPage : ContentPage
             return;
         }
 
-        await DisplayAlert("Заказ оформлен", "Спасибо за ваш заказ!", "OK");
+        await Navigation.PushAsync(new OrderSummaryPage(CartItems));
+
 
         CartItems.Clear();
         UpdateSummary();

@@ -1,0 +1,67 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project.Pages.Client.OrderSummaryPage"
+             Title="Подтверждение заказа">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Список товаров -->
+            <Label Text="Сведения о товарах" FontSize="22" />
+            <CollectionView x:Name="SummaryCollectionView" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding Name}" FontSize="18" />
+                            <Label Text="{Binding Price}" TextColor="Green" />
+                            <Label Text="x{Binding Quantity}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Доставка -->
+            <Label Text="Способ доставки" FontSize="22" />
+            <Picker x:Name="DeliveryPicker">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Самовывоз</x:String>
+                        <x:String>Курьер</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <StackLayout x:Name="AddressSection" IsVisible="False" Spacing="10">
+                <Entry x:Name="CityEntry" Placeholder="Город" />
+                <Entry x:Name="StreetEntry" Placeholder="Улица, дом, квартира" />
+            </StackLayout>
+
+            <!-- Оплата -->
+            <Label Text="Способ оплаты" FontSize="22" />
+            <Picker x:Name="PaymentPicker">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Наличными</x:String>
+                        <x:String>Карта</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <StackLayout x:Name="CardSection" IsVisible="False" Spacing="10">
+                <Entry x:Name="CardNumberEntry" Placeholder="Номер карты" Keyboard="Numeric" />
+                <Entry x:Name="CVVEntry" Placeholder="CVV" Keyboard="Numeric" MaxLength="3" />
+                <Entry x:Name="ExpiryEntry" Placeholder="Срок действия (MM/YY)" />
+            </StackLayout>
+
+            <!-- Итого -->
+            <Label x:Name="TotalLabel" FontSize="20" TextColor="Black" />
+
+            <!-- Подтвердить -->
+            <Button Text="Подтвердить заказ"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    Clicked="OnConfirmOrderClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
