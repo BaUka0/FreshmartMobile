@@ -59,7 +59,7 @@
             x:Name="dashboardTab"
             Title="Дэшбоард"
             Icon="catalog_gray.png"
-            ContentTemplate="{DataTemplate local:CatalogPage}" />
+            ContentTemplate="{DataTemplate pages:CatalogPage}" />
 
     </TabBar>
 

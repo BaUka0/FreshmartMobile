@@ -39,7 +39,7 @@ public partial class CatalogPage : ContentPage
         if (selectedCategory == null) return;
 
         // Переход на страницу ProductList с выбранной категорией
-        await Navigation.PushAsync(new ProductList(selectedCategory));
+        await Navigation.PushAsync(new ProductListPage(selectedCategory));
     }
     private async void OnCategoryTapped(object sender, EventArgs e)
     {
