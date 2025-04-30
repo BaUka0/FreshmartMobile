@@ -14,7 +14,7 @@
                         <StackLayout Padding="10">
                             <Label Text="{Binding Name}" FontSize="18" />
                             <Label Text="{Binding Price}" TextColor="Green" />
-                            <Label Text="x{Binding Quantity}" />
+                            <Label Text="{Binding Quantity}" />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
