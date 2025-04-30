@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.ProductListPage"
              Title="Список товаров">
-    
+
     <VerticalStackLayout Padding="10">
 
         <Label x:Name="CategoryNameLabel"
@@ -12,7 +12,8 @@
            Margin="0,20,0,10"
            TextColor="Green"/>
 
-        <CollectionView x:Name="ProductsCollectionView">
+        <CollectionView x:Name="ProductsCollectionView"
+                    SelectionMode="None">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Span="2" Orientation="Vertical"/>
             </CollectionView.ItemsLayout>
@@ -20,51 +21,50 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" Margin="5" HasShadow="True">
-                        <Grid HorizontalOptions="Center" VerticalOptions="Center">
-                            <!-- Определение строк и колонок -->
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnProductTapped"/>
+                        </Frame.GestureRecognizers>
 
-                            <!-- Изображение продукта -->
-                            <Image Source="defaultProduct.png"
-                               WidthRequest="60"
-                               HeightRequest="60"
+                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
+
+                            <Image Source="default_product.png"
+                               WidthRequest="80"
+                               HeightRequest="80"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"
-                               Aspect="AspectFit" 
-                               Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                               Aspect="AspectFit" />
 
-                            <!-- Название продукта -->
                             <Label Text="{Binding Name}"
                                FontSize="18"
                                HorizontalOptions="Center"
-                               VerticalOptions="Center"
-                               Grid.Row="1" Grid.Column="0"
                                TextColor="Black"/>
 
-                            <!-- Описание продукта -->
                             <Label Text="{Binding Description}"
                                FontSize="14"
                                HorizontalOptions="Center"
-                               VerticalOptions="Center"
-                               Grid.Row="2" Grid.Column="0"
                                TextColor="Gray"/>
 
-                            <!-- Цена продукта -->
                             <Label Text="{Binding Price}"
                                FontSize="16"
                                HorizontalOptions="Center"
-                               VerticalOptions="Center"
-                               Grid.Row="3" Grid.Column="0"
                                TextColor="Green"/>
-                        </Grid>
+
+                            <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+                                <ImageButton Source="favourite_grey.png"
+                                 Clicked="OnLikeClicked"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="40"
+                                 HeightRequest="40"
+                                 Aspect="AspectFit"/>
+
+                                <ImageButton Source="basket_grey.png"
+                                 Clicked="OnAddToCartClicked"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="40"
+                                 HeightRequest="40"
+                                 Aspect="AspectFit"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

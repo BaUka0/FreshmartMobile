@@ -5,8 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Project"
     xmlns:pages="clr-namespace:Project.Pages"
+    xmlns:pages_seller="clr-namespace:Project.Pages.Seller"
     xmlns:pages_admin="clr-namespace:Project.Pages.Admin"
-    Shell.TabBarBackgroundColor="{AppThemeBinding Light=LightGray, Dark=#333333}"
+    xmlns:pages_client="clr-namespace:Project.Pages.Client"
+    Shell.TabBarBackgroundColor="White"
     Shell.TabBarForegroundColor="Green"
     Shell.TabBarUnselectedColor="Gray"
     Shell.TabBarTitleColor="Green"
@@ -35,31 +37,42 @@
         <ShellContent
             x:Name="favouriteTab"
             Title="Избранное"
-            Icon="favourite_grey.png" />
+            Icon="favourite_grey.png"
+            ContentTemplate="{DataTemplate pages_client:FavouritePage}" />
 
         <ShellContent
             x:Name="cartTab"
             Title="Корзина"
-            Icon="basket_grey.png"/>
+            Icon="basket_grey.png"
+            ContentTemplate="{DataTemplate pages:CartPage}" />
 
         <ShellContent
             x:Name="profileTab"
             Title="Профиль"
-            Icon="profile_grey.png"/>
+            Icon="profile_grey.png"
+            ContentTemplate="{DataTemplate local:ProfilePage}" />
+
+        <ShellContent
+            x:Name="loginTab"
+            Title="Логин"
+            Icon="profile_grey.png"
+            ContentTemplate="{DataTemplate pages:LoginPage}" />
+
         <ShellContent
             x:Name="userList"
             Title="Пользователи"
-            
+            Icon="users_green.png"
             ContentTemplate="{DataTemplate pages_admin:UserListPage}" />
-            <ShellContent 
-                x:Name="applicationList"
-                Title="Заявки"
-                ContentTemplate="{DataTemplate pages_admin:SellerApplicationsPage}"/>
+        <ShellContent
+            x:Name="applicationList"
+            Title="Заявки"
+            Icon="mail_green.png"
+            ContentTemplate="{DataTemplate pages_admin:SellerApplicationsPage}" />
         <ShellContent
             x:Name="dashboardTab"
-            Title="Дэшбоард"
-            Icon="catalog_gray.png"
-            ContentTemplate="{DataTemplate pages:CatalogPage}" />
+            Title="Дэшборд"
+            Icon="dashboard_green.png"
+            ContentTemplate="{DataTemplate pages_seller:DashboardPage}" />
 
     </TabBar>
 

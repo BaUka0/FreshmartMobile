@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project.Pages.Seller.DashboardPage"
+             Title="DashboardPage">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Button Text="Добавить продукт"
+                BackgroundColor="Green"
+                TextColor="White"
+                Clicked="OnAddProductClicked" />
+
+            <CollectionView x:Name="ProductCollectionView" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
+                            <HorizontalStackLayout Spacing="10">
+
+                                <Image Source="{Binding ImagePath}" WidthRequest="80" HeightRequest="80" Aspect="AspectFill" />
+
+                                <VerticalStackLayout Spacing="4" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding Name}" FontSize="20" FontAttributes="Bold" />
+                                    <Label Text="{Binding Category}" FontSize="14" TextColor="Gray" />
+                                    <Label Text="{Binding Price}" FontSize="16" TextColor="Green" />
+
+                                    <HorizontalStackLayout Spacing="5" Margin="0,5,0,0">
+                                        <Button Text="Посмотреть"
+                                            Clicked="OnViewProductClicked"
+                                            BackgroundColor="Green"
+                                            TextColor="White"
+                                            FontSize="12" />
+
+                                        <Button Text="Изменить"
+                                            Clicked="OnEditProductClicked"
+                                            BackgroundColor="DarkOrange"
+                                            TextColor="White"
+                                            FontSize="12" />
+
+                                        <Button Text="Удалить"
+                                            Clicked="OnDeleteProductClicked"
+                                            BackgroundColor="Red"
+                                            TextColor="White"
+                                            FontSize="12" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

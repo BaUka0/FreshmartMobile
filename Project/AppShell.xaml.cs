@@ -64,7 +64,7 @@ namespace Project
                 case "guest":
                     tabBar.Items.Add(homeTab);
                     tabBar.Items.Add(catalogTab);
-                    tabBar.Items.Add(profileTab);
+                    tabBar.Items.Add(loginTab);
                     break;
 
                 default:

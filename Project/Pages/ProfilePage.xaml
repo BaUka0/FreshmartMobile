@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project.Pages.ProfilePage"
+             Title="ProfilePage">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20" HorizontalOptions="Center">
+
+            <!-- Фото профиля -->
+            <Image Source="default_profile.png"
+               WidthRequest="120"
+               HeightRequest="120"
+               Aspect="AspectFill"
+               HorizontalOptions="Center"
+               Margin="0,20,0,0">
+                <Image.Clip>
+                    <EllipseGeometry Center="60,60" RadiusX="60" RadiusY="60" />
+                </Image.Clip>
+            </Image>
+
+            <!-- Имя пользователя -->
+            <Label Text="Имя пользователя"
+               FontSize="24"
+               HorizontalOptions="Center"
+               TextColor="Black"/>
+
+            <!-- Почта пользователя -->
+            <Label Text="user@example.com"
+               FontSize="16"
+               HorizontalOptions="Center"
+               TextColor="Gray"/>
+
+            <!-- Сетка карточек -->
+            <CollectionView ItemsSource="{Binding Options}" Margin="0,20,0,0"
+                        SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Span="3" Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="LightGray" 
+                           CornerRadius="15" 
+                           Padding="10"
+                           Margin="5"
+                           HasShadow="True"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="FillAndExpand">
+
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnButtonTapped"/>
+                            </Frame.GestureRecognizers>
+
+                            <!-- Вертикальное расположение иконки и текста -->
+                            <VerticalStackLayout Spacing="10" VerticalOptions="Center" HorizontalOptions="Center">
+                                <Image Source="{Binding Icon}" 
+                                   WidthRequest="24" 
+                                   HeightRequest="24" 
+                                   VerticalOptions="Center"/>
+                                <Label Text="{Binding Name}" 
+                                   FontSize="14" 
+                                   TextColor="Black"
+                                   VerticalOptions="Center"/>
+                            </VerticalStackLayout>
+
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
