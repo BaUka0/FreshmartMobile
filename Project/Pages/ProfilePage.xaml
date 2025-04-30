@@ -17,15 +17,15 @@
                 </Image.Clip>
             </Image>
 
-            <Label Text="Имя пользователя"
-               FontSize="24"
-               HorizontalOptions="Center"
-               TextColor="Black"/>
+            <Label Text="{Binding Username}"
+                   FontSize="24"
+                   HorizontalOptions="Center"
+                   TextColor="Black"/>
 
-            <Label Text="user@example.com"
-               FontSize="16"
-               HorizontalOptions="Center"
-               TextColor="Gray"/>
+            <Label Text="{Binding Email}"
+                   FontSize="16"
+                   HorizontalOptions="Center"
+                   TextColor="Gray"/>
 
             <CollectionView ItemsSource="{Binding Options}" Margin="0,20,0,0"
                         SelectionMode="None">

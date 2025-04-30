@@ -4,15 +4,15 @@
              x:Class="Project.Pages.LoginPage"
              Title="Вход">
     <Grid>
-    <!-- Фоновое изображение -->
-    <Image Source="background1.png"
+        <!-- Фоновое изображение -->
+        <Image Source="background1.png"
                Aspect="AspectFill"
                Opacity="0.3"
                Grid.RowSpan="1" />
 
-    <!-- Основной контент -->
-    <ScrollView>
-        <VerticalStackLayout 
+        <!-- Основной контент -->
+        <ScrollView>
+            <VerticalStackLayout 
                 Padding="20" 
                 Spacing="15" 
                 HorizontalOptions="Center"
@@ -20,40 +20,40 @@
                 WidthRequest="410"
                 >
 
-            <!-- Логотип -->
-            <Image Source="logo.png" HeightRequest="100" Margin="0,10" HorizontalOptions="Center" />
+                <!-- Логотип -->
+                <Image Source="logo.png" HeightRequest="100" Margin="0,10" HorizontalOptions="Center" />
 
-            <!-- Заголовок -->
-            <Label Text="Кіру"
+                <!-- Заголовок -->
+                <Label Text="Вход"
                        FontSize="32"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center" />
 
-            <!-- Поля ввода -->
-            <Entry x:Name="entryEmail" Placeholder="Email" Keyboard="Email" />
-            <Entry x:Name="entryPassword" Placeholder="Құпия сөз" IsPassword="True" />
+                <!-- Поля ввода -->
+                <Entry x:Name="entryEmail" Placeholder="Имя пользователя" Keyboard="Email" />
+                <Entry x:Name="entryPassword" Placeholder="Пароль" IsPassword="True" />
 
-            <!-- Кнопка входа -->
-            <Button Text="Кіру" Clicked="OnLoginClicked" BackgroundColor="#009c00" TextColor="White" CornerRadius="10" />
+                <!-- Кнопка входа -->
+                <Button Text="Вход" Clicked="OnLoginClicked" BackgroundColor="#009c00" TextColor="White" CornerRadius="10" />
 
-            <!-- Сообщение об ошибке -->
-            <Label x:Name="lblMessage" TextColor="Red" IsVisible="False" HorizontalOptions="Center" />
+                <!-- Сообщение об ошибке -->
+                <Label x:Name="lblMessage" TextColor="Red" IsVisible="False" HorizontalOptions="Center" />
 
-            <!-- Ссылка на регистрацию -->
-            <Label HorizontalOptions="Center">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Аккаунтыңыз жоқ па? " />
-                        <Span Text="Тіркелу" TextColor="Blue">
-                            <Span.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnRegisterTapped" />
-                            </Span.GestureRecognizers>
-                        </Span>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-        </VerticalStackLayout>
-    </ScrollView>
+                <!-- Ссылка на регистрацию -->
+                <Label HorizontalOptions="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="У вас нет аккаунта? " />
+                            <Span Text="Регистрация" TextColor="Blue">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnRegisterTapped" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </VerticalStackLayout>
+        </ScrollView>
     </Grid>
 </ContentPage>

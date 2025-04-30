@@ -2,12 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.Admin.SellerApplicationHistoryPage"
-             Title="SellerApplicationHistoryPage">
+             Title="История заявок">
     <VerticalStackLayout Padding="10" Spacing="10">
-        <Label Text="История заявок на роль продавца"
-               FontSize="Title"
-               FontAttributes="Bold"
-               HorizontalOptions="Center" />
 
         <!-- Используем CollectionView для отображения списка заявок -->
         <CollectionView x:Name="ApplicationsHistoryCollectionView"

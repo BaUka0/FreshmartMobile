@@ -6,7 +6,8 @@ namespace Project.Pages;
 public partial class ProfilePage : ContentPage
 {
     private readonly AuthService _authService;
-
+    public string Username { get; set; }
+    public string Email { get; set; }
     public List<ProfileOption> Options { get; set; }
 
     public ProfilePage(AuthService authService)
@@ -14,6 +15,13 @@ public partial class ProfilePage : ContentPage
         InitializeComponent();
 
         _authService = authService;
+
+        var currentUser = _authService.CurrentUser;
+        if (currentUser != null)
+        {
+            Username = currentUser.username;
+            Email = currentUser.email;
+        }
 
         Options = new List<ProfileOption>
         {

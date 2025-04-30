@@ -2,12 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.Admin.UserListPage"
-             Title="UserListPage">
+             Title="Пользователи">
     <VerticalStackLayout Padding="10" Spacing="10">
-        <Label Text="Список зарегистрированных пользователей"
-               FontSize="Title"
-               FontAttributes="Bold"
-               HorizontalOptions="Center" />
 
         <CollectionView x:Name="UsersCollectionView"
                         ItemsSource="{Binding Users}">
@@ -40,11 +36,11 @@
                                 <Label Text="Логин:" FontAttributes="Bold"/>
                                 <Label Text="{Binding username}" HorizontalOptions="StartAndExpand"/>
 
-                                <Label Text="Пароль:" FontAttributes="Bold"/>
-                                <Label Text="{Binding password}" TextColor="Red"/>
+                                <Label Text="Почта:" FontAttributes="Bold"/>
+                                <Label Text="{Binding email}" />
 
                                 <Label Text="Роль:" FontAttributes="Bold"/>
-                                <Label Text="{Binding role}"/>
+                                <Label Text="{Binding role}" />
                             </HorizontalStackLayout>
                         </Border>
                     </SwipeView>
