@@ -11,7 +11,6 @@ public partial class CartPage : ContentPage
     {
         InitializeComponent();
 
-        // Пример: наполняем тестовыми товарами
         CartItems.Add(new Product { Name = "Яблоко", Price = "500 ₸", Quantity = 1 });
         CartItems.Add(new Product { Name = "Банан", Price = "600 ₸", Quantity = 2 });
         CartItems.Add(new Product { Name = "Груша", Price = "700 ₸", Quantity = 1 });
@@ -65,13 +64,22 @@ public partial class CartPage : ContentPage
             await DisplayAlert("Корзина пуста", "Добавьте товары перед оформлением заказа.", "OK");
             return;
         }
+        var cartItemsCopy = new ObservableCollection<Product>(CartItems.Select(item => new Product
+        {
+            Name = item.Name,
+            Price = item.Price,
+            Quantity = item.Quantity,
+            Description = item.Description,
+            Image = item.Image,
+            Category = item.Category
+        }));
 
-        await Navigation.PushAsync(new OrderSummaryPage(CartItems));
+        await Navigation.PushAsync(new OrderSummaryPage(cartItemsCopy));
 
-
-        //CartItems.Clear();
+        CartItems.Clear();
         UpdateSummary();
     }
+
 
     private void UpdateSummary()
     {
