@@ -6,7 +6,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20" HorizontalOptions="Center">
 
-            <!-- Фото профиля -->
             <Image Source="default_profile.png"
                WidthRequest="120"
                HeightRequest="120"
@@ -18,19 +17,16 @@
                 </Image.Clip>
             </Image>
 
-            <!-- Имя пользователя -->
             <Label Text="Имя пользователя"
                FontSize="24"
                HorizontalOptions="Center"
                TextColor="Black"/>
 
-            <!-- Почта пользователя -->
             <Label Text="user@example.com"
                FontSize="16"
                HorizontalOptions="Center"
                TextColor="Gray"/>
 
-            <!-- Сетка карточек -->
             <CollectionView ItemsSource="{Binding Options}" Margin="0,20,0,0"
                         SelectionMode="None">
                 <CollectionView.ItemsLayout>
@@ -51,7 +47,6 @@
                                 <TapGestureRecognizer Tapped="OnButtonTapped"/>
                             </Frame.GestureRecognizers>
 
-                            <!-- Вертикальное расположение иконки и текста -->
                             <VerticalStackLayout Spacing="10" VerticalOptions="Center" HorizontalOptions="Center">
                                 <Image Source="{Binding Icon}" 
                                    WidthRequest="24" 

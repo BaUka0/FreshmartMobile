@@ -33,6 +33,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<RegisterPage>();
         builder.Services.AddTransient<UserListPage>();
         builder.Services.AddTransient<SellerApplicationsPage>();
+        builder.Services.AddSingleton<AuthService>();
+
 
 
 

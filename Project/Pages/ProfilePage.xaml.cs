@@ -1,14 +1,19 @@
 using Project.Models;
+using Project.Services;
 
 namespace Project.Pages;
 
 public partial class ProfilePage : ContentPage
 {
+    private readonly AuthService _authService;
+
     public List<ProfileOption> Options { get; set; }
 
-    public ProfilePage()
+    public ProfilePage(AuthService authService)
     {
         InitializeComponent();
+
+        _authService = authService;
 
         Options = new List<ProfileOption>
         {
@@ -22,12 +27,74 @@ public partial class ProfilePage : ContentPage
 
         BindingContext = this;
     }
+
+    private async void OnPurchaseHistoryTapped()
+    {
+        await DisplayAlert("Действие", "Открыть историю покупок", "ОК");
+    }
+
+    private async void OnMyReviewsTapped()
+    {
+        await DisplayAlert("Действие", "Открыть мои отзывы", "ОК");
+    }
+
+    private async void OnPaymentMethodTapped()
+    {
+        await DisplayAlert("Действие", "Открыть способы оплаты", "ОК");
+    }
+
+    private async void OnEditProfileTapped()
+    {
+        await DisplayAlert("Действие", "Изменить профиль", "ОК");
+    }
+
+    private async void OnChangePasswordTapped()
+    {
+        await DisplayAlert("Действие", "Изменить пароль", "ОК");
+    }
+
+    private async void OnLogoutTapped()
+    {
+        bool confirm = await DisplayAlert("Выход", "Вы уверены, что хотите выйти из аккаунта?", "Да", "Нет");
+        if (confirm)
+        {
+            _authService.Logout();
+            if (Application.Current.MainPage is AppShell appShell)
+            {
+                appShell.OnUserLoggedOut();
+            }
+            await DisplayAlert("Выход", "Вы успешно вышли из аккаунта", "ОК");
+        }
+    }
+
     private async void OnButtonTapped(object sender, TappedEventArgs e)
     {
         if (sender is Frame frame && frame.BindingContext is ProfileOption option)
         {
-            string selectedOption = option.Name;
-            await DisplayAlert("Вы выбрали", selectedOption, "ОК");
+            switch (option.Name)
+            {
+                case "История покупок":
+                    OnPurchaseHistoryTapped();
+                    break;
+                case "Мои отзывы":
+                    OnMyReviewsTapped();
+                    break;
+                case "Способ оплаты":
+                    OnPaymentMethodTapped();
+                    break;
+                case "Изменить профиль":
+                    OnEditProfileTapped();
+                    break;
+                case "Изменить пароль":
+                    OnChangePasswordTapped();
+                    break;
+                case "Выход":
+                    OnLogoutTapped();
+                    break;
+                default:
+                    await DisplayAlert("Ошибка", "Неизвестная опция", "ОК");
+                    break;
+            }
         }
     }
 }
