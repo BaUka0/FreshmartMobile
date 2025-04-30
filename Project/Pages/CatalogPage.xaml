@@ -4,61 +4,63 @@
              x:Class="Project.Pages.CatalogPage"
              xmlns:local="clr-namespace:Project.Pages"
              Title="Каталог товаров">
-    
-    <VerticalStackLayout Padding="10">
 
-        <Label 
-        Text="Категории товаров"
-        FontSize="24"
-        HorizontalOptions="Center"
-        Margin="0,20,0,10"
-        TextColor="Green"/>
+    <ScrollView>
+        <VerticalStackLayout Padding="10">
 
-        <CollectionView ItemsSource="{Binding Categories}" 
-                    SelectionMode="None"
-                    Margin="10">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Span="2" Orientation="Vertical"/>
-            </CollectionView.ItemsLayout>
+            <Label 
+         Text="Каталог товаров"
+         FontSize="24"
+         HorizontalOptions="Center"
+         Margin="0,20,0,10"
+         TextColor="Green"/>
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame 
-                    BorderColor="LightGray" 
-                    CornerRadius="15" 
-                    Padding="0"
-                    Margin="5"
-                    HasShadow="True"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="FillAndExpand">
+            <CollectionView ItemsSource="{Binding Categories}" 
+                     SelectionMode="None"
+                     Margin="10">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Span="2" Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
 
-                        <!-- GestureRecognizers для клика -->
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer 
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:CatalogPage}}, Path=CategoryCommand}"
-                            CommandParameter="{Binding .}"
-                            Tapped="OnCategoryTapped"/>
-                        </Frame.GestureRecognizers>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame 
+                     BorderColor="LightGray" 
+                     CornerRadius="15" 
+                     Padding="0"
+                     Margin="5"
+                     HasShadow="True"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
 
-                        <!-- Вложенный StackLayout -->
-                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="10">
-                            <Image 
-                            Source="{Binding Icon}" 
-                            WidthRequest="60" 
-                            HeightRequest="60" 
-                            HorizontalOptions="Center" 
-                            VerticalOptions="Center" 
-                            Aspect="AspectFit"/>
-                            <Label 
-                            Text="{Binding Name}" 
-                            FontSize="18" 
-                            HorizontalOptions="Center" 
-                            VerticalOptions="Center" 
-                            TextColor="Green"/>
-                        </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+                            <!-- GestureRecognizers для клика -->
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer 
+                             Command="{Binding Source={RelativeSource AncestorType={x:Type local:CatalogPage}}, Path=CategoryCommand}"
+                             CommandParameter="{Binding .}"
+                             Tapped="OnCategoryTapped"/>
+                            </Frame.GestureRecognizers>
+
+                            <!-- Вложенный StackLayout -->
+                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="10">
+                                <Image 
+                             Source="{Binding Icon}" 
+                             WidthRequest="60" 
+                             HeightRequest="60" 
+                             HorizontalOptions="Center" 
+                             VerticalOptions="Center" 
+                             Aspect="AspectFit"/>
+                                <Label 
+                             Text="{Binding Name}" 
+                             FontSize="18" 
+                             HorizontalOptions="Center" 
+                             VerticalOptions="Center" 
+                             TextColor="Green"/>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

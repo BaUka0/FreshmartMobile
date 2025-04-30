@@ -1,7 +1,7 @@
 ﻿using Project.Models;
 using System.Collections.ObjectModel;
 
-namespace Project.Pages.Seller;
+namespace Project.Pages.Client;
 
 public partial class CartPage : ContentPage
 {

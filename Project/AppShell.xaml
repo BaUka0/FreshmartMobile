@@ -44,13 +44,13 @@
             x:Name="cartTab"
             Title="Корзина"
             Icon="basket_grey.png"
-            ContentTemplate="{DataTemplate pages:CartPage}" />
+            ContentTemplate="{DataTemplate pages_client:CartPage}" />
 
         <ShellContent
             x:Name="profileTab"
             Title="Профиль"
             Icon="profile_grey.png"
-            ContentTemplate="{DataTemplate local:ProfilePage}" />
+            ContentTemplate="{DataTemplate pages:ProfilePage}" />
 
         <ShellContent
             x:Name="loginTab"

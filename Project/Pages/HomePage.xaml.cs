@@ -17,9 +17,4 @@ public partial class HomePage : ContentPage
 
         BindingContext = this;
     }
-
-    private async void abu_Clicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("//login");
-    }
 }

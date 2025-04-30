@@ -7,6 +7,7 @@ public class Category
     public string Name { get; set; }
     public string Icon { get; set; }
 }
+
 public partial class CatalogPage : ContentPage
 {
     public List<Category> Categories { get; set; }
@@ -22,10 +23,16 @@ public partial class CatalogPage : ContentPage
             new Category { Name = "Фрукты", Icon = "fruit_icon.png" },
             new Category { Name = "Овощи", Icon = "vegetables_icon.png" },
             new Category { Name = "Мясо", Icon = "meat_icon.png" },
+            new Category { Name = "Гастрономия", Icon = "gastronomy.png" },
             new Category { Name = "Молочные продукты", Icon = "dairy_icon.png" },
+            new Category { Name = "Бакалея", Icon = "grocery.png" },
             new Category { Name = "Хлеб и выпечка", Icon = "bread_icon.png" },
+            new Category { Name = "Чай, кофе, какао", Icon = "tea.png" },
             new Category { Name = "Конфеты и сладости", Icon = "candies_icon.png" },
-            new Category { Name = "Замороженные продукты", Icon = "frozen_icon.png" }
+            new Category { Name = "Собственное производство", Icon = "cake.png" },
+            new Category { Name = "Консервы", Icon = "canned.png" },
+            new Category { Name = "Замороженные продукты", Icon = "frozen_icon.png" },
+            new Category { Name = "Другие товары", Icon = "others.png" },
         };
 
         // Создаем команду для обработки нажатия на категорию

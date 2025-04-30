@@ -3,33 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.HomePage"
              Title="HomePage">
-    
-    <VerticalStackLayout>
-        <CarouselView
-        HeightRequest="200"
-        IndicatorView="carouselIndicators"
-        ItemsSource="{Binding CarouselItems}">
-            <CarouselView.ItemTemplate>
-                <DataTemplate>
-                    <Image Source="{Binding}" Aspect="AspectFill"/>
-                </DataTemplate>
-            </CarouselView.ItemTemplate>
-        </CarouselView>
 
-        <IndicatorView
-        x:Name="carouselIndicators"
-        IndicatorColor="Gray"
-        SelectedIndicatorColor="Green"
-        HorizontalOptions="Center"
-        Margin="0,10,0,20"/>
+    <ScrollView>
+        <VerticalStackLayout>
+            <CarouselView
+            HeightRequest="200"
+            IndicatorView="carouselIndicators"
+            ItemsSource="{Binding CarouselItems}">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding}" Aspect="AspectFill"/>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
 
-        <Label 
-        Text="Welcome to Freshmart!"
-        VerticalOptions="Center" 
-        HorizontalOptions="Center" />
+            <IndicatorView
+            x:Name="carouselIndicators"
+            IndicatorColor="Gray"
+            SelectedIndicatorColor="Green"
+            HorizontalOptions="Center"
+            Margin="0,10,0,20"/>
 
-        <Button
-        Text="abu"
-        Clicked="abu_Clicked"/>
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
