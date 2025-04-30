@@ -69,11 +69,10 @@ public partial class CartPage : ContentPage
         await Navigation.PushAsync(new OrderSummaryPage(CartItems));
 
 
-        CartItems.Clear();
+        //CartItems.Clear();
         UpdateSummary();
     }
 
-    // Метод для обновления общей информации
     private void UpdateSummary()
     {
         int totalItems = CartItems.Sum(item => item.Quantity);
@@ -89,7 +88,6 @@ public partial class CartPage : ContentPage
 
         SummaryLabel.Text = $"Товаров: {totalItems} | Итого: {totalPrice} ₸";
 
-        // Если корзина пуста — показываем сообщение, скрываем список
         bool isCartEmpty = CartItems.Count == 0;
         CartCollectionView.IsVisible = !isCartEmpty;
         EmptyCartLabel.IsVisible = isCartEmpty;
