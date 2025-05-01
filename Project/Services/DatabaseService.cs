@@ -27,6 +27,7 @@ namespace Project.Services
 
             await _database.CreateTableAsync<Product>();
             await _database.CreateTableAsync<FavoriteProduct>();
+            await _database.CreateTableAsync<CartItem>();
         }
 
         public async Task<List<User>> GetUsersAsync() => await _database.Table<User>().ToListAsync();
@@ -116,6 +117,66 @@ namespace Project.Services
 
             return favoriteProducts;
         }
+
+        // корзина
+        public async Task AddToCartAsync(int userId, int productId, int quantity = 1)
+        {
+            var existingCartItem = await _database.Table<CartItem>()
+                .FirstOrDefaultAsync(ci => ci.UserId == userId && ci.ProductId == productId);
+
+            if (existingCartItem != null)
+            {
+                existingCartItem.Quantity += quantity;
+                await _database.UpdateAsync(existingCartItem);
+            }
+            else
+            {
+                var newCartItem = new CartItem
+                {
+                    UserId = userId,
+                    ProductId = productId,
+                    Quantity = quantity
+                };
+                await _database.InsertAsync(newCartItem);
+            }
+        }
+
+        public async Task<List<CartItem>> GetCartItemsAsync(int userId)
+        {
+            return await _database.Table<CartItem>()
+                                  .Where(ci => ci.UserId == userId)
+                                  .ToListAsync();
+        }
+
+        public async Task RemoveCartItemAsync(int cartItemId)
+        {
+            var item = await _database.Table<CartItem>().FirstOrDefaultAsync(ci => ci.Id == cartItemId);
+            if (item != null)
+                await _database.DeleteAsync(item);
+        }
+
+        public async Task UpdateCartItemQuantityAsync(int cartItemId, int newQuantity)
+        {
+            var item = await _database.Table<CartItem>()
+                .FirstOrDefaultAsync(ci => ci.Id == cartItemId);
+
+            if (item != null && newQuantity > 0)
+            {
+                item.Quantity = newQuantity;
+                await _database.UpdateAsync(item);
+            }
+        }
+        public async Task ClearCartAsync(int userId)
+        {
+            var items = await _database.Table<CartItem>()
+                                       .Where(ci => ci.UserId == userId)
+                                       .ToListAsync();
+            foreach (var item in items)
+            {
+                await _database.DeleteAsync(item);
+            }
+        }
+
 
     }
 }

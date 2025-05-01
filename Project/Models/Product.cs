@@ -26,7 +26,8 @@ namespace Project.Models
         public bool IsCartButtonVisible { get; set; } = true;
         [Ignore]
         public string FavoriteIcon { get; set; } = "favourite_grey.png";
-
+        [Ignore]
+        public string CartIcon { get; set; } = "basket_grey.png";
 
     }
 

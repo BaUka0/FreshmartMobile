@@ -1,58 +1,91 @@
 ﻿using Project.Models;
+using Project.Services;
 using System.Collections.ObjectModel;
 
 namespace Project.Pages.Client;
 
 public partial class CartPage : ContentPage
 {
-    public ObservableCollection<Product> CartItems { get; set; } = new();
+    private readonly DatabaseService _databaseService;
+    private readonly AuthService _authService;
+    public ObservableCollection<CartDisplayItem> CartItems { get; set; } = new();
 
-    public CartPage()
+    public CartPage(DatabaseService databaseService, AuthService authService)
     {
         InitializeComponent();
-
-        CartItems.Add(new Product { Name = "Яблоко", Price = "500 ₸", Quantity = 1 });
-        CartItems.Add(new Product { Name = "Банан", Price = "600 ₸", Quantity = 2 });
-        CartItems.Add(new Product { Name = "Груша", Price = "700 ₸", Quantity = 1 });
+        _databaseService = databaseService;
+        _authService = authService;
 
         CartCollectionView.ItemsSource = CartItems;
+    }
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await LoadCartItems();
+    }
+    private async Task LoadCartItems()
+    {
+        CartItems.Clear();
+
+        // Получаем все записи корзины пользователя
+        var userId = _authService.GetCurrentUserId();
+        var cartItems = await _databaseService.GetCartItemsAsync(userId);
+
+        foreach (var ci in cartItems)
+        {
+            // Для каждого CartItem достаем данные о товаре
+            var product = await _databaseService.GetProductAsync(ci.ProductId);
+            if (product == null)
+                continue;
+
+            // Создаем модель для отображения
+            CartItems.Add(new CartDisplayItem
+            {
+                CartItemId = ci.Id,
+                ProductId = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Quantity = ci.Quantity,
+            });
+        }
 
         UpdateSummary();
     }
 
     private void OnIncreaseQuantityClicked(object sender, EventArgs e)
     {
-        var button = sender as Button;
-        var product = (button.BindingContext as Product);
-        if (product != null)
+        if (sender is Button button && button.BindingContext is CartDisplayItem item)
         {
-            product.Quantity++;
+            item.Quantity++;
+            _databaseService.UpdateCartItemQuantityAsync(item.CartItemId, item.Quantity);
+            UpdateSummary();
             CartCollectionView.ItemsSource = null;
             CartCollectionView.ItemsSource = CartItems;
-            UpdateSummary();
         }
     }
 
     private void OnDecreaseQuantityClicked(object sender, EventArgs e)
     {
-        var button = sender as Button;
-        var product = (button.BindingContext as Product);
-        if (product != null && product.Quantity > 1)
+        if (sender is Button button && button.BindingContext is CartDisplayItem item)
         {
-            product.Quantity--;
-            CartCollectionView.ItemsSource = null;
-            CartCollectionView.ItemsSource = CartItems;
-            UpdateSummary();
+            if (item.Quantity > 1)
+            {
+                item.Quantity--;
+                _databaseService.UpdateCartItemQuantityAsync(item.CartItemId, item.Quantity);
+                UpdateSummary();
+                CartCollectionView.ItemsSource = null;
+                CartCollectionView.ItemsSource = CartItems;
+            }
         }
     }
 
-    private void OnDeleteItemClicked(object sender, EventArgs e)
+    private async void OnDeleteItemClicked(object sender, EventArgs e)
     {
-        var button = sender as Button;
-        var product = (button.BindingContext as Product);
-        if (product != null)
+        if (sender is Button button && button.BindingContext is CartDisplayItem item)
         {
-            CartItems.Remove(product);
+            await _databaseService.RemoveCartItemAsync(item.CartItemId);
+
+            CartItems.Remove(item);
             UpdateSummary();
         }
     }
@@ -69,14 +102,15 @@ public partial class CartPage : ContentPage
             Name = item.Name,
             Price = item.Price,
             Quantity = item.Quantity,
-            Description = item.Description,
-            Image = item.Image,
-            Category = item.Category
         }));
 
         await Navigation.PushAsync(new OrderSummaryPage(cartItemsCopy));
 
         CartItems.Clear();
+
+        var userId = _authService.GetCurrentUserId();
+        await _databaseService.ClearCartAsync(userId);
+
         UpdateSummary();
     }
 

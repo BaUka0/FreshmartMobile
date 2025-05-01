@@ -64,7 +64,7 @@
              Aspect="AspectFit"
              IsVisible="{Binding IsFavoriteButtonVisible}" />
 
-                                <ImageButton Source="basket_grey.png"
+                                <ImageButton Source="{Binding CartIcon}"
              Clicked="OnAddToCartClicked"
              BackgroundColor="Transparent"
              WidthRequest="40"

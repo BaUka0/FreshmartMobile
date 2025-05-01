@@ -46,7 +46,7 @@
                                              WidthRequest="40"
                                              HeightRequest="40"
                                              BackgroundColor="Transparent" />
-                                    <ImageButton Source="basket_grey.png"
+                                    <ImageButton Source="{Binding CartIcon}"
                                              Clicked="OnAddToCartClicked"
                                              WidthRequest="40"
                                              HeightRequest="40"

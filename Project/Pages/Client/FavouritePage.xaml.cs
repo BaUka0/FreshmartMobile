@@ -31,14 +31,23 @@ public partial class FavouritePage : ContentPage
     private async void LoadFavouriteProducts()
     {
         var userId = _authService.CurrentUser.Id;
+
+        // Получаем все товары в корзине текущего пользователя
+        var cartItems = await _databaseService.GetCartItemsAsync(userId);
+        var cartProductIds = cartItems.Select(ci => ci.ProductId).ToHashSet();
+
         var favoriteProducts = await _databaseService.GetFavoriteProductsAsync(userId);
 
         FavoriteProducts.Clear();
         foreach (var product in favoriteProducts)
         {
+            // Проверяем, находится ли продукт в корзине
+            product.CartIcon = cartProductIds.Contains(product.Id) ? "basket_green.png" : "basket_grey.png";
+
             FavoriteProducts.Add(product);
         }
     }
+
 
     private async void OnLikeClicked(object sender, EventArgs e)
     {
@@ -55,11 +64,25 @@ public partial class FavouritePage : ContentPage
 
     private async void OnAddToCartClicked(object sender, EventArgs e)
     {
-        if (sender is ImageButton button)
+        if (sender is ImageButton button && button.BindingContext is Product product)
         {
-            button.Source = "basket_green.png";
-            await DisplayAlert("Добавлено", "Товар добавлен в корзину!", "Ок");
-            button.Source = "basket_grey.png";
+            var userId = _authService.GetCurrentUserId();
+
+            // Проверяем, находится ли продукт в корзине
+            var cartItems = await _databaseService.GetCartItemsAsync(userId);
+            var isInCart = cartItems.Any(ci => ci.ProductId == product.Id);
+
+            if (isInCart)
+            {
+                await DisplayAlert("Корзина", "Товар уже находится в корзине!", "Ок");
+            }
+            else
+            {
+                await _databaseService.AddToCartAsync(userId, product.Id, 1);
+                product.CartIcon = "basket_green.png";
+                await DisplayAlert("Добавлено", "Товар добавлен в корзину!", "Ок");
+            }
         }
     }
+
 }

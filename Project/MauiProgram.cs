@@ -46,6 +46,7 @@ public static class MauiProgram
         builder.Services.AddTransient<CatalogPage>();
         builder.Services.AddTransient<ProfilePage>();
         builder.Services.AddTransient<FavouritePage>();
+        builder.Services.AddTransient<CartPage>();
 
 
 
