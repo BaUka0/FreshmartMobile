@@ -1,3 +1,4 @@
+using Project.Services;
 using System.Windows.Input;
 
 namespace Project.Pages;
@@ -10,12 +11,16 @@ public class Category
 
 public partial class CatalogPage : ContentPage
 {
+    private readonly DatabaseService _databaseService;
+    private readonly AuthService _authService;
     public List<Category> Categories { get; set; }
     public ICommand CategoryCommand { get; set; }
 
-    public CatalogPage()
+    public CatalogPage(DatabaseService databaseService, AuthService authService)
     {
         InitializeComponent();
+        _databaseService = databaseService;
+        _authService = authService;
 
         Categories = new List<Category>
         {
@@ -46,7 +51,7 @@ public partial class CatalogPage : ContentPage
         if (selectedCategory == null) return;
 
         // Переход на страницу ProductList с выбранной категорией
-        await Navigation.PushAsync(new ProductListPage(selectedCategory));
+        await Navigation.PushAsync(new ProductListPage(selectedCategory, _databaseService, _authService));
     }
     private async void OnCategoryTapped(object sender, EventArgs e)
     {

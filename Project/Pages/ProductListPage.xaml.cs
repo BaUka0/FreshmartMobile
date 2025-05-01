@@ -1,15 +1,21 @@
 using Project.Models;
+using Project.Services;
+using System.Threading.Tasks;
 
 namespace Project.Pages;
 
 public partial class ProductListPage : ContentPage
 {
+    private DatabaseService _databaseService;
+    private AuthService _authService;
     public Category SelectedCategory { get; set; }
     public List<Product> Products { get; set; }
 
-    public ProductListPage(Category category)
+    public ProductListPage(Category category, DatabaseService databaseService, AuthService authService)
     {
         InitializeComponent();
+        _databaseService = databaseService;
+        _authService = authService;
 
         SelectedCategory = category;
         CategoryNameLabel.Text = SelectedCategory.Name;
@@ -17,23 +23,36 @@ public partial class ProductListPage : ContentPage
         LoadProducts();
     }
 
-    private void LoadProducts()
+    private async Task LoadProducts()
     {
-        Products = new List<Product>
-        {
-            new Product { Name = "Продукт 1", Description = "Описание 1", Price = "$10.00", Image = "default_product.png" },
-            new Product { Name = "Продукт 2", Description = "Описание 2", Price = "$20.00", Image = "default_product.png" },
-            // Добавьте ещё товары
-        };
+        Products = await _databaseService.GetProductsByCategoryAsync(SelectedCategory.Name);
 
-        ProductsCollectionView.ItemsSource = Products;
+        var role = _authService.GetCurrentUserRole();
+        if (!role.Equals("client", StringComparison.OrdinalIgnoreCase))
+        {
+            foreach (var product in Products)
+            {
+                product.IsFavoriteButtonVisible = false;
+                product.IsCartButtonVisible = false;
+            }
+        }
+        else
+        {
+            foreach (var product in Products)
+            {
+                product.IsFavoriteButtonVisible = true;
+                product.IsCartButtonVisible = true;
+            }
+        }
+
+            ProductsCollectionView.ItemsSource = Products;
     }
 
     private async void OnProductTapped(object sender, TappedEventArgs e)
     {
         if (sender is Frame frame && frame.BindingContext is Product tappedProduct)
         {
-            await Navigation.PushAsync(new ProductDetail(tappedProduct));
+            await Navigation.PushAsync(new ProductDetail(tappedProduct, _databaseService));
         }
     }
 

@@ -1,15 +1,19 @@
 ﻿using Project.Models;
+using Project.Services;
 
 namespace Project.Pages.Seller;
 
 public partial class AddProductPage : ContentPage
 {
     private string _imagePath;
+    private DatabaseService _databaseService;
     public List<Category> Categories { get; set; }
+    
 
-    public AddProductPage()
+    public AddProductPage(DatabaseService databaseService)
     {
         InitializeComponent();
+        _databaseService = databaseService;
         LoadCategories();
         CategoryPicker.ItemsSource = Categories;
     }
@@ -64,21 +68,27 @@ public partial class AddProductPage : ContentPage
             return;
         }
 
+
+        byte[] fileBytes = null;
+        if (!string.IsNullOrEmpty(_imagePath))
+        {
+            fileBytes = File.ReadAllBytes(_imagePath);
+        }
+
         var newProduct = new Product
         {
             Name = name,
             Description = description,
             Price = price + " ₸",
             Category = category.Name,
-            Image = _imagePath
+            ImageData = fileBytes
         };
 
-        if (Navigation.NavigationStack.FirstOrDefault(p => p is DashboardPage) is DashboardPage dashboardPage)
-        {
-            dashboardPage.Products.Add(newProduct);
-        }
+
+        await _databaseService.CreateProductAsync(newProduct);
 
         await DisplayAlert("Успешно", "Продукт добавлен", "OK");
         await Navigation.PopAsync();
     }
+
 }

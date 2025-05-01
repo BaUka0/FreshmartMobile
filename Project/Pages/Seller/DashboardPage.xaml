@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.Seller.DashboardPage"
              Title="Товары продавца">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
@@ -17,7 +25,7 @@
                         <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
                             <HorizontalStackLayout Spacing="10">
 
-                                <Image Source="{Binding ImagePath}" WidthRequest="80" HeightRequest="80" Aspect="AspectFill" />
+                                <Image WidthRequest="80" HeightRequest="80" Aspect="AspectFill" Source="{Binding ImageData, Converter={StaticResource ByteArrayToImageSourceConverter}}" />
 
                                 <VerticalStackLayout Spacing="4" HorizontalOptions="FillAndExpand">
                                     <Label Text="{Binding Name}" FontSize="20" FontAttributes="Bold" />

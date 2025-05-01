@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.ProductListPage"
              Title="Список товаров">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <VerticalStackLayout Padding="10">
 
@@ -27,12 +34,11 @@
 
                         <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
 
-                            <Image Source="default_product.png"
-                               WidthRequest="80"
-                               HeightRequest="80"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center"
-                               Aspect="AspectFit" />
+                            <Image WidthRequest="80"
+                                   HeightRequest="80"
+                                   Aspect="AspectFit"
+                                   HorizontalOptions="Center"
+                                   Source="{Binding ImageData, Converter={StaticResource ByteArrayToImageSourceConverter}}" />
 
                             <Label Text="{Binding Name}"
                                FontSize="18"
@@ -51,18 +57,21 @@
 
                             <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
                                 <ImageButton Source="favourite_grey.png"
-                                 Clicked="OnLikeClicked"
-                                 BackgroundColor="Transparent"
-                                 WidthRequest="40"
-                                 HeightRequest="40"
-                                 Aspect="AspectFit"/>
+             Clicked="OnLikeClicked"
+             BackgroundColor="Transparent"
+             WidthRequest="40"
+             HeightRequest="40"
+             Aspect="AspectFit"
+             IsVisible="{Binding IsFavoriteButtonVisible}" />
 
                                 <ImageButton Source="basket_grey.png"
-                                 Clicked="OnAddToCartClicked"
-                                 BackgroundColor="Transparent"
-                                 WidthRequest="40"
-                                 HeightRequest="40"
-                                 Aspect="AspectFit"/>
+             Clicked="OnAddToCartClicked"
+             BackgroundColor="Transparent"
+             WidthRequest="40"
+             HeightRequest="40"
+             Aspect="AspectFit"
+             IsVisible="{Binding IsCartButtonVisible}" />
+
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Frame>

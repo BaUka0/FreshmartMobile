@@ -24,6 +24,8 @@ namespace Project.Services
             _database = new SQLiteAsyncConnection(dbPath);
             await _database.CreateTableAsync<User>();
             await _database.CreateTableAsync<SellerApplication>();
+
+            await _database.CreateTableAsync<Product>();
         }
 
         public async Task<List<User>> GetUsersAsync() => await _database.Table<User>().ToListAsync();
@@ -60,6 +62,16 @@ namespace Project.Services
         }
         public Task<List<SellerApplication>> GetPendingSellerApplicationsWithUsersAsync() => GetSellerApplicationsWithUsersAsync("Pending");
         public Task<int> CreateSellerApplicationAsync(SellerApplication application) => _database.InsertAsync(application);
+
+
+        // Методы для работы с товаром
+        public Task<int> CreateProductAsync(Product product) => _database.InsertAsync(product);
+        public Task<int> UpdateProductAsync(Product product) => _database.UpdateAsync(product);
+        public Task<int> DeleteProductAsync(Product product) => _database.DeleteAsync(product);
+        public Task<List<Product>> GetProductsAsync() => _database.Table<Product>().ToListAsync();
+        public Task<Product> GetProductAsync(int id) => _database.Table<Product>().FirstOrDefaultAsync(p => p.Id == id);
+        public Task<List<Product>> GetProductsByCategoryAsync(string category) => _database.Table<Product>().Where(p => p.Category == category).ToListAsync();
+
 
     }
 }

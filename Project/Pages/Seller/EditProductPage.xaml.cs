@@ -1,16 +1,19 @@
 ﻿using Project.Models;
+using Project.Services;
 
 namespace Project.Pages.Seller;
 
 public partial class EditProductPage : ContentPage
 {
     private Product _product;
+    private DatabaseService _databaseService;
     private string _imagePath;
     private List<Category> Categories;
 
-    public EditProductPage(Product product)
+    public EditProductPage(Product product, DatabaseService databaseService)
     {
         InitializeComponent();
+        _databaseService = databaseService;
         _product = product;
         _imagePath = product.Image;
         LoadCategories();
@@ -45,7 +48,20 @@ public partial class EditProductPage : ContentPage
         NameEntry.Text = _product.Name;
         DescriptionEditor.Text = _product.Description;
         PriceEntry.Text = _product.Price.Replace("₸", "").Trim();
-        ProductImage.Source = _product.Image;
+
+        // Отображаем уже сохраненное фото из байтов, если есть
+        if (_product.ImageData != null && _product.ImageData.Length > 0)
+        {
+            ProductImage.Source = ImageSource.FromStream(() => new MemoryStream(_product.ImageData));
+        }
+        else if (!string.IsNullOrEmpty(_product.Image))
+        {
+            ProductImage.Source = ImageSource.FromFile(_product.Image);
+        }
+        else
+        {
+            ProductImage.Source = null;
+        }
 
         var selectedCategory = Categories.FirstOrDefault(c => c.Name == _product.Category);
         if (selectedCategory != null)
@@ -85,6 +101,15 @@ public partial class EditProductPage : ContentPage
         _product.Price = PriceEntry.Text + " ₸";
         _product.Category = selectedCategory.Name;
         _product.Image = _imagePath;
+
+
+        if (!string.IsNullOrEmpty(_imagePath))
+        {
+            _product.ImageData = File.ReadAllBytes(_imagePath);
+        }
+
+        // Вызываем метод для обновления товара в базе
+        await _databaseService.UpdateProductAsync(_product);
 
         await DisplayAlert("Успешно", "Товар обновлен", "OK");
         await Navigation.PopAsync();
