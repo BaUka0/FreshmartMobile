@@ -1,34 +1,55 @@
 using Project.Models;
+using Project.Services;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Project.Pages.Client;
 
 public partial class FavouritePage : ContentPage
 {
-    public FavouritePage()
+    private readonly DatabaseService _databaseService;
+    private readonly AuthService _authService;
+
+    // Используем ObservableCollection для автоматического обновления интерфейса
+    public ObservableCollection<Product> FavoriteProducts { get; set; }
+
+    public FavouritePage(DatabaseService databaseService, AuthService authService)
     {
         InitializeComponent();
-        LoadTestProducts();
+        _databaseService = databaseService;
+        _authService = authService;
+
+        FavoriteProducts = new ObservableCollection<Product>();
+        FavouritesCollectionView.ItemsSource = FavoriteProducts;
+    }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        LoadFavouriteProducts();
     }
 
-    private void LoadTestProducts()
+    private async void LoadFavouriteProducts()
     {
-        var products = new List<Product>
-    {
-        new Product { Name = "Яблоко", Image = "defaultProduct.png", Price = "100" },
-        new Product { Name = "Банан", Image = "defaultProduct.png", Price = "100" },
-        new Product { Name = "Апельсин", Image = "defaultProduct.png" , Price = "100" }
-    };
+        var userId = _authService.CurrentUser.Id;
+        var favoriteProducts = await _databaseService.GetFavoriteProductsAsync(userId);
 
-        FavouritesCollectionView.ItemsSource = products;
-    }
-
-    private void OnLikeClicked(object sender, EventArgs e)
-    {
-        if (sender is ImageButton button)
+        FavoriteProducts.Clear();
+        foreach (var product in favoriteProducts)
         {
-            button.Source = button.Source.ToString().Contains("green")
-                ? "favourite_grey.png"
-                : "favourite_green.png";
+            FavoriteProducts.Add(product);
+        }
+    }
+
+    private async void OnLikeClicked(object sender, EventArgs e)
+    {
+        if (sender is ImageButton button && button.BindingContext is Product product)
+        {
+            var userId = _authService.GetCurrentUserId();
+
+            await _databaseService.RemoveFavoriteProductAsync(userId, product.Id);
+            await DisplayAlert("Избранное", "Товар удален из избранного", "Ок");
+
+            FavoriteProducts.Remove(product);
         }
     }
 

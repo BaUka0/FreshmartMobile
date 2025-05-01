@@ -68,6 +68,14 @@ namespace Project.Services
                 return _currentUser.role;
             }
             return "guest";
+        } 
+        public int GetCurrentUserId()
+        {
+            if (_currentUser != null)
+            {
+                return _currentUser.Id;
+            }
+            return 0;
         }
         public void Logout() => _currentUser = null;
     }

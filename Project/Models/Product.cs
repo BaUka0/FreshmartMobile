@@ -20,9 +20,13 @@ namespace Project.Models
         public int Quantity { get; set; } = 1;
 
 
-
+        [Ignore]
         public bool IsFavoriteButtonVisible { get; set; } = true;
+        [Ignore]
         public bool IsCartButtonVisible { get; set; } = true;
+        [Ignore]
+        public string FavoriteIcon { get; set; } = "favourite_grey.png";
+
 
     }
 

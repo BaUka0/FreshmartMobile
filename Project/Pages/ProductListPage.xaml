@@ -56,7 +56,7 @@
                                TextColor="Green"/>
 
                             <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
-                                <ImageButton Source="favourite_grey.png"
+                                <ImageButton Source="{Binding FavoriteIcon}"
              Clicked="OnLikeClicked"
              BackgroundColor="Transparent"
              WidthRequest="40"

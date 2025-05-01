@@ -28,25 +28,28 @@ public partial class ProductListPage : ContentPage
         Products = await _databaseService.GetProductsByCategoryAsync(SelectedCategory.Name);
 
         var role = _authService.GetCurrentUserRole();
-        if (!role.Equals("client", StringComparison.OrdinalIgnoreCase))
+        var userId = _authService.GetCurrentUserId();
+
+        foreach (var product in Products)
         {
-            foreach (var product in Products)
+            if (role.Equals("client", StringComparison.OrdinalIgnoreCase))
+            {
+                product.IsFavoriteButtonVisible = true;
+                product.IsCartButtonVisible = true;
+
+                var isFavorite = await _databaseService.IsProductFavoriteAsync(userId, product.Id);
+                product.FavoriteIcon = isFavorite ? "favourite_green.png" : "favourite_grey.png";
+            }
+            else
             {
                 product.IsFavoriteButtonVisible = false;
                 product.IsCartButtonVisible = false;
             }
         }
-        else
-        {
-            foreach (var product in Products)
-            {
-                product.IsFavoriteButtonVisible = true;
-                product.IsCartButtonVisible = true;
-            }
-        }
 
-            ProductsCollectionView.ItemsSource = Products;
+        ProductsCollectionView.ItemsSource = Products;
     }
+
 
     private async void OnProductTapped(object sender, TappedEventArgs e)
     {
@@ -56,24 +59,28 @@ public partial class ProductListPage : ContentPage
         }
     }
 
-    private void OnLikeClicked(object sender, EventArgs e)
+    private async void OnLikeClicked(object sender, EventArgs e)
     {
-        if (sender is ImageButton button)
+        if (sender is ImageButton button && button.BindingContext is Product product)
         {
-            if (button.Source is FileImageSource imageSource)
+            var userId = _authService.GetCurrentUserId();
+            var isFavorite = await _databaseService.IsProductFavoriteAsync(userId, product.Id);
+
+            if (isFavorite)
             {
-                // Проверяем текущую картинку
-                if (imageSource.File == "favourite_grey.png")
-                {
-                    button.Source = "favourite_green.png";
-                }
-                else
-                {
-                    button.Source = "favourite_grey.png";
-                }
+                await _databaseService.RemoveFavoriteProductAsync(userId, product.Id);
+                button.Source = "favourite_grey.png";
+                await DisplayAlert("Избранное", "Товар удален из избранного", "Ок");
+            }
+            else
+            {
+                await _databaseService.AddFavoriteProductAsync(userId, product.Id);
+                button.Source = "favourite_green.png";
+                await DisplayAlert("Избранное", "Товар добавлен в избранное", "Ок");
             }
         }
     }
+
 
 
     private async void OnAddToCartClicked(object sender, EventArgs e)

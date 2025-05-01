@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.Client.FavouritePage"
              Title="Избранное">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
         <VerticalStackLayout Padding="10" Spacing="10">
 
@@ -14,10 +22,10 @@
                             <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
 
                                 <!-- Картинка товара -->
-                                <Image Source="default_product.png"
-                                   WidthRequest="80"
-                                   HeightRequest="80"
-                                   Aspect="AspectFit" />
+                                <Image Source="{Binding ImageData, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                    WidthRequest="80"
+                                    HeightRequest="80"
+                                    Aspect="AspectFit" />
 
                                 <!-- Информация о товаре -->
                                 <VerticalStackLayout Spacing="5" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
@@ -33,7 +41,7 @@
 
                                 <!-- Кнопки "лайк" и "в корзину" справа -->
                                 <HorizontalStackLayout Spacing="20" HorizontalOptions="End" VerticalOptions="Center">
-                                    <ImageButton Source="favourite_grey.png"
+                                    <ImageButton Source="favourite_green.png"
                                              Clicked="OnLikeClicked"
                                              WidthRequest="40"
                                              HeightRequest="40"

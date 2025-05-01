@@ -26,6 +26,7 @@ namespace Project.Services
             await _database.CreateTableAsync<SellerApplication>();
 
             await _database.CreateTableAsync<Product>();
+            await _database.CreateTableAsync<FavoriteProduct>();
         }
 
         public async Task<List<User>> GetUsersAsync() => await _database.Table<User>().ToListAsync();
@@ -72,6 +73,49 @@ namespace Project.Services
         public Task<Product> GetProductAsync(int id) => _database.Table<Product>().FirstOrDefaultAsync(p => p.Id == id);
         public Task<List<Product>> GetProductsByCategoryAsync(string category) => _database.Table<Product>().Where(p => p.Category == category).ToListAsync();
 
+        // Избранное
+        public async Task<int> AddFavoriteProductAsync(int userId, int productId)
+        {
+            var favorite = new FavoriteProduct { UserId = userId, ProductId = productId };
+            return await _database.InsertAsync(favorite);
+        }
+
+        public async Task<int> RemoveFavoriteProductAsync(int userId, int productId)
+        {
+            var favorite = await _database.Table<FavoriteProduct>()
+                                           .FirstOrDefaultAsync(f => f.UserId == userId && f.ProductId == productId);
+            if (favorite != null)
+            {
+                return await _database.DeleteAsync(favorite);
+            }
+            return 0;
+        }
+
+        public async Task<bool> IsProductFavoriteAsync(int userId, int productId)
+        {
+            var favorite = await _database.Table<FavoriteProduct>()
+                                           .FirstOrDefaultAsync(f => f.UserId == userId && f.ProductId == productId);
+            return favorite != null;
+        }
+        public async Task<List<Product>> GetFavoriteProductsAsync(int userId)
+        {
+            var favoriteProducts = new List<Product>();
+
+            var favoriteProductIds = await _database.Table<FavoriteProduct>()
+                                                    .Where(f => f.UserId == userId)
+                                                    .ToListAsync();
+
+            foreach (var favorite in favoriteProductIds)
+            {
+                var product = await GetProductAsync(favorite.ProductId);
+                if (product != null)
+                {
+                    favoriteProducts.Add(product);
+                }
+            }
+
+            return favoriteProducts;
+        }
 
     }
 }

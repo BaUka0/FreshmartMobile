@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Project.Pages;
 using Project.Pages.Admin;
+using Project.Pages.Client;
 using Project.Pages.Seller;
 using Project.Services;
 
@@ -30,16 +31,21 @@ public static class MauiProgram
         // Registering Pages
         builder.Services.AddSingleton<SplashPage>();
         builder.Services.AddSingleton<AppShell>();
+
         builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<RegisterPage>();
+
         builder.Services.AddTransient<UserListPage>();
         builder.Services.AddTransient<SellerApplicationsPage>();
-        builder.Services.AddSingleton<AuthService>();
+
         builder.Services.AddTransient<DashboardPage>();
         builder.Services.AddTransient<AddProductPage>();
+
         builder.Services.AddTransient<ProductDetail>();
         builder.Services.AddTransient<ProductListPage>();
         builder.Services.AddTransient<CatalogPage>();
+        builder.Services.AddTransient<ProfilePage>();
+        builder.Services.AddTransient<FavouritePage>();
 
 
 
