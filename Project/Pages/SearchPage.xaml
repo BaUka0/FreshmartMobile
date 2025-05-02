@@ -2,41 +2,27 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Project.Converters"
-             x:Class="Project.Pages.HomePage"
+             x:Class="Project.Pages.SearchPage"
              BackgroundColor="White"
-             Title="Главная">
+             Title="Поиск товаров">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
-
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout Padding="10" Spacing="20">
 
+            <!-- Поле поиска на новой странице -->
             <SearchBar Placeholder="Поиск товаров..."
-           Focused="OnSearchBarFocused"
-           HorizontalOptions="FillAndExpand" />
+                       TextChanged="OnSearchTextChanged"
+                       HorizontalOptions="FillAndExpand" />
 
-
-            <!-- Карусель -->
-            <CarouselView ItemsSource="{Binding CarouselItems}" HeightRequest="200" IndicatorView="carouselIndicators">
-                <CarouselView.ItemTemplate>
-                    <DataTemplate>
-                        <Image Source="{Binding}" Aspect="AspectFill"/>
-                    </DataTemplate>
-                </CarouselView.ItemTemplate>
-            </CarouselView>
-
-            <IndicatorView x:Name="carouselIndicators" IndicatorColor="LightGray" SelectedIndicatorColor="DarkGray"/>
-
-            <Label Text="Популярные товары" FontSize="24" FontAttributes="Bold" Margin="0,10,0,0" HorizontalOptions="Center"/>
-
-            <!-- Список популярных товаров -->
-            <CollectionView x:Name="PopularCollectionView"
-                            ItemsSource="{Binding PopularProducts}"
+            <!-- Список результатов поиска -->
+            <CollectionView x:Name="SearchResultsCollectionView"
+                            ItemsSource="{Binding SearchResults}"
                             SelectionMode="None">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Span="2" Orientation="Vertical"/>
@@ -45,10 +31,6 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" Margin="5" HasShadow="True">
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnProductTapped"/>
-                            </Frame.GestureRecognizers>
-
                             <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
 
                                 <Image WidthRequest="80"
@@ -71,24 +53,6 @@
                                        FontSize="16"
                                        HorizontalOptions="Center"
                                        TextColor="Green"/>
-
-                                <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
-                                    <ImageButton Source="{Binding FavoriteIcon}"
-                                                 Clicked="OnLikeClicked"
-                                                 BackgroundColor="Transparent"
-                                                 WidthRequest="40"
-                                                 HeightRequest="40"
-                                                 Aspect="AspectFit"
-                                                 IsVisible="{Binding IsFavoriteButtonVisible}" />
-
-                                    <ImageButton Source="{Binding CartIcon}"
-                                                 Clicked="OnAddToCartClicked"
-                                                 BackgroundColor="Transparent"
-                                                 WidthRequest="40"
-                                                 HeightRequest="40"
-                                                 Aspect="AspectFit"
-                                                 IsVisible="{Binding IsCartButtonVisible}" />
-                                </HorizontalStackLayout>
 
                             </VerticalStackLayout>
                         </Frame>
