@@ -87,8 +87,9 @@ public partial class ProfilePage : ContentPage
 
     private async void OnMyReviewsTapped()
     {
-        await DisplayAlert("Действие", "Открыть мои отзывы", "ОК");
+        await Navigation.PushAsync(new UserReviewsPage(_databaseService, _authService));
     }
+
 
     private async void OnPaymentMethodTapped()
     {

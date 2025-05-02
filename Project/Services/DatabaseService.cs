@@ -78,6 +78,38 @@ namespace Project.Services
         public Task<List<Product>> GetProductsAsync() => _database.Table<Product>().ToListAsync();
         public Task<Product> GetProductAsync(int id) => _database.Table<Product>().FirstOrDefaultAsync(p => p.Id == id);
         public Task<List<Product>> GetProductsByCategoryAsync(string category) => _database.Table<Product>().Where(p => p.Category == category).ToListAsync();
+        public async Task<List<Product>> GetPopularProductsAsync(int limit = 10)
+        {
+            var allFavorites = await _database.Table<FavoriteProduct>().ToListAsync();
+
+            var popularProductIds = allFavorites
+                .GroupBy(f => f.ProductId)
+                .Select(g => new { ProductId = g.Key, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
+                .Take(limit)
+                .ToList();
+
+            var popularProducts = new List<Product>();
+
+            foreach (var item in popularProductIds)
+            {
+                var product = await GetProductAsync(item.ProductId);
+                if (product != null)
+                {
+                    popularProducts.Add(product);
+                }
+            }
+
+            if (popularProducts.Count == 0)
+            {
+                popularProducts = await _database.Table<Product>()
+                    .Take(limit)
+                    .ToListAsync();
+            }
+
+            return popularProducts;
+        }
+
 
         // Избранное
         public async Task<int> AddFavoriteProductAsync(int userId, int productId)
@@ -206,6 +238,26 @@ namespace Project.Services
 
             return reviews;
         }
+        public async Task<List<Review>> GetUserReviewsAsync(int userId)
+        {
+            var reviews = await _database.Table<Review>()
+                                        .Where(r => r.UserId == userId)
+                                        .OrderByDescending(r => r.CreatedAt)
+                                        .ToListAsync();
+
+            foreach (var review in reviews)
+            {
+                var product = await GetProductAsync(review.ProductId);
+                if (product != null)
+                {
+                    // Добавим название продукта в свойство Ignore
+                    review.UserName = product.Name;
+                }
+            }
+
+            return reviews;
+        }
+
         //Заказы
         public async Task<int> CreateOrderAsync(Order order)
         {

@@ -25,6 +25,25 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
         set => SetProperty(ref _popularProducts, value);
     }
 
+    private ObservableCollection<Product> _searchSuggestions;
+    public ObservableCollection<Product> SearchSuggestions
+    {
+        get => _searchSuggestions;
+        set => SetProperty(ref _searchSuggestions, value);
+    }
+
+    private double _suggestionsHeight = 0;
+    public double SuggestionsHeight
+    {
+        get => _suggestionsHeight;
+        set => SetProperty(ref _suggestionsHeight, value);
+    }
+
+    // Задержка поиска для улучшения производительности
+    private CancellationTokenSource _throttleCts;
+    // Флаг для отслеживания состояния поиска
+    private bool _isSearchActive = false;
+
     public HomePage(DatabaseService databaseService, AuthService authService)
     {
         InitializeComponent();
@@ -39,20 +58,52 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
         };
 
         PopularProducts = new ObservableCollection<Product>();
+        SearchSuggestions = new ObservableCollection<Product>();
 
         BindingContext = this;
 
         LoadMockProducts();
     }
 
-    private void LoadMockProducts()
+    protected override void OnAppearing()
     {
-        PopularProducts = new ObservableCollection<Product>
+        base.OnAppearing();
+        LoadMockProducts();
+        _isSearchActive = false;
+    }
+
+    private async void LoadMockProducts()
+    {
+        PopularProducts.Clear();
+
+        var popularProducts = await _databaseService.GetPopularProductsAsync(6);
+
+        var userId = _authService.GetCurrentUserId();
+        var userRole = _authService.GetCurrentUserRole();
+
+        var cartItems = await _databaseService.GetCartItemsAsync(userId);
+        var cartProductIds = cartItems.Select(ci => ci.ProductId).ToHashSet();
+
+        foreach (var product in popularProducts)
         {
-            new Product { Id = 1, Name = "Яблоко", Price = "150", Image = "default_product.png", FavoriteIcon = "favourite_grey.png", CartIcon = "basket_grey.png", IsFavoriteButtonVisible = true, IsCartButtonVisible = true },
-            new Product { Id = 2, Name = "Банан", Price = "200", Image = "default_product.png", FavoriteIcon = "favourite_grey.png", CartIcon = "basket_grey.png", IsFavoriteButtonVisible = true, IsCartButtonVisible = true },
-            new Product { Id = 3, Name = "Молоко", Price = "300", Image = "default_product.png", FavoriteIcon = "favourite_grey.png", CartIcon = "basket_grey.png", IsFavoriteButtonVisible = true, IsCartButtonVisible = true }
-        };
+            if (userRole.Equals("client", StringComparison.OrdinalIgnoreCase))
+            {
+                product.IsFavoriteButtonVisible = true;
+                product.IsCartButtonVisible = true;
+
+                var isFavorite = await _databaseService.IsProductFavoriteAsync(userId, product.Id);
+                product.FavoriteIcon = isFavorite ? "favourite_green.png" : "favourite_grey.png";
+
+                product.CartIcon = cartProductIds.Contains(product.Id) ? "basket_green.png" : "basket_grey.png";
+            }
+            else
+            {
+                product.IsFavoriteButtonVisible = false;
+                product.IsCartButtonVisible = false;
+            }
+
+            PopularProducts.Add(product);
+        }
     }
 
     private async void OnProductTapped(object sender, TappedEventArgs e)
@@ -112,8 +163,169 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
 
     private void RefreshProducts()
     {
-        // Принудительно обновляем привязку UI
         PopularProducts = new ObservableCollection<Product>(PopularProducts);
+    }
+
+    private async void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+    {
+        string searchText = e.NewTextValue?.Trim();
+
+        // Если в процессе фокусировки, пропускаем обработку
+        if (_isSearchActive)
+            return;
+
+        // Отмена предыдущего поиска, если он в процессе
+        _throttleCts?.Cancel();
+        _throttleCts = new CancellationTokenSource();
+
+        if (string.IsNullOrEmpty(searchText))
+        {
+            suggestionsFrame.IsVisible = false;
+            return;
+        }
+
+        try
+        {
+            // Добавляем задержку перед поиском для уменьшения количества запросов
+            await Task.Delay(300, _throttleCts.Token);
+
+            // Получаем список всех продуктов и фильтруем их
+            var allProducts = await _databaseService.GetProductsAsync();
+            var filteredProducts = allProducts
+                .Where(p => p.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                .Take(5)
+                .ToList();
+
+            SearchSuggestions.Clear();
+            foreach (var product in filteredProducts)
+            {
+                SearchSuggestions.Add(product);
+            }
+
+            // Рассчитываем высоту списка подсказок
+            // Высота одного элемента примерно 40 единиц (с учетом отступов)
+            int itemHeight = 40;
+            int maxItems = 5; // Максимальное количество элементов
+
+            // Вычисляем высоту в зависимости от количества элементов
+            SuggestionsHeight = Math.Min(SearchSuggestions.Count, maxItems) * itemHeight;
+
+            // Минимальная высота, если есть хотя бы один элемент
+            if (SearchSuggestions.Count > 0 && SuggestionsHeight < itemHeight)
+                SuggestionsHeight = itemHeight;
+
+            // Показываем результаты только если есть совпадения и текстовое поле не пустое
+            suggestionsFrame.IsVisible = SearchSuggestions.Count > 0 && !string.IsNullOrEmpty(searchText);
+        }
+        catch (TaskCanceledException)
+        {
+            // Поиск был отменен, ничего не делаем
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка при поиске: {ex.Message}");
+        }
+    }
+
+    private void OnSearchBarFocused(object sender, FocusEventArgs e)
+    {
+        // Просто показываем подсказки, если уже набран текст
+        if (!string.IsNullOrEmpty(searchBar.Text))
+        {
+            suggestionsFrame.IsVisible = SearchSuggestions.Count > 0;
+        }
+    }
+
+    private async void OnSearchBarSearchButtonPressed(object sender, EventArgs e)
+    {
+        try
+        {
+            // Устанавливаем флаг активного поиска
+            _isSearchActive = true;
+
+            // Получаем текст поиска
+            string searchText = searchBar.Text?.Trim() ?? string.Empty;
+
+            // Скрываем подсказки
+            suggestionsFrame.IsVisible = false;
+
+            // Очищаем поле поиска
+            searchBar.Text = string.Empty;
+
+            // Проверяем, что сервисы не null перед передачей
+            if (_databaseService != null && _authService != null)
+            {
+                // Переходим на страницу поиска с параметрами
+                await Navigation.PushAsync(new SearchPage(searchText, _databaseService, _authService));
+            }
+            else
+            {
+                // В случае отсутствия сервисов показываем сообщение
+                await DisplayAlert("Ошибка", "Не удается выполнить поиск. Попробуйте позже.", "ОК");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Обрабатываем возможные исключения
+            Console.WriteLine($"Ошибка при переходе на страницу поиска: {ex.Message}");
+            await DisplayAlert("Ошибка", "Произошла ошибка при открытии поиска.", "ОК");
+        }
+        finally
+        {
+            // Сбрасываем флаг в любом случае
+            _isSearchActive = false;
+        }
+    }
+
+    private void OnSearchBarUnfocused(object sender, FocusEventArgs e)
+    {
+        Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(200), () =>
+        {
+            suggestionsFrame.IsVisible = false;
+        });
+    }
+
+    private async void OnSuggestionSelected(object sender, SelectionChangedEventArgs e)
+    {
+        try
+        {
+            if (e.CurrentSelection.FirstOrDefault() is Product selectedProduct)
+            {
+                // Устанавливаем флаг активного поиска
+                _isSearchActive = true;
+
+                // Сбрасываем выделение
+                suggestionsCollection.SelectedItem = null;
+
+                // Скрываем подсказки
+                suggestionsFrame.IsVisible = false;
+
+                // Очищаем поисковую строку
+                searchBar.Text = string.Empty;
+
+                // Проверка, что сервисы не null
+                if (_databaseService != null && _authService != null)
+                {
+                    // Переходим на страницу поиска с выбранным текстом
+                    await Navigation.PushAsync(new SearchPage(selectedProduct.Name, _databaseService, _authService));
+                }
+                else
+                {
+                    // Показываем сообщение об ошибке
+                    await DisplayAlert("Ошибка", "Не удается открыть поиск. Попробуйте позже.", "ОК");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка при выборе подсказки: {ex.Message}");
+            await DisplayAlert("Ошибка", "Произошла ошибка при выборе элемента.", "ОК");
+        }
+        finally
+        {
+            // Сбрасываем флаг в любом случае
+            _isSearchActive = false;
+        }
     }
 
     #region INotifyPropertyChanged
@@ -132,11 +344,4 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
         return true;
     }
     #endregion
-
-    private async void OnSearchBarFocused(object sender, FocusEventArgs e)
-    {
-        await Navigation.PushAsync(new SearchPage(string.Empty));
-    }
-
-
 }
