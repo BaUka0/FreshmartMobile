@@ -75,7 +75,8 @@
             <Button Text="Посмотреть историю заявок"
                 Clicked="OnViewHistoryButtonClicked"
                 HorizontalOptions="End"
-                WidthRequest="200" />
+                WidthRequest="200"
+                BackgroundColor="Green"/>
         </HorizontalStackLayout>
 
     </VerticalStackLayout>

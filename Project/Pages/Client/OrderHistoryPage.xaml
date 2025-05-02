@@ -87,7 +87,7 @@
                             </CollectionView>
 
                             <Button Text="Подробнее"
-                                    BackgroundColor="LightGray"
+                                    BackgroundColor="Green"
                                     Clicked="OnOrderDetailClicked"
                                     HorizontalOptions="Center" />
                         </VerticalStackLayout>

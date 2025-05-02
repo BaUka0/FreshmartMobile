@@ -3,49 +3,120 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.Admin.UserListPage"
              Title="Пользователи">
-    <VerticalStackLayout Padding="10" Spacing="10">
 
-        <CollectionView x:Name="UsersCollectionView"
-                        ItemsSource="{Binding Users}">
-            <CollectionView.EmptyView>
-                <Label Text="Пользователи не найдены."
-                       HorizontalOptions="Center"
-                       VerticalOptions="CenterAndExpand" />
-            </CollectionView.EmptyView>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItems Mode="Reveal">
-                                <SwipeItem Text="Удалить"
-                               BackgroundColor="Red"
-                               IconImageSource="delete_icon.png"
-                               Invoked="OnDeleteSwipeItemInvoked" />
-                                <SwipeItem Text="Изменить"
-                               BackgroundColor="Blue"
-                               IconImageSource="edit_icon.png"
-                               Invoked="OnEditSwipeItemInvoked" />
-                            </SwipeItems>
-                        </SwipeView.RightItems>
-                        <Border StrokeShape="RoundRectangle 5"
-                    Stroke="{AppThemeBinding Light=LightGray, Dark=Gray}"
-                    Padding="10"
-                    Margin="0,5"
-                    BackgroundColor="{AppThemeBinding Light=WhiteSmoke, Dark= #333}">
-                            <HorizontalStackLayout Spacing="10">
-                                <Label Text="Логин:" FontAttributes="Bold"/>
-                                <Label Text="{Binding username}" HorizontalOptions="StartAndExpand"/>
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="12">
 
-                                <Label Text="Почта:" FontAttributes="Bold"/>
-                                <Label Text="{Binding email}" />
+            <CollectionView x:Name="UsersCollectionView"
+                            ItemsSource="{Binding Users}"
+                            SelectionMode="None">
 
-                                <Label Text="Роль:" FontAttributes="Bold"/>
-                                <Label Text="{Binding role}" />
-                            </HorizontalStackLayout>
-                        </Border>
-                    </SwipeView>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+                <CollectionView.EmptyView>
+                    <Label Text="Пользователи не найдены."
+                           FontSize="16"
+                           HorizontalOptions="Center"
+                           VerticalOptions="CenterAndExpand" />
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItemView>
+                                        <Grid BackgroundColor="Transparent"
+                                              Padding="10"
+                                              HorizontalOptions="FillAndExpand"
+                                              VerticalOptions="FillAndExpand">
+                                            <Frame CornerRadius="15"
+                                               BackgroundColor="#D83B01"
+                                               HasShadow="False"
+                                               Padding="10">
+                                                <HorizontalStackLayout Spacing="8">
+                                                    <Image Source="delete_icon.png" WidthRequest="20" HeightRequest="20" />
+                                                    <Label Text="Удалить"
+                                                       TextColor="White"
+                                                       FontAttributes="Bold"
+                                                       VerticalOptions="Center"/>
+                                                </HorizontalStackLayout>
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer
+                                                        Command="{Binding Source={x:Reference Name=UsersCollectionView}, Path=BindingContext.DeleteCommand}"
+                                                        CommandParameter="{Binding .}" />
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+                                        </Grid>
+                                    </SwipeItemView>
+
+                                    <SwipeItemView>
+                                        <Grid BackgroundColor="Transparent"
+                                          Padding="10"
+                                          HorizontalOptions="FillAndExpand"
+                                          VerticalOptions="FillAndExpand">
+                                            <Frame CornerRadius="15"
+                                               BackgroundColor="DarkOrange"
+                                               HasShadow="False"
+                                               Padding="10">
+                                                <HorizontalStackLayout Spacing="8">
+                                                    <Image Source="edit_icon.png" WidthRequest="20" HeightRequest="20" />
+                                                    <Label Text="Изменить"
+                                                       TextColor="White"
+                                                       FontAttributes="Bold"
+                                                       VerticalOptions="Center"/>
+                                                </HorizontalStackLayout>
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer
+                                                        Command="{Binding Source={x:Reference Name=UsersCollectionView}, Path=BindingContext.EditCommand}"
+                                                        CommandParameter="{Binding .}" />
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+                                        </Grid>
+                                    </SwipeItemView>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+
+
+                            <Frame CornerRadius="10"
+                                   Padding="15"
+                                   Margin="0,6"
+                                   BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#2C2C2C}"
+                                   BorderColor="{AppThemeBinding Light=#DDD, Dark=#444}"
+                                   HasShadow="True">
+
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="{Binding username}"
+                                           FontAttributes="Bold"
+                                           FontSize="18" />
+
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Почта: " FontAttributes="Bold"/>
+                                                <Span Text="{Binding email}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Роль: " FontAttributes="Bold"/>
+                                                <Span Text="{Binding role}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+
+                            </Frame>
+
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

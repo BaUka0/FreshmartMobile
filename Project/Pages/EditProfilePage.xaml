@@ -23,14 +23,14 @@
                          HeightRequest="120"
                          Aspect="AspectFill" />
                 </Frame>
-                <Button Text="" 
+                <Button Text="+" 
                         CornerRadius="20" 
                         WidthRequest="40" 
                         HeightRequest="40" 
                         HorizontalOptions="End" 
                         VerticalOptions="End"
                         Clicked="OnChangeProfileImageClicked"
-                        BackgroundColor="#007AFF" 
+                        BackgroundColor="Green" 
                         TextColor="White"
                         FontSize="16"
                         Margin="0,0,5,5"/>
@@ -50,7 +50,7 @@
                 </StackLayout>
             </Frame>
 
-            <Button Text="Сохранить" Clicked="OnSaveClicked" BackgroundColor="#007AFF" TextColor="White" Margin="0,0,0,15"/>
+            <Button Text="Сохранить" Clicked="OnSaveClicked" BackgroundColor="Green" TextColor="White" Margin="0,0,0,15"/>
             <Button Text="Отмена" Clicked="OnCancelClicked" BackgroundColor="LightGray" TextColor="Black"/>
         </StackLayout>
     </Grid>

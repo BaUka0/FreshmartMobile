@@ -92,7 +92,7 @@ public partial class ProfilePage : ContentPage
 
     private async void OnPaymentMethodTapped()
     {
-        await DisplayAlert("Действие", "Открыть способы оплаты", "ОК");
+        await DisplayAlert("Действие", "Сделай пжж", "ОК");
     }
 
     private async void OnEditProfileTapped()

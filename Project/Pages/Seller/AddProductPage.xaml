@@ -14,6 +14,11 @@
             <Picker x:Name="CategoryPicker" Title="Выберите категорию" ItemDisplayBinding="{Binding Name}" />
 
             <Image x:Name="ProductImage" HeightRequest="150" Aspect="AspectFit" />
+
+            <Label Text="Рекомендуемый формат изображения — квадрат!"
+               FontSize="12"
+               TextColor="Gray"
+               HorizontalOptions="Center"/>
             <Button Text="Загрузить изображение" Clicked="OnUploadImageClicked" BackgroundColor="Green"/>
 
             <Button Text="Сохранить"
