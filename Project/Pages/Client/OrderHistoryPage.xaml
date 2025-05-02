@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Project.Converters"
+             x:Class="Project.Pages.Client.OrderHistoryPage"
+             Title="История заказов">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <CollectionView x:Name="OrdersCollectionView" 
+                        SelectionMode="None"
+                        EmptyView="У вас еще нет заказов">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="LightGray" 
+                           Margin="10" 
+                           Padding="15" 
+                           CornerRadius="10"
+                           HasShadow="True">
+
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="{Binding OrderDate, StringFormat='Заказ от {0:dd.MM.yyyy HH:mm}'}"
+                                           FontSize="18"
+                                           FontAttributes="Bold" />
+
+                                    <Label Text="{Binding TotalPrice, StringFormat='Сумма заказа: {0}'}"
+                                           FontSize="16"
+                                           TextColor="Green" />
+
+                                    <Label Text="{Binding OrderStatus, StringFormat='Статус: {0}'}"
+                                           FontSize="14"
+                                           TextColor="DarkGray" />
+                                </VerticalStackLayout>
+
+                                <Button Grid.Column="1"
+                                        Text="Скачать чек"
+                                        BackgroundColor="Green"
+                                        TextColor="White"
+                                        Clicked="OnDownloadReceiptClicked"
+                                        HeightRequest="40"
+                                        WidthRequest="120"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="End" />
+                            </Grid>
+
+                            <BoxView HeightRequest="1" BackgroundColor="#e0e0e0" />
+
+                            <Label Text="Товары в заказе:" 
+                                   FontSize="16"
+                                   FontAttributes="Bold" />
+
+                            <CollectionView ItemsSource="{Binding Items}"
+                                           HeightRequest="{Binding Items.Count, Converter={StaticResource ItemsToHeightConverter}}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="Auto,*,Auto" Padding="5">
+                                            <Image Grid.Column="0"
+                                                   Source="{Binding ProductImageData, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                                   WidthRequest="50"
+                                                   HeightRequest="50"
+                                                   Aspect="AspectFit"
+                                                   Margin="0,0,10,0" />
+
+                                            <VerticalStackLayout Grid.Column="1">
+                                                <Label Text="{Binding ProductName}"
+                                                       FontSize="14" />
+                                                <Label Text="{Binding ProductPrice}"
+                                                       FontSize="12"
+                                                       TextColor="Green" />
+                                            </VerticalStackLayout>
+
+                                            <Label Grid.Column="2"
+                                                   Text="{Binding Quantity, StringFormat='x{0}'}"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="End"
+                                                   FontSize="14" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <Button Text="Подробнее"
+                                    BackgroundColor="LightGray"
+                                    Clicked="OnOrderDetailClicked"
+                                    HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator x:Name="LoadingIndicator"
+                           IsRunning="False"
+                           IsVisible="False"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+    </Grid>
+</ContentPage>

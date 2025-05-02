@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Project.Converters"
+             x:Class="Project.Pages.Client.OrderDetailPage"
+             Title="Детали заказа">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Frame BorderColor="LightGray"
+                  Padding="15"
+                  CornerRadius="10"
+                  HasShadow="True">
+
+                <VerticalStackLayout Spacing="10">
+                    <Label x:Name="OrderNumberLabel"
+                          Text="Заказ №123"
+                          FontSize="20"
+                          FontAttributes="Bold" />
+
+                    <Label x:Name="OrderDateLabel"
+                          Text="Дата: 01.01.2023 12:00"
+                          FontSize="16" />
+
+                    <Label x:Name="OrderStatusLabel"
+                          Text="Статус: Обработка"
+                          FontSize="16" />
+
+                    <Label x:Name="DeliveryMethodLabel"
+                          Text="Способ доставки: Курьер"
+                          FontSize="16" />
+
+                    <Label x:Name="PaymentMethodLabel"
+                          Text="Способ оплаты: Карта"
+                          FontSize="16" />
+
+                    <Label x:Name="AddressLabel"
+                          Text="Адрес доставки: ул. Примерная, 123"
+                          FontSize="16"
+                          IsVisible="False" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="Товары в заказе:"
+                  FontSize="18"
+                  FontAttributes="Bold"
+                  Margin="0,10,0,0" />
+
+            <CollectionView x:Name="OrderItemsCollectionView" 
+                           SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="LightGray"
+                              Margin="0,5"
+                              Padding="10"
+                              CornerRadius="10">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <Image Grid.Column="0"
+                                      Source="{Binding ProductImageData, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                      WidthRequest="60"
+                                      HeightRequest="60"
+                                      Aspect="AspectFit"
+                                      Margin="0,0,10,0" />
+
+                                <VerticalStackLayout Grid.Column="1"
+                                                   VerticalOptions="Center">
+                                    <Label Text="{Binding ProductName}"
+                                          FontSize="16" />
+                                    <Label Text="{Binding ProductPrice}"
+                                          FontSize="14"
+                                          TextColor="Green" />
+                                </VerticalStackLayout>
+
+                                <Label Grid.Column="2"
+                                      Text="{Binding Quantity, StringFormat='x{0}'}"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="End"
+                                      FontSize="16"
+                                      FontAttributes="Bold" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Frame BorderColor="LightGray"
+                  Padding="15"
+                  CornerRadius="10"
+                  HasShadow="True"
+                  Margin="0,10,0,0">
+                <StackLayout>
+                    <Label x:Name="TotalPriceLabel"
+                          Text="Итого: 0 ₸"
+                          FontSize="18"
+                          FontAttributes="Bold"
+                          HorizontalOptions="End" />
+                </StackLayout>
+            </Frame>
+
+            <Button Text="Скачать чек"
+                   BackgroundColor="Green"
+                   TextColor="White"
+                   Clicked="OnDownloadReceiptClicked"
+                   Margin="0,20,0,0" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -30,6 +30,9 @@ namespace Project.Services
             await _database.CreateTableAsync<CartItem>();
 
             await _database.CreateTableAsync<Review>();
+
+            await _database.CreateTableAsync<Order>();
+            await _database.CreateTableAsync<OrderItem>();
         }
 
         public async Task<List<User>> GetUsersAsync() => await _database.Table<User>().ToListAsync();
@@ -202,6 +205,90 @@ namespace Project.Services
             }
 
             return reviews;
+        }
+        //Заказы
+        public async Task<int> CreateOrderAsync(Order order)
+        {
+            order.OrderDate = DateTime.Now;
+            order.OrderStatus = "Обработка";
+            var orderId = await _database.InsertAsync(order);
+
+            if (order.Items != null && order.Items.Count > 0)
+            {
+                foreach (var item in order.Items)
+                {
+                    item.OrderId = order.Id;
+                    await _database.InsertAsync(item);
+                }
+            }
+
+            return orderId;
+        }
+
+        public async Task<List<Order>> GetUserOrdersAsync(int userId)
+        {
+            var orders = await _database.Table<Order>()
+                                      .Where(o => o.UserId == userId)
+                                      .OrderByDescending(o => o.OrderDate)
+                                      .ToListAsync();
+
+            foreach (var order in orders)
+            {
+                order.Items = await _database.Table<OrderItem>()
+                                           .Where(oi => oi.OrderId == order.Id)
+                                           .ToListAsync();
+
+                // Загружаем данные о продуктах для отображения изображений
+                foreach (var item in order.Items)
+                {
+                    var product = await GetProductAsync(item.ProductId);
+                    if (product != null)
+                    {
+                        item.ProductImageData = product.ImageData;
+                    }
+                }
+            }
+
+            return orders;
+        }
+
+        public async Task<Order> GetOrderAsync(int orderId)
+        {
+            var order = await _database.Table<Order>()
+                                     .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order != null)
+            {
+                order.Items = await _database.Table<OrderItem>()
+                                           .Where(oi => oi.OrderId == order.Id)
+                                           .ToListAsync();
+
+                // Загружаем данные о продуктах для отображения изображений
+                foreach (var item in order.Items)
+                {
+                    var product = await GetProductAsync(item.ProductId);
+                    if (product != null)
+                    {
+                        item.ProductImageData = product.ImageData;
+                    }
+                }
+            }
+
+            return order;
+        }
+
+        public async Task<int> UpdateOrderStatusAsync(int orderId, string status)
+        {
+            var order = await _database.Table<Order>()
+                                     .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order != null)
+            {
+                order.OrderStatus = status;
+                return await _database.UpdateAsync(order);
+            }
+
+            return 0;
         }
     }
 }

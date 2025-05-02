@@ -122,7 +122,7 @@ public partial class CartPage : ContentPage
             Quantity = item.Quantity,
         }));
 
-        await Navigation.PushAsync(new OrderSummaryPage(cartItemsCopy));
+        await Navigation.PushAsync(new OrderSummaryPage(cartItemsCopy, _databaseService, _authService));
 
         CartItems.Clear();
 

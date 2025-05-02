@@ -1,20 +1,23 @@
 using Project.Models;
 using Project.Services;
+using Project.Pages.Client;
 
 namespace Project.Pages;
 
 public partial class ProfilePage : ContentPage
 {
     private readonly AuthService _authService;
+    private readonly DatabaseService _databaseService;
     public string Username { get; set; }
     public string Email { get; set; }
     public List<ProfileOption> Options { get; set; }
 
-    public ProfilePage(AuthService authService)
+    public ProfilePage(AuthService authService, DatabaseService databaseService)
     {
         InitializeComponent();
 
         _authService = authService;
+        _databaseService = databaseService;
 
         var currentUser = _authService.CurrentUser;
         if (currentUser != null)
@@ -38,7 +41,9 @@ public partial class ProfilePage : ContentPage
 
     private async void OnPurchaseHistoryTapped()
     {
-        await DisplayAlert("Действие", "Открыть историю покупок", "ОК");
+        var databaseService = new DatabaseService();
+        await databaseService.InitAsync();
+        await Navigation.PushAsync(new OrderHistoryPage(_databaseService, _authService));
     }
 
     private async void OnMyReviewsTapped()
