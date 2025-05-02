@@ -12,54 +12,117 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="10" Spacing="20">
+    <Grid RowDefinitions="Auto,Auto,*">
+        <!-- Строка поиска -->
+        <SearchBar Grid.Row="0" 
+                   x:Name="searchBar"
+                   Placeholder="Поиск товаров..."
+                   TextChanged="OnSearchTextChanged"
+                   Margin="10,10,10,0"
+                   HorizontalOptions="FillAndExpand" />
 
-            <!-- Поле поиска на новой странице -->
-            <SearchBar Placeholder="Поиск товаров..."
-                       TextChanged="OnSearchTextChanged"
-                       HorizontalOptions="FillAndExpand" />
+        <!-- Секция фильтров по категориям -->
+        <Grid Grid.Row="1" Margin="10,5,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-            <!-- Список результатов поиска -->
-            <CollectionView x:Name="SearchResultsCollectionView"
-                            ItemsSource="{Binding SearchResults}"
-                            SelectionMode="None">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Span="2" Orientation="Vertical"/>
-                </CollectionView.ItemsLayout>
+            <Label Grid.Row="0" 
+                   Text="Категории" 
+                   FontSize="18" 
+                   FontAttributes="Bold"
+                   Margin="0,10,0,5"/>
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" Margin="5" HasShadow="True">
-                            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
+            <ScrollView Grid.Row="1" 
+                        Orientation="Horizontal" 
+                        HorizontalScrollBarVisibility="Never">
+                <HorizontalStackLayout x:Name="categoriesContainer" 
+                                       Spacing="10"
+                                       Margin="0,0,0,10">
+                    <!-- Категории будут добавлены динамически -->
+                </HorizontalStackLayout>
+            </ScrollView>
+        </Grid>
 
-                                <Image WidthRequest="80"
-                                       HeightRequest="80"
-                                       Aspect="AspectFit"
-                                       HorizontalOptions="Center"
-                                       Source="{Binding ImageData, Converter={StaticResource ByteArrayToImageSourceConverter}}" />
+        <!-- Результаты поиска -->
+        <ScrollView Grid.Row="2">
+            <VerticalStackLayout Padding="10" Spacing="10">
+                <Label x:Name="resultsCountLabel" 
+                       Text="Найдено товаров: 0"
+                       FontSize="16"
+                       TextColor="Gray"
+                       Margin="0,0,0,10"/>
 
-                                <Label Text="{Binding Name}"
-                                       FontSize="18"
-                                       HorizontalOptions="Center"
-                                       TextColor="Black"/>
+                <CollectionView x:Name="SearchResultsCollectionView"
+                                ItemsSource="{Binding SearchResults}"
+                                SelectionMode="None"
+                                EmptyView="Нет результатов, соответствующих вашему запросу">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Span="2" Orientation="Vertical"/>
+                    </CollectionView.ItemsLayout>
 
-                                <Label Text="{Binding Description}"
-                                       FontSize="14"
-                                       HorizontalOptions="Center"
-                                       TextColor="Gray"/>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BorderColor="LightGray" 
+                                   CornerRadius="10" 
+                                   Padding="10" 
+                                   Margin="5" 
+                                   HasShadow="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnProductTapped"/>
+                                </Frame.GestureRecognizers>
 
-                                <Label Text="{Binding Price}"
-                                       FontSize="16"
-                                       HorizontalOptions="Center"
-                                       TextColor="Green"/>
+                                <VerticalStackLayout HorizontalOptions="Center" 
+                                                     VerticalOptions="Center" 
+                                                     Spacing="10">
 
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                    <Image WidthRequest="80"
+                                           HeightRequest="80"
+                                           Aspect="AspectFit"
+                                           HorizontalOptions="Center"
+                                           Source="{Binding ImageData, Converter={StaticResource ByteArrayToImageSourceConverter}}" />
 
-        </VerticalStackLayout>
-    </ScrollView>
+                                    <Label Text="{Binding Name}"
+                                           FontSize="18"
+                                           HorizontalOptions="Center"
+                                           TextColor="Black"/>
+
+                                    <Label Text="{Binding Description}"
+                                           FontSize="14"
+                                           HorizontalOptions="Center"
+                                           MaxLines="2"
+                                           LineBreakMode="TailTruncation"
+                                           TextColor="Gray"/>
+
+                                    <Label Text="{Binding Price}"
+                                           FontSize="16"
+                                           HorizontalOptions="Center"
+                                           TextColor="Green"/>
+
+                                    <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+                                        <ImageButton Source="{Binding FavoriteIcon}"
+                                                     Clicked="OnLikeClicked"
+                                                     BackgroundColor="Transparent"
+                                                     WidthRequest="40"
+                                                     HeightRequest="40"
+                                                     Aspect="AspectFit"
+                                                     IsVisible="{Binding IsFavoriteButtonVisible}" />
+
+                                        <ImageButton Source="{Binding CartIcon}"
+                                                     Clicked="OnAddToCartClicked"
+                                                     BackgroundColor="Transparent"
+                                                     WidthRequest="40"
+                                                     HeightRequest="40"
+                                                     Aspect="AspectFit"
+                                                     IsVisible="{Binding IsCartButtonVisible}" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>
