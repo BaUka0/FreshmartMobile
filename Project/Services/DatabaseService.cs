@@ -238,6 +238,26 @@ namespace Project.Services
 
             return reviews;
         }
+        public async Task<List<Review>> GetUserReviewsAsync(int userId)
+        {
+            var reviews = await _database.Table<Review>()
+                                        .Where(r => r.UserId == userId)
+                                        .OrderByDescending(r => r.CreatedAt)
+                                        .ToListAsync();
+
+            foreach (var review in reviews)
+            {
+                var product = await GetProductAsync(review.ProductId);
+                if (product != null)
+                {
+                    // Добавим название продукта в свойство Ignore
+                    review.UserName = product.Name;
+                }
+            }
+
+            return reviews;
+        }
+
         //Заказы
         public async Task<int> CreateOrderAsync(Order order)
         {
