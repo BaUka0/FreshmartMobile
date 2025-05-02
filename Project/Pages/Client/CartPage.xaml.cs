@@ -1,5 +1,6 @@
 ﻿using Project.Models;
 using Project.Services;
+using Project.Pages;
 using System.Collections.ObjectModel;
 
 namespace Project.Pages.Client;
@@ -18,11 +19,13 @@ public partial class CartPage : ContentPage
 
         CartCollectionView.ItemsSource = CartItems;
     }
+
     protected override async void OnAppearing()
     {
         base.OnAppearing();
         await LoadCartItems();
     }
+
     private async Task LoadCartItems()
     {
         CartItems.Clear();
@@ -46,10 +49,25 @@ public partial class CartPage : ContentPage
                 Name = product.Name,
                 Price = product.Price,
                 Quantity = ci.Quantity,
+                ImageData = product.ImageData
             });
         }
 
         UpdateSummary();
+    }
+
+    // Новый обработчик нажатия на продукт
+    private async void OnProductTapped(object sender, TappedEventArgs e)
+    {
+        if (sender is Grid grid && grid.BindingContext is CartDisplayItem item)
+        {
+            // Получаем полную информацию о продукте
+            var product = await _databaseService.GetProductAsync(item.ProductId);
+            if (product != null)
+            {
+                await Navigation.PushAsync(new ProductDetail(product, _databaseService, _authService));
+            }
+        }
     }
 
     private void OnIncreaseQuantityClicked(object sender, EventArgs e)
@@ -113,7 +131,6 @@ public partial class CartPage : ContentPage
 
         UpdateSummary();
     }
-
 
     private void UpdateSummary()
     {

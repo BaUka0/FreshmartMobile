@@ -1,5 +1,6 @@
 using Project.Models;
 using Project.Services;
+using Project.Pages;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -22,6 +23,7 @@ public partial class FavouritePage : ContentPage
         FavoriteProducts = new ObservableCollection<Product>();
         FavouritesCollectionView.ItemsSource = FavoriteProducts;
     }
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -48,6 +50,14 @@ public partial class FavouritePage : ContentPage
         }
     }
 
+    // Новый обработчик нажатия на продукт
+    private async void OnProductTapped(object sender, TappedEventArgs e)
+    {
+        if (sender is Grid grid && grid.BindingContext is Product product)
+        {
+            await Navigation.PushAsync(new ProductDetail(product, _databaseService, _authService));
+        }
+    }
 
     private async void OnLikeClicked(object sender, EventArgs e)
     {
@@ -84,5 +94,4 @@ public partial class FavouritePage : ContentPage
             }
         }
     }
-
 }

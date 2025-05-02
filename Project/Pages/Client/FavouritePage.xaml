@@ -21,36 +21,49 @@
 
                             <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
 
-                                <!-- Картинка товара -->
-                                <Image Source="{Binding ImageData, Converter={StaticResource ByteArrayToImageSourceConverter}}"
-                                    WidthRequest="80"
-                                    HeightRequest="80"
-                                    Aspect="AspectFit" />
+                                <!-- Область для тапа с общей информацией о товаре -->
+                                <Grid ColumnDefinitions="Auto,*" 
+                                      HorizontalOptions="FillAndExpand">
 
-                                <!-- Информация о товаре -->
-                                <VerticalStackLayout Spacing="5" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                                    <Label Text="{Binding Name}"
-                                       FontSize="18"
-                                       TextColor="Black"
-                                       HorizontalOptions="Start" />
-                                    <Label Text="{Binding Price}"
-                                       FontSize="16"
-                                       TextColor="Green"
-                                       HorizontalOptions="Start" />
-                                </VerticalStackLayout>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnProductTapped" />
+                                    </Grid.GestureRecognizers>
+
+                                    <!-- Картинка товара -->
+                                    <Image Grid.Column="0"
+                                           Source="{Binding ImageData, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                           WidthRequest="80"
+                                           HeightRequest="80"
+                                           Aspect="AspectFit" />
+
+                                    <!-- Информация о товаре -->
+                                    <VerticalStackLayout Grid.Column="1"
+                                                         Spacing="5" 
+                                                         VerticalOptions="Center" 
+                                                         HorizontalOptions="FillAndExpand">
+                                        <Label Text="{Binding Name}"
+                                               FontSize="18"
+                                               TextColor="Black"
+                                               HorizontalOptions="Start" />
+                                        <Label Text="{Binding Price}"
+                                               FontSize="16"
+                                               TextColor="Green"
+                                               HorizontalOptions="Start" />
+                                    </VerticalStackLayout>
+                                </Grid>
 
                                 <!-- Кнопки "лайк" и "в корзину" справа -->
                                 <HorizontalStackLayout Spacing="20" HorizontalOptions="End" VerticalOptions="Center">
                                     <ImageButton Source="favourite_green.png"
-                                             Clicked="OnLikeClicked"
-                                             WidthRequest="40"
-                                             HeightRequest="40"
-                                             BackgroundColor="Transparent" />
+                                                 Clicked="OnLikeClicked"
+                                                 WidthRequest="40"
+                                                 HeightRequest="40"
+                                                 BackgroundColor="Transparent" />
                                     <ImageButton Source="{Binding CartIcon}"
-                                             Clicked="OnAddToCartClicked"
-                                             WidthRequest="40"
-                                             HeightRequest="40"
-                                             BackgroundColor="Transparent" />
+                                                 Clicked="OnAddToCartClicked"
+                                                 WidthRequest="40"
+                                                 HeightRequest="40"
+                                                 BackgroundColor="Transparent" />
                                 </HorizontalStackLayout>
 
                             </HorizontalStackLayout>
