@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.ProfilePage"
              Title="Профиль">
+    <ContentPage.Resources>
+        <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+    </ContentPage.Resources>
+
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20" HorizontalOptions="Center">
 
-            <Image Source="default_profile.png"
-               WidthRequest="120"
-               HeightRequest="120"
-               Aspect="AspectFill"
-               HorizontalOptions="Center"
-               Margin="0,20,0,0">
-                <Image.Clip>
-                    <EllipseGeometry Center="60,60" RadiusX="60" RadiusY="60" />
-                </Image.Clip>
-            </Image>
+            <Grid HorizontalOptions="Center">
+                <Frame CornerRadius="60" 
+                       IsClippedToBounds="True" 
+                       BorderColor="LightGray" 
+                       Padding="0" 
+                       WidthRequest="120" 
+                       HeightRequest="120">
+                    <Image x:Name="ProfileImage"
+                         Source="{Binding ProfileImageSource, Converter={StaticResource ByteArrayToImageSourceConverter}, TargetNullValue='default_profile.png'}"
+                         WidthRequest="120"
+                         HeightRequest="120"
+                         Aspect="AspectFill" />
+                </Frame>
+                <Button Text="+" 
+                        CornerRadius="20" 
+                        WidthRequest="40" 
+                        HeightRequest="40" 
+                        HorizontalOptions="End" 
+                        VerticalOptions="End"
+                        Clicked="OnChangeProfileImageClicked"
+                        BackgroundColor="#007AFF" 
+                        TextColor="White"
+                        FontSize="16"
+                        Margin="0,0,5,5"/>
+            </Grid>
 
             <Label Text="{Binding Username}"
                    FontSize="24"

@@ -60,7 +60,49 @@ namespace Project.Services
 
             return false;
         }
+        public async Task<bool> ChangePasswordAsync(string oldPassword, string newPassword)
+        {
+            if (_currentUser == null)
+            {
+                return false;
+            }
 
+            if (_currentUser.password != oldPassword)
+            {
+                return false;
+            }
+
+            _currentUser.password = newPassword;
+            await _databaseService.UpdateUserAsync(_currentUser);
+
+            return true;
+        }
+        public async Task<bool> UpdateProfileImageAsync(byte[] imageData)
+        {
+            if (_currentUser == null)
+            {
+                return false;
+            }
+
+            _currentUser.ProfileImage = imageData;
+            await _databaseService.UpdateUserAsync(_currentUser);
+
+            return true;
+        }
+
+        public async Task<bool> UpdateProfileAsync(string username, string email)
+        {
+            if (_currentUser == null)
+            {
+                return false;
+            }
+
+            _currentUser.username = username;
+            _currentUser.email = email;
+            await _databaseService.UpdateUserAsync(_currentUser);
+
+            return true;
+        }
         public string GetCurrentUserRole()
         {
             if (_currentUser != null)

@@ -10,6 +10,7 @@ public partial class ProfilePage : ContentPage
     private readonly DatabaseService _databaseService;
     public string Username { get; set; }
     public string Email { get; set; }
+    public byte[] ProfileImageSource { get; set; }
     public List<ProfileOption> Options { get; set; }
 
     public ProfilePage(AuthService authService, DatabaseService databaseService)
@@ -19,12 +20,7 @@ public partial class ProfilePage : ContentPage
         _authService = authService;
         _databaseService = databaseService;
 
-        var currentUser = _authService.CurrentUser;
-        if (currentUser != null)
-        {
-            Username = currentUser.username;
-            Email = currentUser.email;
-        }
+        LoadUserData();
 
         Options = new List<ProfileOption>
         {
@@ -39,10 +35,53 @@ public partial class ProfilePage : ContentPage
         BindingContext = this;
     }
 
+    private void LoadUserData()
+    {
+        var currentUser = _authService.CurrentUser;
+        if (currentUser != null)
+        {
+            Username = currentUser.username;
+            Email = currentUser.email;
+            ProfileImageSource = currentUser.ProfileImage;
+        }
+    }
+
+    private async void OnChangeProfileImageClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
+            {
+                Title = "Выберите фото профиля"
+            });
+
+            if (result != null)
+            {
+                using var stream = await result.OpenReadAsync();
+                using var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream);
+                var imageData = memoryStream.ToArray();
+
+                if (imageData.Length > 1000000) // Если больше ~1MB
+                {
+                    await DisplayAlert("Предупреждение", "Изображение слишком большое, выберите другое", "OK");
+                    return;
+                }
+
+                await _authService.UpdateProfileImageAsync(imageData);
+                ProfileImageSource = imageData;
+
+                OnPropertyChanged(nameof(ProfileImageSource));
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ошибка", $"Не удалось загрузить изображение: {ex.Message}", "OK");
+        }
+    }
+
     private async void OnPurchaseHistoryTapped()
     {
-        var databaseService = new DatabaseService();
-        await databaseService.InitAsync();
         await Navigation.PushAsync(new OrderHistoryPage(_databaseService, _authService));
     }
 
@@ -58,12 +97,12 @@ public partial class ProfilePage : ContentPage
 
     private async void OnEditProfileTapped()
     {
-        await DisplayAlert("Действие", "Изменить профиль", "ОК");
+        await Navigation.PushAsync(new EditProfilePage(_authService));
     }
 
     private async void OnChangePasswordTapped()
     {
-        await DisplayAlert("Действие", "Изменить пароль", "ОК");
+        await Navigation.PushAsync(new ChangePasswordPage(_authService));
     }
 
     private async void OnLogoutTapped()
@@ -109,5 +148,14 @@ public partial class ProfilePage : ContentPage
                     break;
             }
         }
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        LoadUserData();
+        OnPropertyChanged(nameof(Username));
+        OnPropertyChanged(nameof(Email));
+        OnPropertyChanged(nameof(ProfileImageSource));
     }
 }
