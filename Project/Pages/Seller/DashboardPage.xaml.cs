@@ -7,12 +7,14 @@ namespace Project.Pages.Seller;
 public partial class DashboardPage : ContentPage
 {
     private readonly DatabaseService _databaseService;
+    private readonly AuthService _authService;
     public ObservableCollection<Product> Products { get; set; } = new();
 
-    public DashboardPage(DatabaseService databaseService)
+    public DashboardPage(DatabaseService databaseService, AuthService authService)
     {
         InitializeComponent();
         _databaseService = databaseService;
+        _authService = authService;
 
         ProductCollectionView.ItemsSource = Products;
     }
@@ -39,7 +41,7 @@ public partial class DashboardPage : ContentPage
         var product = (sender as Button)?.BindingContext as Product;
         if (product != null)
         {
-            await Navigation.PushAsync(new ProductDetail(product, _databaseService));
+            await Navigation.PushAsync(new ProductDetail(product, _databaseService, _authService));
         }
     }
 

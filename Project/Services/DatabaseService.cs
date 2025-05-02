@@ -28,6 +28,8 @@ namespace Project.Services
             await _database.CreateTableAsync<Product>();
             await _database.CreateTableAsync<FavoriteProduct>();
             await _database.CreateTableAsync<CartItem>();
+
+            await _database.CreateTableAsync<Review>();
         }
 
         public async Task<List<User>> GetUsersAsync() => await _database.Table<User>().ToListAsync();
@@ -177,6 +179,29 @@ namespace Project.Services
             }
         }
 
+        //отзывы
+        public async Task<int> AddReviewAsync(Review review)
+        {
+            review.CreatedAt = DateTime.Now;
+            return await _database.InsertAsync(review);
+        }
+        public async Task<List<Review>> GetProductReviewsAsync(int productId)
+        {
+            var reviews = await _database.Table<Review>()
+                                        .Where(r => r.ProductId == productId)
+                                        .OrderByDescending(r => r.CreatedAt)
+                                        .ToListAsync();
 
+            foreach (var review in reviews)
+            {
+                var user = await GetUserAsync(review.UserId);
+                if (user != null)
+                {
+                    review.UserName = user.username;
+                }
+            }
+
+            return reviews;
+        }
     }
 }

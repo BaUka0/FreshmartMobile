@@ -64,7 +64,7 @@ public partial class ProductListPage : ContentPage
     {
         if (sender is Frame frame && frame.BindingContext is Product tappedProduct)
         {
-            await Navigation.PushAsync(new ProductDetail(tappedProduct, _databaseService));
+            await Navigation.PushAsync(new ProductDetail(tappedProduct, _databaseService, _authService));
         }
     }
 
