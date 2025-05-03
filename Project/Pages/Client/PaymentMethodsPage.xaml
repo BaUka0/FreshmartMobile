@@ -53,7 +53,7 @@
                                     WidthRequest="80"
                                     HeightRequest="40"
                                     HorizontalOptions="End"
-                                    BackgroundColor="#0078D7"
+                                    BackgroundColor="Green"
                                     TextColor="White"
                                     Clicked="OnEditCardClicked"
                                     CommandParameter="{Binding Id}"/>
@@ -66,7 +66,7 @@
         <Button 
             Grid.Row="2"
             Text="Добавить новую карту" 
-            BackgroundColor="#0078D7"
+            BackgroundColor="Green"
             TextColor="White"
             Margin="0,10,0,0"
             Clicked="OnAddCardClicked" />

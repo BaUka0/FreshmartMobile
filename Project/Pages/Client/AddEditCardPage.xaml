@@ -8,22 +8,34 @@
         <VerticalStackLayout Padding="20" Spacing="15">
             <Label Text="Информация о карте" FontSize="22" FontAttributes="Bold" Margin="0,0,0,10"/>
 
-            <Label Text="Номер карты" FontSize="16" />
-            <Entry x:Name="CardNumberEntry" 
-                   Placeholder="1234 5678 9012 3456" 
-                   Keyboard="Numeric"
-                   MaxLength="19" />
+            <Frame BorderColor="LightGray" Padding="15" Margin="0,0,0,10">
+                <StackLayout>
+                    <Label Text="Номер карты" FontSize="16" />
+                    <Entry x:Name="CardNumberEntry" 
+                           Placeholder="1234 5678 9012 3456" 
+                           Keyboard="Numeric"
+                           MaxLength="19" />
+                </StackLayout>
+            </Frame>
 
-            <Label Text="Имя держателя карты" FontSize="16" />
-            <Entry x:Name="CardHolderEntry" 
-                   Placeholder="IVAN IVANOV" />
+            <Frame BorderColor="LightGray" Padding="15" Margin="0,0,0,10">
+                <StackLayout>
+                    <Label Text="Имя держателя карты" FontSize="16" />
+                    <Entry x:Name="CardHolderEntry" 
+                           Placeholder="IVAN IVANOV" />
+                </StackLayout>
+            </Frame>
 
-            <Label Text="Срок действия (MM/YY)" FontSize="16" />
-            <Entry x:Name="ExpiryDateEntry" 
-                   Placeholder="05/25" 
-                   MaxLength="5" />
+            <Frame BorderColor="LightGray" Padding="15" Margin="0,0,0,10">
+                <StackLayout>
+                    <Label Text="Срок действия (MM/YY)" FontSize="16" />
+                    <Entry x:Name="ExpiryDateEntry" 
+                           Placeholder="05/25" 
+                           MaxLength="5" />
+                </StackLayout>
+            </Frame>
 
-            <Frame BorderColor="LightGray" CornerRadius="10" Padding="15" Margin="0,10">
+            <Frame BorderColor="LightGray" CornerRadius="10" Padding="15" Margin="0,0,0,30">
                 <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
                     <VerticalStackLayout Spacing="5">
                         <Label Text="Сделать основной картой" 
@@ -39,23 +51,23 @@
             </Frame>
 
             <Button Text="Сохранить" 
-                    BackgroundColor="#0078D7"
+                    BackgroundColor="Green"
                     TextColor="White"
-                    Margin="0,20,0,0"
+                    Margin="0,0,0,15"
                     Clicked="OnSaveClicked" />
 
             <Button x:Name="CancelButton"
                     Text="Отмена" 
-                    BackgroundColor="Gray"
-                    TextColor="White"
-                    Margin="0,10,0,0"
+                    BackgroundColor="LightGray"
+                    TextColor="Black"
+                    Margin="0,0,0,15"
                     Clicked="OnCancelClicked" />
 
             <Button x:Name="DeleteButton"
                     Text="Удалить карту" 
                     BackgroundColor="#FF3B30"
                     TextColor="White"
-                    Margin="0,10,0,0"
+                    Margin="0,0,0,0"
                     IsVisible="{Binding IsEditing}"
                     Clicked="OnDeleteClicked" />
         </VerticalStackLayout>
