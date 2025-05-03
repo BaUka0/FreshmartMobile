@@ -45,11 +45,6 @@
                                HorizontalOptions="Center"
                                TextColor="Black"/>
 
-                            <Label Text="{Binding Description}"
-                               FontSize="14"
-                               HorizontalOptions="Center"
-                               TextColor="Gray"/>
-
                             <Label Text="{Binding Price}"
                                FontSize="16"
                                HorizontalOptions="Center"
