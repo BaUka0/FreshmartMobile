@@ -50,7 +50,7 @@
                             <Button Grid.Column="2" Grid.RowSpan="3"
                                     Text="Изменить"
                                     FontSize="12"
-                                    WidthRequest="80"
+                                    WidthRequest="90"
                                     HeightRequest="40"
                                     HorizontalOptions="End"
                                     BackgroundColor="Green"
