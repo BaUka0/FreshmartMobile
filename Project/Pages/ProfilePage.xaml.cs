@@ -93,7 +93,7 @@ public partial class ProfilePage : ContentPage
 
     private async void OnPaymentMethodTapped()
     {
-        await DisplayAlert("Действие", "Сделай пжж", "ОК");
+        await Navigation.PushAsync(new PaymentMethodsPage(_databaseService, _authService));
     }
 
     private async void OnEditProfileTapped()

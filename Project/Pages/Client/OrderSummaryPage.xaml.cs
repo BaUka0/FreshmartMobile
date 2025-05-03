@@ -14,6 +14,8 @@ public partial class OrderSummaryPage : ContentPage
     private DatabaseService _databaseService;
     private AuthService _authService;
     private ObservableCollection<Product> OrderItems;
+    private List<PaymentCard> _userCards;
+    private PaymentCard _selectedCard;
 
     public OrderSummaryPage(ObservableCollection<Product> items, DatabaseService database, AuthService authService)
     {
@@ -34,8 +36,27 @@ public partial class OrderSummaryPage : ContentPage
         DeliveryPicker.SelectedIndexChanged += OnDeliveryChanged;
         PaymentPicker.SelectedIndexChanged += OnPaymentChanged;
         _authService = authService;
+        LoadUserCardsAsync();
     }
+    private async Task LoadUserCardsAsync()
+    {
+        var userId = _authService.GetCurrentUserId();
+        _userCards = await _databaseService.GetPaymentCardsAsync(userId);
 
+        // Если у пользователя есть сохраненные карты, добавляем их в PaymentPicker
+        if (_userCards != null && _userCards.Count > 0)
+        {
+            List<string> paymentOptions = new List<string> { "Наличными", "Карта" };
+
+            // Добавляем сохраненные карты
+            foreach (var card in _userCards)
+            {
+                paymentOptions.Add($"Карта {card.MaskedCardNumber}");
+            }
+
+            PaymentPicker.ItemsSource = paymentOptions;
+        }
+    }
     private void OnDeliveryChanged(object sender, EventArgs e)
     {
         AddressSection.IsVisible = DeliveryPicker.SelectedItem?.ToString() == "Курьер";
@@ -43,7 +64,25 @@ public partial class OrderSummaryPage : ContentPage
 
     private void OnPaymentChanged(object sender, EventArgs e)
     {
-        CardSection.IsVisible = PaymentPicker.SelectedItem?.ToString() == "Карта";
+        string selectedPayment = PaymentPicker.SelectedItem?.ToString();
+
+        if (selectedPayment == "Карта")
+        {
+            CardSection.IsVisible = true;
+            _selectedCard = null;
+        }
+        else if (selectedPayment != null && selectedPayment.StartsWith("Карта "))
+        {
+            // Пользователь выбрал сохраненную карту
+            string maskedNumber = selectedPayment.Substring(6); // "Карта ".Length = 6
+            _selectedCard = _userCards.FirstOrDefault(c => c.MaskedCardNumber == maskedNumber);
+            CardSection.IsVisible = false;
+        }
+        else
+        {
+            CardSection.IsVisible = false;
+            _selectedCard = null;
+        }
     }
 
     private async void OnConfirmOrderClicked(object sender, EventArgs e)
@@ -64,11 +103,36 @@ public partial class OrderSummaryPage : ContentPage
             }
         }
 
+        string paymentMethod = PaymentPicker.SelectedItem?.ToString() ?? "Наличные";
+
+        // Если выбрана новая карта и поля заполнены, предложим сохранить её
+        if (paymentMethod == "Карта" &&
+            !string.IsNullOrWhiteSpace(CardNumberEntry.Text) &&
+            !string.IsNullOrWhiteSpace(ExpiryEntry.Text))
+        {
+            bool saveCard = await DisplayAlert("Сохранить карту?",
+                "Хотите сохранить эту карту для будущих покупок?", "Да", "Нет");
+
+            if (saveCard)
+            {
+                PaymentCard newCard = new PaymentCard
+                {
+                    UserId = _authService.GetCurrentUserId(),
+                    CardNumber = CardNumberEntry.Text,
+                    ExpiryDate = ExpiryEntry.Text,
+                    CardHolderName = "Владелец", // По умолчанию
+                    IsDefault = false
+                };
+
+                await _databaseService.AddPaymentCardAsync(newCard);
+            }
+        }
+
         var order = new Order
         {
             UserId = _authService.GetCurrentUserId(),
             DeliveryMethod = DeliveryPicker.SelectedItem?.ToString() ?? "Самовывоз",
-            PaymentMethod = PaymentPicker.SelectedItem?.ToString() ?? "Наличные",
+            PaymentMethod = paymentMethod,
             Address = address,
             OrderDate = DateTime.Now,
             OrderStatus = "Обработка"

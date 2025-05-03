@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project.Pages.Client.PaymentMethodsPage"
+             Title="Методы оплаты">
+
+    <Grid RowDefinitions="Auto, *, Auto" Padding="20">
+        <Label Text="Выберите карту для управления" 
+               FontSize="18" 
+               Margin="0,0,0,10"/>
+
+        <CollectionView 
+            Grid.Row="1"
+            x:Name="CardsCollectionView"
+            ItemsSource="{Binding PaymentCards}"
+            SelectionMode="Single"
+            SelectionChanged="OnCardSelected">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="Нет сохраненных карт" 
+                          FontSize="18" 
+                          TextColor="Gray" 
+                          HorizontalOptions="Center" />
+                    <Label Text="Добавьте карту для быстрой оплаты" 
+                          FontSize="14" 
+                          TextColor="Gray" 
+                          HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,5" Padding="15" BorderColor="LightGray" CornerRadius="10">
+                        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto,Auto">
+                            <Label Text="{Binding MaskedCardNumber}" FontSize="18" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Text="{Binding CardHolderName}" FontSize="14" />
+                            <Label Grid.Row="2" Text="{Binding ExpiryDate}" FontSize="14" />
+
+                            <Image Grid.RowSpan="3" Grid.Column="1" 
+                                  Source="credit_card.png" 
+                                  WidthRequest="40" 
+                                  VerticalOptions="Center" />
+
+                            <Image Grid.Row="2" Grid.Column="1" 
+                                  IsVisible="{Binding IsDefault}"
+                                  Source="checkmark.png" 
+                                  WidthRequest="24" 
+                                  VerticalOptions="End" 
+                                  HorizontalOptions="End" />
+
+                            <Button Grid.Column="2" Grid.RowSpan="3"
+                                    Text="Изменить"
+                                    FontSize="12"
+                                    WidthRequest="80"
+                                    HeightRequest="40"
+                                    HorizontalOptions="End"
+                                    BackgroundColor="#0078D7"
+                                    TextColor="White"
+                                    Clicked="OnEditCardClicked"
+                                    CommandParameter="{Binding Id}"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button 
+            Grid.Row="2"
+            Text="Добавить новую карту" 
+            BackgroundColor="#0078D7"
+            TextColor="White"
+            Margin="0,10,0,0"
+            Clicked="OnAddCardClicked" />
+    </Grid>
+
+</ContentPage>

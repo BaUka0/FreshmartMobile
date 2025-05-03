@@ -33,6 +33,7 @@ namespace Project.Services
 
             await _database.CreateTableAsync<Order>();
             await _database.CreateTableAsync<OrderItem>();
+            await _database.CreateTableAsync<PaymentCard>();
         }
 
         public async Task<List<User>> GetUsersAsync() => await _database.Table<User>().ToListAsync();
@@ -340,6 +341,71 @@ namespace Project.Services
                 return await _database.UpdateAsync(order);
             }
 
+            return 0;
+        }
+
+
+        // Оплата
+        public async Task<List<PaymentCard>> GetPaymentCardsAsync(int userId)
+        {
+            return await _database.Table<PaymentCard>()
+                                .Where(c => c.UserId == userId)
+                                .ToListAsync();
+        }
+
+        public async Task<PaymentCard> GetDefaultPaymentCardAsync(int userId)
+        {
+            return await _database.Table<PaymentCard>()
+                                .Where(c => c.UserId == userId && c.IsDefault)
+                                .FirstOrDefaultAsync();
+        }
+
+        public async Task<int> AddPaymentCardAsync(PaymentCard card)
+        {
+            // Если добавляемая карта помечена как основная, сбрасываем флаг у остальных карт
+            if (card.IsDefault)
+            {
+                var userCards = await GetPaymentCardsAsync(card.UserId);
+                foreach (var userCard in userCards)
+                {
+                    if (userCard.IsDefault)
+                    {
+                        userCard.IsDefault = false;
+                        await _database.UpdateAsync(userCard);
+                    }
+                }
+            }
+
+            return await _database.InsertAsync(card);
+        }
+
+        public async Task<int> UpdatePaymentCardAsync(PaymentCard card)
+        {
+            // Если обновляемая карта помечена как основная, сбрасываем флаг у остальных карт
+            if (card.IsDefault)
+            {
+                var userCards = await GetPaymentCardsAsync(card.UserId);
+                foreach (var userCard in userCards)
+                {
+                    if (userCard.Id != card.Id && userCard.IsDefault)
+                    {
+                        userCard.IsDefault = false;
+                        await _database.UpdateAsync(userCard);
+                    }
+                }
+            }
+
+            return await _database.UpdateAsync(card);
+        }
+
+        public async Task<int> DeletePaymentCardAsync(int cardId)
+        {
+            var card = await _database.Table<PaymentCard>()
+                                    .FirstOrDefaultAsync(c => c.Id == cardId);
+            if (card != null)
+            {
+                return await _database.DeleteAsync(card);
+            }
             return 0;
         }
     }
