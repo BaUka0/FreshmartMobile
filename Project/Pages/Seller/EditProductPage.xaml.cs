@@ -49,7 +49,6 @@ public partial class EditProductPage : ContentPage
         DescriptionEditor.Text = _product.Description;
         PriceEntry.Text = _product.Price.Replace("₸", "").Trim();
 
-        // Отображаем уже сохраненное фото из байтов, если есть
         if (_product.ImageData != null && _product.ImageData.Length > 0)
         {
             ProductImage.Source = ImageSource.FromStream(() => new MemoryStream(_product.ImageData));
@@ -108,7 +107,6 @@ public partial class EditProductPage : ContentPage
             _product.ImageData = File.ReadAllBytes(_imagePath);
         }
 
-        // Вызываем метод для обновления товара в базе
         await _databaseService.UpdateProductAsync(_product);
 
         await DisplayAlert("Сәтті", "Тауар жаңартылды", "OK");

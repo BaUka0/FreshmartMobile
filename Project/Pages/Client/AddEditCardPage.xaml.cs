@@ -22,7 +22,6 @@ namespace Project.Pages.Client
 
             Title = _isEditing ? "Картаны өңдеу" : "Картаны қосу";
 
-            // Кнопка удаления видна только при редактировании
             DeleteButton.IsVisible = _isEditing;
 
             if (_isEditing)

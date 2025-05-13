@@ -67,7 +67,7 @@ public partial class ProfilePage : ContentPage
                 await stream.CopyToAsync(memoryStream);
                 var imageData = memoryStream.ToArray();
 
-                if (imageData.Length > 1000000) // Если больше ~1MB
+                if (imageData.Length > 1000000)
                 {
                     await DisplayAlert("Ескерту", "Сурет тым үлкен, басқасын таңдаңыз", "OK");
                     return;

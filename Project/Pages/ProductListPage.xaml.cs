@@ -30,7 +30,6 @@ public partial class ProductListPage : ContentPage
         var role = _authService.GetCurrentUserRole();
         var userId = _authService.GetCurrentUserId();
 
-        // Получаем все товары в корзине текущего пользователя
         var cartItems = await _databaseService.GetCartItemsAsync(userId);
         var cartProductIds = cartItems.Select(ci => ci.ProductId).ToHashSet();
 
@@ -41,11 +40,9 @@ public partial class ProductListPage : ContentPage
                 product.IsFavoriteButtonVisible = true;
                 product.IsCartButtonVisible = true;
 
-                // Проверяем, является ли продукт избранным
                 var isFavorite = await _databaseService.IsProductFavoriteAsync(userId, product.Id);
                 product.FavoriteIcon = isFavorite ? "favourite_green.png" : "favourite_grey.png";
 
-                // Проверяем, находится ли продукт в корзине
                 product.CartIcon = cartProductIds.Contains(product.Id) ? "basket_green.png" : "basket_grey.png";
             }
             else
@@ -98,7 +95,6 @@ public partial class ProductListPage : ContentPage
         {
             var userId = _authService.GetCurrentUserId();
 
-            // Проверяем, находится ли продукт в корзине
             var cartItems = await _databaseService.GetCartItemsAsync(userId);
             var isInCart = cartItems.Any(ci => ci.ProductId == product.Id);
 
@@ -113,7 +109,6 @@ public partial class ProductListPage : ContentPage
                 await DisplayAlert("Қосылды", "Тауар себетке қосылды!", "Ок");
             }
 
-            // Обновляем привязку
             ProductsCollectionView.ItemsSource = null;
             ProductsCollectionView.ItemsSource = Products;
         }

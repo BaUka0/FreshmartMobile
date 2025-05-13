@@ -40,7 +40,6 @@ public partial class CatalogPage : ContentPage
             new Category { Name = "\tБасқа тауарлар", Icon = "others.png" },
         };
 
-        // Создаем команду для обработки нажатия на категорию
         CategoryCommand = new Command<Category>(OnCategorySelected);
 
         BindingContext = this;
@@ -50,7 +49,6 @@ public partial class CatalogPage : ContentPage
     {
         if (selectedCategory == null) return;
 
-        // Переход на страницу ProductList с выбранной категорией
         await Navigation.PushAsync(new ProductListPage(selectedCategory, _databaseService, _authService));
     }
     private async void OnCategoryTapped(object sender, EventArgs e)
@@ -58,7 +56,6 @@ public partial class CatalogPage : ContentPage
         var frame = sender as Frame;
         if (frame != null)
         {
-            // Анимация уменьшения и увеличения
             await frame.ScaleTo(0.9, 100, Easing.CubicIn);
             await frame.ScaleTo(1, 100, Easing.CubicOut);
         }

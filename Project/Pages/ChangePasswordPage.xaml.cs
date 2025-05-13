@@ -18,21 +18,18 @@ public partial class ChangePasswordPage : ContentPage
         string newPassword = NewPasswordEntry.Text;
         string confirmPassword = ConfirmPasswordEntry.Text;
 
-        // Проверяем заполнение полей
         if (string.IsNullOrEmpty(currentPassword) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
         {
             await DisplayAlert("Қате", "Барлық өрістер толтырылуы керек", "ОК");
             return;
         }
 
-        // Проверяем совпадение паролей
         if (newPassword != confirmPassword)
         {
             await DisplayAlert("Қате", "Жаңа құпия сөз мен растау сәйкес келмейді", "ОК");
             return;
         }
 
-        // Пытаемся изменить пароль
         bool result = await _authService.ChangePasswordAsync(currentPassword, newPassword);
 
         if (result)

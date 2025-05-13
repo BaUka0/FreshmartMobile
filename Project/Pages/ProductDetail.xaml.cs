@@ -23,15 +23,12 @@ public partial class ProductDetail : ContentPage
         ProductDescriptionLabel.Text = _product.Description;
         ProductPriceLabel.Text = _product.Price;
 
-        // Получаем роль пользователя
         var userRole = _authService.GetCurrentUserRole();
         var isClient = userRole == "client";
 
-        // Показываем кнопки действий и возможность оставить отзыв только клиентам
         ActionButtonsSection.IsVisible = isClient;
         AddReviewSection.IsVisible = isClient;
 
-        // Если пользователь клиент, проверяем статус избранного и корзины
         if (isClient)
         {
             InitializeClientButtons();
@@ -44,11 +41,9 @@ public partial class ProductDetail : ContentPage
     {
         var userId = _authService.GetCurrentUserId();
 
-        // Проверяем, находится ли товар в избранном
         var isFavorite = await _databaseService.IsProductFavoriteAsync(userId, _product.Id);
         FavoriteButton.Source = isFavorite ? "favourite_green.png" : "favourite_grey.png";
 
-        // Проверяем, находится ли товар в корзине
         var cartItems = await _databaseService.GetCartItemsAsync(userId);
         var isInCart = cartItems.Any(ci => ci.ProductId == _product.Id);
         CartButton.Source = isInCart ? "basket_green.png" : "basket_grey.png";
@@ -77,7 +72,6 @@ public partial class ProductDetail : ContentPage
     {
         var userId = _authService.GetCurrentUserId();
 
-        // Проверяем, находится ли продукт в корзине
         var cartItems = await _databaseService.GetCartItemsAsync(userId);
         var isInCart = cartItems.Any(ci => ci.ProductId == _product.Id);
 
@@ -97,12 +91,10 @@ public partial class ProductDetail : ContentPage
     {
         var reviews = await _databaseService.GetProductReviewsAsync(_product.Id);
 
-        // Очищаем контейнер с отзывами
         ReviewsContainer.Children.Clear();
 
         if (reviews.Count == 0)
         {
-            // Добавляем сообщение об отсутствии отзывов
             ReviewsContainer.Children.Add(new Label
             {
                 Text = "Әзірге пікірлер жоқ. Бірінші болыңыз!",
@@ -113,7 +105,6 @@ public partial class ProductDetail : ContentPage
         }
         else
         {
-            // Отображаем все отзывы
             foreach (var review in reviews)
             {
                 var reviewFrame = new Frame
@@ -159,8 +150,6 @@ public partial class ProductDetail : ContentPage
             }
         }
     }
-
-    // Обработчик кнопки отправки отзыва
     private async void OnSubmitReviewClicked(object sender, EventArgs e)
     {
         string reviewText = ReviewEditor.Text?.Trim();
@@ -171,14 +160,12 @@ public partial class ProductDetail : ContentPage
             return;
         }
 
-        // Проверяем, авторизован ли пользователь и является ли он клиентом
         if (_authService.CurrentUser == null || _authService.GetCurrentUserRole() != "client")
         {
             await DisplayAlert("Қате", "Тек клиенттер пікір қалдыра алады.", "OK");
             return;
         }
 
-        // Создаем и сохраняем новый отзыв
         var review = new Review
         {
             ProductId = _product.Id,
@@ -189,10 +176,8 @@ public partial class ProductDetail : ContentPage
         await _databaseService.AddReviewAsync(review);
         await DisplayAlert("Пікір жіберілді", "Пікіріңізге рахмет!", "OK");
 
-        // Очищаем поле
         ReviewEditor.Text = string.Empty;
 
-        // Обновляем список отзывов
         LoadReviews();
     }
 }

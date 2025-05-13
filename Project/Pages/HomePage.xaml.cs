@@ -170,11 +170,9 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
     {
         string searchText = e.NewTextValue?.Trim();
 
-        // Если в процессе фокусировки, пропускаем обработку
         if (_isSearchActive)
             return;
 
-        // Отмена предыдущего поиска, если он в процессе
         _throttleCts?.Cancel();
         _throttleCts = new CancellationTokenSource();
 
@@ -186,10 +184,8 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
 
         try
         {
-            // Добавляем задержку перед поиском для уменьшения количества запросов
             await Task.Delay(300, _throttleCts.Token);
 
-            // Получаем список всех продуктов и фильтруем их
             var allProducts = await _databaseService.GetProductsAsync();
             var filteredProducts = allProducts
                 .Where(p => p.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase))
@@ -202,25 +198,17 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
                 SearchSuggestions.Add(product);
             }
 
-            // Рассчитываем высоту списка подсказок
-            // Высота одного элемента примерно 40 единиц (с учетом отступов)
             int itemHeight = 40;
-            int maxItems = 5; // Максимальное количество элементов
+            int maxItems = 5;
 
-            // Вычисляем высоту в зависимости от количества элементов
             SuggestionsHeight = Math.Min(SearchSuggestions.Count, maxItems) * itemHeight;
 
-            // Минимальная высота, если есть хотя бы один элемент
             if (SearchSuggestions.Count > 0 && SuggestionsHeight < itemHeight)
                 SuggestionsHeight = itemHeight;
 
-            // Показываем результаты только если есть совпадения и текстовое поле не пустое
             suggestionsFrame.IsVisible = SearchSuggestions.Count > 0 && !string.IsNullOrEmpty(searchText);
         }
-        catch (TaskCanceledException)
-        {
-            // Поиск был отменен, ничего не делаем
-        }
+        catch (TaskCanceledException) {}
         catch (Exception ex)
         {
             Console.WriteLine($"Іздеу кезіндегі қате: {ex.Message}");
@@ -229,7 +217,6 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
 
     private void OnSearchBarFocused(object sender, FocusEventArgs e)
     {
-        // Просто показываем подсказки, если уже набран текст
         if (!string.IsNullOrEmpty(searchBar.Text))
         {
             suggestionsFrame.IsVisible = SearchSuggestions.Count > 0;
@@ -240,39 +227,30 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
     {
         try
         {
-            // Устанавливаем флаг активного поиска
             _isSearchActive = true;
 
-            // Получаем текст поиска
             string searchText = searchBar.Text?.Trim() ?? string.Empty;
 
-            // Скрываем подсказки
             suggestionsFrame.IsVisible = false;
 
-            // Очищаем поле поиска
             searchBar.Text = string.Empty;
 
-            // Проверяем, что сервисы не null перед передачей
             if (_databaseService != null && _authService != null)
             {
-                // Переходим на страницу поиска с параметрами
                 await Navigation.PushAsync(new SearchPage(searchText, _databaseService, _authService));
             }
             else
             {
-                // В случае отсутствия сервисов показываем сообщение
                 await DisplayAlert("Қате", "Іздеуіңізді аяқтау мүмкін емес. Тағы жасауды сәл кейінірек көріңізді өтінеміз.", "ОК");
             }
         }
         catch (Exception ex)
         {
-            // Обрабатываем возможные исключения
             Console.WriteLine($"Іздеу бетіне өту кезінде қате: {ex.Message}");
             await DisplayAlert("Қате", "Іздеу кезінде қате орын алды.", "ОК");
         }
         finally
         {
-            // Сбрасываем флаг в любом случае
             _isSearchActive = false;
         }
     }
@@ -291,27 +269,20 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
         {
             if (e.CurrentSelection.FirstOrDefault() is Product selectedProduct)
             {
-                // Устанавливаем флаг активного поиска
                 _isSearchActive = true;
 
-                // Сбрасываем выделение
                 suggestionsCollection.SelectedItem = null;
 
-                // Скрываем подсказки
                 suggestionsFrame.IsVisible = false;
 
-                // Очищаем поисковую строку
                 searchBar.Text = string.Empty;
 
-                // Проверка, что сервисы не null
                 if (_databaseService != null && _authService != null)
                 {
-                    // Переходим на страницу поиска с выбранным текстом
                     await Navigation.PushAsync(new SearchPage(selectedProduct.Name, _databaseService, _authService));
                 }
                 else
                 {
-                    // Показываем сообщение об ошибке
                     await DisplayAlert("Қате", "Іздеуді ашу мүмкін емес. Әрекетті кейінірек қайталаңыз.", "ОК");
                 }
             }
@@ -323,7 +294,6 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
         }
         finally
         {
-            // Сбрасываем флаг в любом случае
             _isSearchActive = false;
         }
     }

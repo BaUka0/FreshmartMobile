@@ -62,7 +62,6 @@ public partial class DashboardPage : ContentPage
             bool confirm = await DisplayAlert("Жою", $"{product.Name} жою керек па?", "Иә", "Жоқ");
             if (confirm)
             {
-                // Удаляем из БД
                 await _databaseService.DeleteProductAsync(product);
                 Products.Remove(product);
             }

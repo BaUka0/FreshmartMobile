@@ -56,12 +56,10 @@ public partial class CartPage : ContentPage
         UpdateSummary();
     }
 
-    // Новый обработчик нажатия на продукт
     private async void OnProductTapped(object sender, TappedEventArgs e)
     {
         if (sender is Grid grid && grid.BindingContext is CartDisplayItem item)
         {
-            // Получаем полную информацию о продукте
             var product = await _databaseService.GetProductAsync(item.ProductId);
             if (product != null)
             {

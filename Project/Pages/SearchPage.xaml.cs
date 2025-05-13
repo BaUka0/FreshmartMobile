@@ -57,7 +57,6 @@ namespace Project.Pages
                 };
 
 
-            // Создаем кнопки для категорий
             foreach (var category in _categories)
             {
                 var frame = new Frame
@@ -80,7 +79,6 @@ namespace Project.Pages
                     Margin = new Thickness(0)
                 };
 
-                // Добавляем обработчик клика
                 categoryButton.Clicked += (sender, e) =>
                 {
                     OnCategorySelected(category.Name);
@@ -88,14 +86,10 @@ namespace Project.Pages
 
                 frame.Content = categoryButton;
 
-                // Добавляем данные категории в свойство BindingContext фрейма
                 frame.BindingContext = category;
 
-                // Добавляем на экран
                 categoriesContainer.Children.Add(frame);
             }
-
-            // По умолчанию выбираем "Все"
             _selectedCategories.Add("Все");
         }
 
@@ -103,11 +97,9 @@ namespace Project.Pages
         {
             if (categoryName == "Барлығы")
             {
-                // Если выбрали "Все", сбрасываем все остальные выбранные категории
                 _selectedCategories.Clear();
                 _selectedCategories.Add("Барлығы");
 
-                // Обновляем визуальное состояние кнопок
                 foreach (var child in categoriesContainer.Children)
                 {
                     if (child is Frame frame)
@@ -124,14 +116,10 @@ namespace Project.Pages
             }
             else
             {
-                // Если выбрали конкретную категорию
-
-                // Удаляем "Все" из выбранных категорий, если она там есть
                 if (_selectedCategories.Contains("Барлығы"))
                 {
                     _selectedCategories.Remove("Барлығы");
 
-                    // Сбрасываем визуальное состояние кнопки "Все"
                     foreach (var child in categoriesContainer.Children)
                     {
                         if (child is Frame frame && frame.BindingContext is Category category && category.Name == "Барлығы")
@@ -146,7 +134,6 @@ namespace Project.Pages
                     }
                 }
 
-                // Инвертируем состояние выбранной категории
                 if (_selectedCategories.Contains(categoryName))
                 {
                     _selectedCategories.Remove(categoryName);
@@ -156,12 +143,10 @@ namespace Project.Pages
                     _selectedCategories.Add(categoryName);
                 }
 
-                // Если не осталось выбранных категорий, выбираем "Все"
                 if (_selectedCategories.Count == 0)
                 {
                     _selectedCategories.Add("Барлығы");
 
-                    // Обновляем визуальное состояние кнопки "Все"
                     foreach (var child in categoriesContainer.Children)
                     {
                         if (child is Frame frame && frame.BindingContext is Category category && category.Name == "Барлығы")
@@ -176,7 +161,6 @@ namespace Project.Pages
                     }
                 }
 
-                // Обновляем визуальное состояние выбранных/не выбранных категорий
                 foreach (var child in categoriesContainer.Children)
                 {
                     if (child is Frame frame && frame.BindingContext is Category category && category.Name != "Барлығы")
@@ -192,71 +176,13 @@ namespace Project.Pages
                 }
             }
 
-            // Обновляем результаты поиска с учетом выбранных категорий
             ApplyFilters();
         }
 
         private async void LoadProducts()
         {
-            if (_databaseService != null)
-            {
-                // Загружаем все продукты из базы данных
-                _allProducts = await _databaseService.GetProductsAsync();
-
-                // Применяем фильтры к загруженным продуктам
-                ApplyFilters();
-            }
-            else
-            {
-                // Если сервис не предоставлен, используем демо-данные
-                _allProducts = new List<Product>
-                {
-                    new Product
-                    {
-                        Name = "Сүт",
-                        Description = "Жаңа сүт 2.5%",
-                        Price = "450 ₸",
-                        Category = "Сүт өнімдері",
-                        ImageData = new byte[] { }
-                    },
-                    new Product
-                    {
-                        Name = "Нан",
-                        Description = "Ақ нан",
-                        Price = "180 ₸",
-                        Category = "Нан және тоқаштар",
-                        ImageData = new byte[] { }
-                    },
-                    new Product
-                    {
-                        Name = "Алма",
-                        Description = "Жаңа алма",
-                        Price = "550 ₸",
-                        Category = "Жемістер",
-                        ImageData = new byte[] { }
-                    },
-                    new Product
-                    {
-                        Name = "Кока-кола",
-                        Description = "Газдалған сусын 1.5л",
-                        Price = "650 ₸",
-                        Category = "Сусындар",
-                        ImageData = new byte[] { }
-                    },
-                    new Product
-                    {
-                        Name = "Сыр",
-                        Description = "Ресейлік сыр 45%",
-                        Price = "1800 ₸",
-                        Category = "Сүт өнімдері",
-                        ImageData = new byte[] { }
-                    },
-                };
-
-
-                // Применяем фильтры к демо-данным
-                ApplyFilters();
-            }
+            _allProducts = await _databaseService.GetProductsAsync();
+            ApplyFilters();
         }
 
         private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
@@ -267,10 +193,8 @@ namespace Project.Pages
 
         private void ApplyFilters()
         {
-            // Проверяем, что источник данных не null
             if (_allProducts == null)
             {
-                // Если продукты не загружены, обновляем интерфейс с пустыми результатами
                 SearchResults.Clear();
                 resultsCountLabel.Text = "Табылған тауарлар: 0";
                 return;
@@ -278,7 +202,6 @@ namespace Project.Pages
 
             var filteredProducts = _allProducts;
 
-            // Фильтрация по поисковому запросу
             if (!string.IsNullOrEmpty(_currentSearchText))
             {
                 filteredProducts = filteredProducts
@@ -287,8 +210,6 @@ namespace Project.Pages
                         (p.Description?.Contains(_currentSearchText, StringComparison.OrdinalIgnoreCase) == true))
                     .ToList();
             }
-
-            // Фильтрация по категориям
             if (!_selectedCategories.Contains("Барлығы"))
             {
                 filteredProducts = filteredProducts
@@ -296,12 +217,10 @@ namespace Project.Pages
                     .ToList();
             }
 
-            // Обновляем результаты поиска
             SearchResults.Clear();
 
             if (_authService != null && _databaseService != null)
             {
-                // Получаем данные пользователя для отображения избранного и корзины
                 var userId = _authService.GetCurrentUserId();
                 var userRole = _authService.GetCurrentUserRole();
 
@@ -318,11 +237,9 @@ namespace Project.Pages
                                 product.IsFavoriteButtonVisible = true;
                                 product.IsCartButtonVisible = true;
 
-                                // Проверяем избранное
                                 var isFavorite = await _databaseService.IsProductFavoriteAsync(userId, product.Id);
                                 product.FavoriteIcon = isFavorite ? "favourite_green.png" : "favourite_grey.png";
 
-                                // Проверяем корзину
                                 product.CartIcon = cartProductIds.Contains(product.Id) ? "basket_green.png" : "basket_grey.png";
                             }
                             else
@@ -337,7 +254,6 @@ namespace Project.Pages
                         }
 
                         MainThread.BeginInvokeOnMainThread(() => {
-                            // Обновляем счетчик результатов
                             resultsCountLabel.Text = $"Табылған тауарлар: {SearchResults.Count}";
                         });
                     }
@@ -352,13 +268,11 @@ namespace Project.Pages
             }
             else
             {
-                // Если сервисы не предоставлены, просто добавляем продукты без обработки
                 foreach (var product in filteredProducts)
                 {
                     SearchResults.Add(product);
                 }
 
-                // Обновляем счетчик результатов
                 resultsCountLabel.Text = $"Табылған тауарлар: {SearchResults.Count}";
             }
         }
@@ -394,7 +308,6 @@ namespace Project.Pages
                     await DisplayAlert("Таңдаулылар", "Тауар таңдаулыларыңызға қосылды", "Ок");
                 }
 
-                // Обновляем UI
                 var index = SearchResults.IndexOf(product);
                 if (index != -1)
                 {
@@ -424,7 +337,6 @@ namespace Project.Pages
                     await DisplayAlert("Себет", "Тауар себетке қосылды!", "Ок");
                 }
 
-                // Обновляем UI
                 var index = SearchResults.IndexOf(product);
                 if (index != -1)
                 {

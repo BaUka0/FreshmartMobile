@@ -43,12 +43,10 @@ public partial class OrderSummaryPage : ContentPage
         var userId = _authService.GetCurrentUserId();
         _userCards = await _databaseService.GetPaymentCardsAsync(userId);
 
-        // Если у пользователя есть сохраненные карты, добавляем их в PaymentPicker
         if (_userCards != null && _userCards.Count > 0)
         {
             List<string> paymentOptions = new List<string> { "Қолма-қол ақшамен", "Карта" };
 
-            // Добавляем сохраненные карты
             foreach (var card in _userCards)
             {
                 paymentOptions.Add($"Карта {card.MaskedCardNumber}");
@@ -73,8 +71,7 @@ public partial class OrderSummaryPage : ContentPage
         }
         else if (selectedPayment != null && selectedPayment.StartsWith("Карта "))
         {
-            // Пользователь выбрал сохраненную карту
-            string maskedNumber = selectedPayment.Substring(6); // "Карта ".Length = 6
+            string maskedNumber = selectedPayment.Substring(6);
             _selectedCard = _userCards.FirstOrDefault(c => c.MaskedCardNumber == maskedNumber);
             CardSection.IsVisible = false;
         }
@@ -87,11 +84,9 @@ public partial class OrderSummaryPage : ContentPage
 
     private async void OnConfirmOrderClicked(object sender, EventArgs e)
     {
-        // Создаем новый заказ
         string address = null;
         if (AddressSection.IsVisible)
         {
-            // Объединяем данные из двух полей ввода, проверяя, что они не пустые
             if (!string.IsNullOrEmpty(CityEntry.Text) && !string.IsNullOrEmpty(StreetEntry.Text))
             {
                 address = $"{CityEntry.Text}, {StreetEntry.Text}";
@@ -105,7 +100,6 @@ public partial class OrderSummaryPage : ContentPage
 
         string paymentMethod = PaymentPicker.SelectedItem?.ToString() ?? "Наличные";
 
-        // Если выбрана новая карта и поля заполнены, предложим сохранить её
         if (paymentMethod == "Карта" &&
             !string.IsNullOrWhiteSpace(CardNumberEntry.Text) &&
             !string.IsNullOrWhiteSpace(ExpiryEntry.Text))
@@ -120,7 +114,7 @@ public partial class OrderSummaryPage : ContentPage
                     UserId = _authService.GetCurrentUserId(),
                     CardNumber = CardNumberEntry.Text,
                     ExpiryDate = ExpiryEntry.Text,
-                    CardHolderName = "Карта иесі", // По умолчанию
+                    CardHolderName = "Карта иесі",
                     IsDefault = false
                 };
 
@@ -138,7 +132,6 @@ public partial class OrderSummaryPage : ContentPage
             OrderStatus = "Өңдеу"
         };
 
-        // Вычисляем общую стоимость
         int totalPrice = 0;
         foreach (var item in OrderItems)
         {
@@ -147,7 +140,6 @@ public partial class OrderSummaryPage : ContentPage
         }
         order.TotalPrice = $"{totalPrice} ₸";
 
-        // Добавляем элементы заказа
         order.Items = new List<OrderItem>();
         foreach (var item in OrderItems)
         {
@@ -157,12 +149,11 @@ public partial class OrderSummaryPage : ContentPage
                 ProductName = item.Name,
                 ProductPrice = item.Price,
                 Quantity = item.Quantity,
-                ProductImageData = item.ImageData // Добавляем передачу изображения
+                ProductImageData = item.ImageData
             });
         }
 
 
-        // Сохраняем заказ в базу данных
         try
         {
             await _databaseService.CreateOrderAsync(order);
@@ -175,7 +166,6 @@ public partial class OrderSummaryPage : ContentPage
 
         try
         {
-            // Генерируем и показываем PDF-чек
             await GenerateOrderReceiptPdf(order);
         }
         catch (Exception ex)
@@ -198,49 +188,39 @@ public partial class OrderSummaryPage : ContentPage
         var font = new PdfTrueTypeFont(fontStream, 12);
         var boldFont = new PdfTrueTypeFont(fontStream, 14, PdfFontStyle.Bold);
 
-        // Заголовок
         graphics.DrawString("Тапсырыс чегі", titleFont, PdfBrushes.DarkBlue, new PointF(0, y));
         y += 30;
 
-        // Номер заказа
         graphics.DrawString($"Тапсырыс №{order.Id}", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
-        // Дата заказа
         graphics.DrawString($"Күн: {order.OrderDate:dd.MM.yyyy HH:mm}", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
-        // Статус заказа
         graphics.DrawString($"Статус: {order.OrderStatus}", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
-        // Способ доставки
         graphics.DrawString($"Жеткізу әдісі: {order.DeliveryMethod}", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
-        // Способ оплаты
         graphics.DrawString($"Төлем әдісі: {order.PaymentMethod}", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
-        // Адрес доставки (если есть)
         if (!string.IsNullOrEmpty(order.Address))
         {
             graphics.DrawString($"Жеткізу мекенжайы: {order.Address}", font, PdfBrushes.Black, new PointF(0, y));
             y += 20;
         }
 
-        // Заголовок таблицы товаров
         graphics.DrawString("Тауарлар реті бойынша:", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
-        // Заголовки столбцов
         graphics.DrawString("Тауар", font, PdfBrushes.Black, new PointF(0, y));
         graphics.DrawString("Саны", font, PdfBrushes.Black, new PointF(200, y));
         graphics.DrawString("Бағасы", font, PdfBrushes.Black, new PointF(300, y));
         graphics.DrawString("Сомма", font, PdfBrushes.Black, new PointF(400, y));
         y += 20;
 
-        // Строки с товарами
         foreach (var item in order.Items)
         {
             if (int.TryParse(item.ProductPrice.Replace("₸", "").Trim(), out int price))
@@ -255,11 +235,9 @@ public partial class OrderSummaryPage : ContentPage
             }
         }
 
-        // Итоговая стоимость
         y += 10;
         graphics.DrawString($"Барлығы: {order.TotalPrice}", boldFont, PdfBrushes.Black, new PointF(0, y));
 
-        // Сохранение и открытие PDF
         var fileName = $"order_{order.Id}_{order.OrderDate:yyyyMMdd_HHmmss}.pdf";
         var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
         using (var stream = File.Create(filePath))

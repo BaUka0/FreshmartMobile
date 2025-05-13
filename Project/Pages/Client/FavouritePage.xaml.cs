@@ -11,7 +11,6 @@ public partial class FavouritePage : ContentPage
     private readonly DatabaseService _databaseService;
     private readonly AuthService _authService;
 
-    // Используем ObservableCollection для автоматического обновления интерфейса
     public ObservableCollection<Product> FavoriteProducts { get; set; }
 
     public FavouritePage(DatabaseService databaseService, AuthService authService)
@@ -34,7 +33,6 @@ public partial class FavouritePage : ContentPage
     {
         var userId = _authService.CurrentUser.Id;
 
-        // Получаем все товары в корзине текущего пользователя
         var cartItems = await _databaseService.GetCartItemsAsync(userId);
         var cartProductIds = cartItems.Select(ci => ci.ProductId).ToHashSet();
 
@@ -43,14 +41,12 @@ public partial class FavouritePage : ContentPage
         FavoriteProducts.Clear();
         foreach (var product in favoriteProducts)
         {
-            // Проверяем, находится ли продукт в корзине
             product.CartIcon = cartProductIds.Contains(product.Id) ? "basket_green.png" : "basket_grey.png";
 
             FavoriteProducts.Add(product);
         }
     }
 
-    // Новый обработчик нажатия на продукт
     private async void OnProductTapped(object sender, TappedEventArgs e)
     {
         if (sender is Grid grid && grid.BindingContext is Product product)
@@ -78,7 +74,6 @@ public partial class FavouritePage : ContentPage
         {
             var userId = _authService.GetCurrentUserId();
 
-            // Проверяем, находится ли продукт в корзине
             var cartItems = await _databaseService.GetCartItemsAsync(userId);
             var isInCart = cartItems.Any(ci => ci.ProductId == product.Id);
 

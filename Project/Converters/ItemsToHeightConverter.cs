@@ -8,7 +8,6 @@ namespace Project.Converters
         {
             if (value is int count)
             {
-                // Базовая высота на один элемент (настройте по необходимости)
                 const int itemHeight = 60;
                 const int minHeight = 60;
                 const int maxHeight = 200;
@@ -17,7 +16,7 @@ namespace Project.Converters
                 return Math.Clamp(totalHeight, minHeight, maxHeight);
             }
 
-            return 100; // Значение по умолчанию
+            return 100;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

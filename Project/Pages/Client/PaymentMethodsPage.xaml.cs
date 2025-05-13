@@ -61,7 +61,6 @@ namespace Project.Pages.Client
         {
             if (e.CurrentSelection.FirstOrDefault() is PaymentCard selectedCard)
             {
-                // Снимаем выделение
                 ((CollectionView)sender).SelectedItem = null;
 
                 string action = await DisplayActionSheet("Картамен әрекет", "Болдырмау", null,

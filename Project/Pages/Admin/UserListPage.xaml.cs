@@ -68,7 +68,6 @@ public partial class UserListPage : ContentPage
         var swipeItem = (SwipeItem)sender;
         var user = (User)swipeItem.BindingContext;
 
-        // Переход на страницу редактирования пользователя
         await Navigation.PushAsync(new EditUserPage(user, _databaseService));
     }
 
