@@ -1,4 +1,4 @@
-using Project.Services;
+п»їusing Project.Services;
 
 namespace Project.Pages;
 
@@ -18,31 +18,31 @@ public partial class ChangePasswordPage : ContentPage
         string newPassword = NewPasswordEntry.Text;
         string confirmPassword = ConfirmPasswordEntry.Text;
 
-        // Проверяем заполнение полей
+        // РџСЂРѕРІРµСЂСЏРµРј Р·Р°РїРѕР»РЅРµРЅРёРµ РїРѕР»РµР№
         if (string.IsNullOrEmpty(currentPassword) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
         {
-            await DisplayAlert("Ошибка", "Все поля должны быть заполнены", "ОК");
+            await DisplayAlert("ТљР°С‚Рµ", "Р‘Р°СЂР»С‹Т› У©СЂС–СЃС‚РµСЂ С‚РѕР»С‚С‹СЂС‹Р»СѓС‹ РєРµСЂРµРє", "РћРљ");
             return;
         }
 
-        // Проверяем совпадение паролей
+        // РџСЂРѕРІРµСЂСЏРµРј СЃРѕРІРїР°РґРµРЅРёРµ РїР°СЂРѕР»РµР№
         if (newPassword != confirmPassword)
         {
-            await DisplayAlert("Ошибка", "Новый пароль и подтверждение не совпадают", "ОК");
+            await DisplayAlert("ТљР°С‚Рµ", "Р–Р°ТЈР° Т›Т±РїРёСЏ СЃУ©Р· РјРµРЅ СЂР°СЃС‚Р°Сѓ СЃУ™Р№РєРµСЃ РєРµР»РјРµР№РґС–", "РћРљ");
             return;
         }
 
-        // Пытаемся изменить пароль
+        // РџС‹С‚Р°РµРјСЃСЏ РёР·РјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ
         bool result = await _authService.ChangePasswordAsync(currentPassword, newPassword);
 
         if (result)
         {
-            await DisplayAlert("Успех", "Пароль успешно изменен", "ОК");
+            await DisplayAlert("РЎУ™С‚С‚С–", "ТљТ±РїРёСЏ СЃУ©Р· СЃУ™С‚С‚С– У©Р·РіРµСЂС‚С–Р»РґС–", "РћРљ");
             await Navigation.PopAsync();
         }
         else
         {
-            await DisplayAlert("Ошибка", "Неверный текущий пароль", "ОК");
+            await DisplayAlert("ТљР°С‚Рµ", "РђТ“С‹РјРґР°Т“С‹ Т›Т±РїРёСЏ СЃУ©Р· РґТ±СЂС‹СЃ РµРјРµСЃ", "РћРљ");
         }
     }
 

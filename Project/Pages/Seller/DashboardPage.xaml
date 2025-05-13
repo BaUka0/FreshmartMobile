@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.Seller.DashboardPage"
-             Title="Товары продавца">
+             Title="Сатушы тауарлары">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -14,7 +14,7 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <Button Text="Добавить продукт"
+            <Button Text="Тауар қосу"
                 BackgroundColor="Green"
                 TextColor="White"
                 Clicked="OnAddProductClicked" />
@@ -33,19 +33,19 @@
                                     <Label Text="{Binding Price}" FontSize="16" TextColor="Green" />
 
                                     <HorizontalStackLayout Spacing="5" Margin="0,5,0,0">
-                                        <Button Text="Посмотреть"
+                                        <Button Text="Көру"
                                             Clicked="OnViewProductClicked"
                                             BackgroundColor="Green"
                                             TextColor="White"
                                             FontSize="12" />
 
-                                        <Button Text="Изменить"
+                                        <Button Text="Өзгерту"
                                             Clicked="OnEditProductClicked"
                                             BackgroundColor="DarkOrange"
                                             TextColor="White"
                                             FontSize="12" />
 
-                                        <Button Text="Удалить"
+                                        <Button Text="Жою"
                                             Clicked="OnDeleteProductClicked"
                                             BackgroundColor="Red"
                                             TextColor="White"

@@ -125,13 +125,13 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
             {
                 await _databaseService.RemoveFavoriteProductAsync(userId, product.Id);
                 product.FavoriteIcon = "favourite_grey.png";
-                await DisplayAlert("Избранное", "Товар удален из избранного", "Ок");
+                await DisplayAlert("Таңдаулы", "Тауар таңдаулылардан жойылды", "Ок");
             }
             else
             {
                 await _databaseService.AddFavoriteProductAsync(userId, product.Id);
                 product.FavoriteIcon = "favourite_green.png";
-                await DisplayAlert("Избранное", "Товар добавлен в избранное", "Ок");
+                await DisplayAlert("Таңдаулы", "Тауар таңдаулыларыңызға қосылды", "Ок");
             }
 
             RefreshProducts();
@@ -148,13 +148,13 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
 
             if (isInCart)
             {
-                await DisplayAlert("Корзина", "Товар уже в корзине", "Ок");
+                await DisplayAlert("Себет", "Тауар қазірдің өзінде себетке салынған", "Ок");
             }
             else
             {
                 await _databaseService.AddToCartAsync(userId, product.Id, 1);
                 product.CartIcon = "basket_green.png";
-                await DisplayAlert("Корзина", "Товар добавлен!", "Ок");
+                await DisplayAlert("Себет", "Тауар қосылды!", "Ок");
             }
 
             RefreshProducts();
@@ -223,7 +223,7 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка при поиске: {ex.Message}");
+            Console.WriteLine($"Іздеу кезіндегі қате: {ex.Message}");
         }
     }
 
@@ -261,14 +261,14 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
             else
             {
                 // В случае отсутствия сервисов показываем сообщение
-                await DisplayAlert("Ошибка", "Не удается выполнить поиск. Попробуйте позже.", "ОК");
+                await DisplayAlert("Қате", "Іздеуіңізді аяқтау мүмкін емес. Тағы жасауды сәл кейінірек көріңізді өтінеміз.", "ОК");
             }
         }
         catch (Exception ex)
         {
             // Обрабатываем возможные исключения
-            Console.WriteLine($"Ошибка при переходе на страницу поиска: {ex.Message}");
-            await DisplayAlert("Ошибка", "Произошла ошибка при открытии поиска.", "ОК");
+            Console.WriteLine($"Іздеу бетіне өту кезінде қате: {ex.Message}");
+            await DisplayAlert("Қате", "Іздеу кезінде қате орын алды.", "ОК");
         }
         finally
         {
@@ -312,14 +312,14 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
                 else
                 {
                     // Показываем сообщение об ошибке
-                    await DisplayAlert("Ошибка", "Не удается открыть поиск. Попробуйте позже.", "ОК");
+                    await DisplayAlert("Қате", "Іздеуді ашу мүмкін емес. Әрекетті кейінірек қайталаңыз.", "ОК");
                 }
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка при выборе подсказки: {ex.Message}");
-            await DisplayAlert("Ошибка", "Произошла ошибка при выборе элемента.", "ОК");
+            Console.WriteLine($"Анықтаманы таңдау кезіндегі қате: {ex.Message}");
+            await DisplayAlert("Қате", "Элементті таңдау кезінде қате орын алды.", "ОК");
         }
         finally
         {

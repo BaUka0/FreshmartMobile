@@ -59,7 +59,7 @@ public partial class DashboardPage : ContentPage
         var product = (sender as Button)?.BindingContext as Product;
         if (product != null)
         {
-            bool confirm = await DisplayAlert("Удалить", $"Удалить {product.Name}?", "Да", "Нет");
+            bool confirm = await DisplayAlert("Жою", $"{product.Name} жою керек па?", "Иә", "Жоқ");
             if (confirm)
             {
                 // Удаляем из БД

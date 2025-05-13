@@ -2,21 +2,21 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.Seller.EditProductPage"
-             Title="Изменить продукт">
+             Title="Тауар өзгерту">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <Entry x:Name="NameEntry" Placeholder="Название товара" />
-            <Editor x:Name="DescriptionEditor" Placeholder="Описание товара" AutoSize="TextChanges" />
+            <Entry x:Name="NameEntry" Placeholder="Тауар атауы" />
+            <Editor x:Name="DescriptionEditor" Placeholder="Тауар сипаттамасы" AutoSize="TextChanges" />
 
-            <Entry x:Name="PriceEntry" Placeholder="Цена (₸)" Keyboard="Numeric" />
+            <Entry x:Name="PriceEntry" Placeholder="Бағасы (₸)" Keyboard="Numeric" />
 
-            <Picker x:Name="CategoryPicker" Title="Выберите категорию" ItemDisplayBinding="{Binding Name}" />
+            <Picker x:Name="CategoryPicker" Title="Каталог таңдаңыз" ItemDisplayBinding="{Binding Name}" />
 
             <Image x:Name="ProductImage" HeightRequest="150" Aspect="AspectFit" />
-            <Button Text="Изменить изображение" Clicked="OnUploadImageClicked" BackgroundColor="Green"/>
+            <Button Text="Суретті өзгерту" Clicked="OnUploadImageClicked" BackgroundColor="Green"/>
 
-            <Button Text="Сохранить изменения"
+            <Button Text="Өзгерістерді сақтау"
                 BackgroundColor="Green"
                 TextColor="White"
                 Clicked="OnSaveClicked" />

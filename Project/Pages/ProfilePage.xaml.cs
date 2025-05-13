@@ -1,4 +1,4 @@
-using Project.Models;
+п»їusing Project.Models;
 using Project.Services;
 using Project.Pages.Client;
 
@@ -24,12 +24,12 @@ public partial class ProfilePage : ContentPage
 
         Options = new List<ProfileOption>
         {
-            new ProfileOption { Name = "История покупок", Icon = "history.png" },
-            new ProfileOption { Name = "Мои отзывы", Icon = "review.png" },
-            new ProfileOption { Name = "Способ оплаты", Icon = "payment.png" },
-            new ProfileOption { Name = "Изменить профиль", Icon = "change_profile.png" },
-            new ProfileOption { Name = "Изменить пароль", Icon = "password.png" },
-            new ProfileOption { Name = "Выход", Icon = "exit.png" },
+            new ProfileOption { Name = "РЎР°С‚С‹Рї Р°Р»Сѓ С‚Р°СЂРёС…С‹", Icon = "history.png" },
+            new ProfileOption { Name = "РњРµРЅС–ТЈ РїС–РєС–СЂР»РµСЂС–Рј", Icon = "review.png" },
+            new ProfileOption { Name = "РўУ©Р»РµРј У™РґС–СЃС–", Icon = "payment.png" },
+            new ProfileOption { Name = "РџСЂРѕС„РёР»СЊРґС– У©ТЈРґРµСѓ", Icon = "change_profile.png" },
+            new ProfileOption { Name = "ТљТ±РїРёСЏ СЃУ©Р·РґС– У©Р·РіРµСЂС‚Сѓ", Icon = "password.png" },
+            new ProfileOption { Name = "РЁС‹Т“Сѓ", Icon = "exit.png" },
         };
 
         BindingContext = this;
@@ -52,7 +52,7 @@ public partial class ProfilePage : ContentPage
         {
             var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
             {
-                Title = "Выберите фото профиля"
+                Title = "РџСЂРѕС„РёР»СЊ С„РѕС‚РѕСЃСѓСЂРµС‚С–РЅ С‚Р°ТЈРґР°ТЈС‹Р·"
             });
 
             if (result != null)
@@ -62,9 +62,9 @@ public partial class ProfilePage : ContentPage
                 await stream.CopyToAsync(memoryStream);
                 var imageData = memoryStream.ToArray();
 
-                if (imageData.Length > 1000000) // Если больше ~1MB
+                if (imageData.Length > 1000000) // Р•СЃР»Рё Р±РѕР»СЊС€Рµ ~1MB
                 {
-                    await DisplayAlert("Предупреждение", "Изображение слишком большое, выберите другое", "OK");
+                    await DisplayAlert("Р•СЃРєРµСЂС‚Сѓ", "РЎСѓСЂРµС‚ С‚С‹Рј ТЇР»РєРµРЅ, Р±Р°СЃТ›Р°СЃС‹РЅ С‚Р°ТЈРґР°ТЈС‹Р·", "OK");
                     return;
                 }
 
@@ -76,7 +76,7 @@ public partial class ProfilePage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Ошибка", $"Не удалось загрузить изображение: {ex.Message}", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", $"РЎСѓСЂРµС‚ Р¶ТЇРєС‚РµР»РјРµРґС–: {ex.Message}", "OK");
         }
     }
 
@@ -108,7 +108,7 @@ public partial class ProfilePage : ContentPage
 
     private async void OnLogoutTapped()
     {
-        bool confirm = await DisplayAlert("Выход", "Вы уверены, что хотите выйти из аккаунта?", "Да", "Нет");
+        bool confirm = await DisplayAlert("РЁС‹Т“Сѓ", "Р–ТЇР№РµРґРµРЅ С€С‹Т›Т›С‹ТЈС‹Р· РєРµР»РµС‚С–РЅС–РЅРµ СЃРµРЅС–РјРґС–СЃС–Р· Р±Рµ?", "РУ™", "Р–РѕТ›");
         if (confirm)
         {
             _authService.Logout();
@@ -116,7 +116,7 @@ public partial class ProfilePage : ContentPage
             {
                 appShell.OnUserLoggedOut();
             }
-            await DisplayAlert("Выход", "Вы успешно вышли из аккаунта", "ОК");
+            await DisplayAlert("РЁС‹Т“Сѓ", "Р–ТЇР№РµРґРµРЅ СЃУ™С‚С‚С– С€С‹Т›С‚С‹ТЈС‹Р·.", "РћРљ");
         }
     }
 
@@ -126,26 +126,26 @@ public partial class ProfilePage : ContentPage
         {
             switch (option.Name)
             {
-                case "История покупок":
+                case "РЎР°С‚С‹Рї Р°Р»Сѓ С‚Р°СЂРёС…С‹":
                     OnPurchaseHistoryTapped();
                     break;
-                case "Мои отзывы":
+                case "РњРµРЅС–ТЈ РїС–РєС–СЂР»РµСЂС–Рј":
                     OnMyReviewsTapped();
                     break;
-                case "Способ оплаты":
+                case "РўУ©Р»РµРј У™РґС–СЃС–":
                     OnPaymentMethodTapped();
                     break;
-                case "Изменить профиль":
+                case "РџСЂРѕС„РёР»СЊРґС– У©ТЈРґРµСѓ":
                     OnEditProfileTapped();
                     break;
-                case "Изменить пароль":
+                case "ТљТ±РїРёСЏ СЃУ©Р·РґС– У©Р·РіРµСЂС‚Сѓ":
                     OnChangePasswordTapped();
                     break;
-                case "Выход":
+                case "РЁС‹Т“Сѓ":
                     OnLogoutTapped();
                     break;
                 default:
-                    await DisplayAlert("Ошибка", "Неизвестная опция", "ОК");
+                    await DisplayAlert("ТљР°С‚Рµ", "Р‘РµР»РіС–СЃС–Р· РѕРїС†РёСЏ", "РћРљ");
                     break;
             }
         }

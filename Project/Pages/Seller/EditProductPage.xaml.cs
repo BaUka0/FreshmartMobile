@@ -23,22 +23,22 @@ public partial class EditProductPage : ContentPage
     private void LoadCategories()
     {
         Categories = new List<Category>
-        {
-            new Category { Name = "Напитки", Icon = "drink_icon.png" },
-            new Category { Name = "Фрукты", Icon = "fruit_icon.png" },
-            new Category { Name = "Овощи", Icon = "vegetables_icon.png" },
-            new Category { Name = "Мясо", Icon = "meat_icon.png" },
-            new Category { Name = "Гастрономия", Icon = "gastronomy.png" },
-            new Category { Name = "Молочные продукты", Icon = "dairy_icon.png" },
-            new Category { Name = "Бакалея", Icon = "grocery.png" },
-            new Category { Name = "Хлеб и выпечка", Icon = "bread_icon.png" },
-            new Category { Name = "Чай, кофе, какао", Icon = "tea.png" },
-            new Category { Name = "Конфеты и сладости", Icon = "candies_icon.png" },
-            new Category { Name = "Собственное производство", Icon = "cake.png" },
-            new Category { Name = "Консервы", Icon = "canned.png" },
-            new Category { Name = "Замороженные продукты", Icon = "frozen_icon.png" },
-            new Category { Name = "Другие товары", Icon = "others.png" },
-        };
+            {
+                new Category { Name = "Сусындар", Icon = "drink_icon.png" },
+                new Category { Name = "Жемістер", Icon = "fruit_icon.png" },
+                new Category { Name = "Көкөністер", Icon = "vegetables_icon.png" },
+                new Category { Name = "Ет өнімдері", Icon = "meat_icon.png" },
+                new Category { Name = "Аспаздық өнімдер", Icon = "gastronomy.png" },
+                new Category { Name = "Сүт өнімдері", Icon = "dairy_icon.png" },
+                new Category { Name = "Бакалея", Icon = "grocery.png" },
+                new Category { Name = "Нан және тоқаштар", Icon = "bread_icon.png" },
+                new Category { Name = "Шай, кофе, какао", Icon = "tea.png" },
+                new Category { Name = "Кәмпиттер мен тәттілер", Icon = "candies_icon.png" },
+                new Category { Name = "Өз өндірісіміз", Icon = "cake.png" },
+                new Category { Name = "Консервілер", Icon = "canned.png" },
+                new Category { Name = "Мұздатылған өнімдер", Icon = "frozen_icon.png" },
+                new Category { Name = "Басқа тауарлар", Icon = "others.png" },
+            };
 
         CategoryPicker.ItemsSource = Categories;
     }
@@ -74,7 +74,7 @@ public partial class EditProductPage : ContentPage
     {
         var result = await FilePicker.Default.PickAsync(new PickOptions
         {
-            PickerTitle = "Выберите изображение",
+            PickerTitle = "Суретті таңдаңыз",
             FileTypes = FilePickerFileType.Images
         });
 
@@ -92,7 +92,7 @@ public partial class EditProductPage : ContentPage
             string.IsNullOrWhiteSpace(PriceEntry.Text) ||
             CategoryPicker.SelectedItem is not Category selectedCategory)
         {
-            await DisplayAlert("Ошибка", "Заполните все поля", "OK");
+            await DisplayAlert("Қате", "Барлық өрістерді толтырыңыз", "OK");
             return;
         }
 
@@ -111,7 +111,7 @@ public partial class EditProductPage : ContentPage
         // Вызываем метод для обновления товара в базе
         await _databaseService.UpdateProductAsync(_product);
 
-        await DisplayAlert("Успешно", "Товар обновлен", "OK");
+        await DisplayAlert("Сәтті", "Тауар жаңартылды", "OK");
         await Navigation.PopAsync();
     }
 }

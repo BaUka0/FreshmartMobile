@@ -79,7 +79,7 @@ public partial class ProductListPage : ContentPage
             {
                 await _databaseService.RemoveFavoriteProductAsync(userId, product.Id);
                 button.Source = "favourite_grey.png";
-                await DisplayAlert("Таңдаулылар", "Тауар таңдаулылардан жойылдыо", "Ок");
+                await DisplayAlert("Таңдаулылар", "Тауар таңдаулылардан жойылды", "Ок");
             }
             else
             {

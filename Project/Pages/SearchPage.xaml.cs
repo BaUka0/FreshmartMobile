@@ -38,23 +38,24 @@ namespace Project.Pages
         private void InitializeCategories()
         {
             _categories = new List<Category>
-            {
-                new Category { Name = "Все", Icon = "all_icon.png" },
-                new Category { Name = "Напитки", Icon = "drink_icon.png" },
-                new Category { Name = "Фрукты", Icon = "fruit_icon.png" },
-                new Category { Name = "Овощи", Icon = "vegetables_icon.png" },
-                new Category { Name = "Мясо", Icon = "meat_icon.png" },
-                new Category { Name = "Гастрономия", Icon = "gastronomy.png" },
-                new Category { Name = "Молочные продукты", Icon = "dairy_icon.png" },
-                new Category { Name = "Бакалея", Icon = "grocery.png" },
-                new Category { Name = "Хлеб и выпечка", Icon = "bread_icon.png" },
-                new Category { Name = "Чай, кофе, какао", Icon = "tea.png" },
-                new Category { Name = "Конфеты и сладости", Icon = "candies_icon.png" },
-                new Category { Name = "Собственное производство", Icon = "cake.png" },
-                new Category { Name = "Консервы", Icon = "canned.png" },
-                new Category { Name = "Замороженные продукты", Icon = "frozen_icon.png" },
-                new Category { Name = "Другие товары", Icon = "others.png" },
-            };
+                {
+                    new Category { Name = "Барлығы", Icon = "all_icon.png" },
+                    new Category { Name = "Сусындар", Icon = "drink_icon.png" },
+                    new Category { Name = "Жемістер", Icon = "fruit_icon.png" },
+                    new Category { Name = "Көкөністер", Icon = "vegetables_icon.png" },
+                    new Category { Name = "Ет өнімдері", Icon = "meat_icon.png" },
+                    new Category { Name = "Аспаздық өнімдер", Icon = "gastronomy.png" },
+                    new Category { Name = "Сүт өнімдері", Icon = "dairy_icon.png" },
+                    new Category { Name = "Бакалея", Icon = "grocery.png" },
+                    new Category { Name = "Нан және тоқаштар", Icon = "bread_icon.png" },
+                    new Category { Name = "Шай, кофе, какао", Icon = "tea.png" },
+                    new Category { Name = "Кәмпиттер мен тәттілер", Icon = "candies_icon.png" },
+                    new Category { Name = "Өз өндірісіміз", Icon = "cake.png" },
+                    new Category { Name = "Консервілер", Icon = "canned.png" },
+                    new Category { Name = "Мұздатылған өнімдер", Icon = "frozen_icon.png" },
+                    new Category { Name = "Басқа тауарлар", Icon = "others.png" },
+                };
+
 
             // Создаем кнопки для категорий
             foreach (var category in _categories)
@@ -64,7 +65,7 @@ namespace Project.Pages
                     Padding = new Thickness(12, 8),
                     CornerRadius = 20,
                     BorderColor = Colors.LightGray,
-                    BackgroundColor = category.Name == "Все" ? Color.FromArgb("#E8F5E9") : Colors.White,
+                    BackgroundColor = category.Name == "<Барлығы>" ? Color.FromArgb("#E8F5E9") : Colors.White,
                     HasShadow = false
                 };
 
@@ -74,7 +75,7 @@ namespace Project.Pages
                     FontSize = 14,
                     BackgroundColor = Colors.Transparent,
                     BorderWidth = 0,
-                    TextColor = category.Name == "Все" ? Color.FromArgb("#388E3C") : Colors.Black,
+                    TextColor = category.Name == "Барлығы" ? Color.FromArgb("#388E3C") : Colors.Black,
                     Padding = new Thickness(0),
                     Margin = new Thickness(0)
                 };
@@ -100,11 +101,11 @@ namespace Project.Pages
 
         private void OnCategorySelected(string categoryName)
         {
-            if (categoryName == "Все")
+            if (categoryName == "Барлығы")
             {
                 // Если выбрали "Все", сбрасываем все остальные выбранные категории
                 _selectedCategories.Clear();
-                _selectedCategories.Add("Все");
+                _selectedCategories.Add("Барлығы");
 
                 // Обновляем визуальное состояние кнопок
                 foreach (var child in categoriesContainer.Children)
@@ -112,11 +113,11 @@ namespace Project.Pages
                     if (child is Frame frame)
                     {
                         var category = frame.BindingContext as Category;
-                        frame.BackgroundColor = category.Name == "Все" ? Color.FromArgb("#E8F5E9") : Colors.White;
+                        frame.BackgroundColor = category.Name == "Барлығы" ? Color.FromArgb("#E8F5E9") : Colors.White;
 
                         if (frame.Content is Button button)
                         {
-                            button.TextColor = category.Name == "Все" ? Color.FromArgb("#388E3C") : Colors.Black;
+                            button.TextColor = category.Name == "Барлығы" ? Color.FromArgb("#388E3C") : Colors.Black;
                         }
                     }
                 }
@@ -126,14 +127,14 @@ namespace Project.Pages
                 // Если выбрали конкретную категорию
 
                 // Удаляем "Все" из выбранных категорий, если она там есть
-                if (_selectedCategories.Contains("Все"))
+                if (_selectedCategories.Contains("Барлығы"))
                 {
-                    _selectedCategories.Remove("Все");
+                    _selectedCategories.Remove("Барлығы");
 
                     // Сбрасываем визуальное состояние кнопки "Все"
                     foreach (var child in categoriesContainer.Children)
                     {
-                        if (child is Frame frame && frame.BindingContext is Category category && category.Name == "Все")
+                        if (child is Frame frame && frame.BindingContext is Category category && category.Name == "Барлығы")
                         {
                             frame.BackgroundColor = Colors.White;
                             if (frame.Content is Button button)
@@ -158,12 +159,12 @@ namespace Project.Pages
                 // Если не осталось выбранных категорий, выбираем "Все"
                 if (_selectedCategories.Count == 0)
                 {
-                    _selectedCategories.Add("Все");
+                    _selectedCategories.Add("Барлығы");
 
                     // Обновляем визуальное состояние кнопки "Все"
                     foreach (var child in categoriesContainer.Children)
                     {
-                        if (child is Frame frame && frame.BindingContext is Category category && category.Name == "Все")
+                        if (child is Frame frame && frame.BindingContext is Category category && category.Name == "Барлығы")
                         {
                             frame.BackgroundColor = Color.FromArgb("#E8F5E9");
                             if (frame.Content is Button button)
@@ -178,7 +179,7 @@ namespace Project.Pages
                 // Обновляем визуальное состояние выбранных/не выбранных категорий
                 foreach (var child in categoriesContainer.Children)
                 {
-                    if (child is Frame frame && frame.BindingContext is Category category && category.Name != "Все")
+                    if (child is Frame frame && frame.BindingContext is Category category && category.Name != "Барлығы")
                     {
                         bool isSelected = _selectedCategories.Contains(category.Name);
                         frame.BackgroundColor = isSelected ? Color.FromArgb("#E8F5E9") : Colors.White;
@@ -210,12 +211,48 @@ namespace Project.Pages
                 // Если сервис не предоставлен, используем демо-данные
                 _allProducts = new List<Product>
                 {
-                    new Product { Name = "Молоко", Description = "Свежее молоко 2.5%", Price = "450 ₸", Category = "Молочные продукты", ImageData = new byte[] { } },
-                    new Product { Name = "Хлеб", Description = "Белый хлеб", Price = "180 ₸", Category = "Хлеб и выпечка", ImageData = new byte[] { } },
-                    new Product { Name = "Яблоки", Description = "Свежие яблоки", Price = "550 ₸", Category = "Фрукты", ImageData = new byte[] { } },
-                    new Product { Name = "Кока-кола", Description = "Газированный напиток 1.5л", Price = "650 ₸", Category = "Напитки", ImageData = new byte[] { } },
-                    new Product { Name = "Сыр", Description = "Сыр Российский 45%", Price = "1800 ₸", Category = "Молочные продукты", ImageData = new byte[] { } },
+                    new Product
+                    {
+                        Name = "Сүт",
+                        Description = "Жаңа сүт 2.5%",
+                        Price = "450 ₸",
+                        Category = "Сүт өнімдері",
+                        ImageData = new byte[] { }
+                    },
+                    new Product
+                    {
+                        Name = "Нан",
+                        Description = "Ақ нан",
+                        Price = "180 ₸",
+                        Category = "Нан және тоқаштар",
+                        ImageData = new byte[] { }
+                    },
+                    new Product
+                    {
+                        Name = "Алма",
+                        Description = "Жаңа алма",
+                        Price = "550 ₸",
+                        Category = "Жемістер",
+                        ImageData = new byte[] { }
+                    },
+                    new Product
+                    {
+                        Name = "Кока-кола",
+                        Description = "Газдалған сусын 1.5л",
+                        Price = "650 ₸",
+                        Category = "Сусындар",
+                        ImageData = new byte[] { }
+                    },
+                    new Product
+                    {
+                        Name = "Сыр",
+                        Description = "Ресейлік сыр 45%",
+                        Price = "1800 ₸",
+                        Category = "Сүт өнімдері",
+                        ImageData = new byte[] { }
+                    },
                 };
+
 
                 // Применяем фильтры к демо-данным
                 ApplyFilters();
@@ -235,7 +272,7 @@ namespace Project.Pages
             {
                 // Если продукты не загружены, обновляем интерфейс с пустыми результатами
                 SearchResults.Clear();
-                resultsCountLabel.Text = "Найдено товаров: 0";
+                resultsCountLabel.Text = "Табылған тауарлар: 0";
                 return;
             }
 
@@ -252,7 +289,7 @@ namespace Project.Pages
             }
 
             // Фильтрация по категориям
-            if (!_selectedCategories.Contains("Все"))
+            if (!_selectedCategories.Contains("Барлығы"))
             {
                 filteredProducts = filteredProducts
                     .Where(p => p.Category != null && _selectedCategories.Contains(p.Category))
@@ -301,14 +338,14 @@ namespace Project.Pages
 
                         MainThread.BeginInvokeOnMainThread(() => {
                             // Обновляем счетчик результатов
-                            resultsCountLabel.Text = $"Найдено товаров: {SearchResults.Count}";
+                            resultsCountLabel.Text = $"Табылған тауарлар: {SearchResults.Count}";
                         });
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Ошибка при применении фильтров: {ex.Message}");
+                        Console.WriteLine($"Фильтр қолдану қатесі: {ex.Message}");
                         MainThread.BeginInvokeOnMainThread(() => {
-                            resultsCountLabel.Text = "Произошла ошибка при поиске";
+                            resultsCountLabel.Text = "Іздеу кезінде қате орын алды";
                         });
                     }
                 });
@@ -322,7 +359,7 @@ namespace Project.Pages
                 }
 
                 // Обновляем счетчик результатов
-                resultsCountLabel.Text = $"Найдено товаров: {SearchResults.Count}";
+                resultsCountLabel.Text = $"Табылған тауарлар: {SearchResults.Count}";
             }
         }
 
@@ -348,13 +385,13 @@ namespace Project.Pages
                 {
                     await _databaseService.RemoveFavoriteProductAsync(userId, product.Id);
                     product.FavoriteIcon = "favourite_grey.png";
-                    await DisplayAlert("Избранное", "Товар удален из избранного", "Ок");
+                    await DisplayAlert("Таңдаулылар", "Тауар таңдаулылардан жойылды", "Ок");
                 }
                 else
                 {
                     await _databaseService.AddFavoriteProductAsync(userId, product.Id);
                     product.FavoriteIcon = "favourite_green.png";
-                    await DisplayAlert("Избранное", "Товар добавлен в избранное", "Ок");
+                    await DisplayAlert("Таңдаулылар", "Тауар таңдаулыларыңызға қосылды", "Ок");
                 }
 
                 // Обновляем UI
@@ -378,13 +415,13 @@ namespace Project.Pages
 
                 if (isInCart)
                 {
-                    await DisplayAlert("Корзина", "Товар уже в корзине", "Ок");
+                    await DisplayAlert("Себет", "Тауар қазірдің өзінде себетке салынған!", "Ок");
                 }
                 else
                 {
                     await _databaseService.AddToCartAsync(userId, product.Id, 1);
                     product.CartIcon = "basket_green.png";
-                    await DisplayAlert("Корзина", "Товар добавлен!", "Ок");
+                    await DisplayAlert("Себет", "Тауар себетке қосылды!", "Ок");
                 }
 
                 // Обновляем UI

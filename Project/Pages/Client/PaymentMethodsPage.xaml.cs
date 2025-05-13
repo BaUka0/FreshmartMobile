@@ -1,4 +1,4 @@
-using Project.Models;
+п»їusing Project.Models;
 using Project.Services;
 using System.Collections.ObjectModel;
 
@@ -61,31 +61,31 @@ namespace Project.Pages.Client
         {
             if (e.CurrentSelection.FirstOrDefault() is PaymentCard selectedCard)
             {
-                // Снимаем выделение
+                // РЎРЅРёРјР°РµРј РІС‹РґРµР»РµРЅРёРµ
                 ((CollectionView)sender).SelectedItem = null;
 
-                string action = await DisplayActionSheet("Действия с картой", "Отмена", null,
-                    "Сделать основной", "Редактировать", "Удалить");
+                string action = await DisplayActionSheet("РљР°СЂС‚Р°РјРµРЅ У™СЂРµРєРµС‚", "Р‘РѕР»РґС‹СЂРјР°Сѓ", null,
+                    "РќРµРіС–Р·РіС– РµС‚С–Рї Р¶Р°СЃР°Сѓ", "УЁТЈРґРµСѓ", "Р–РѕСЋ");
 
                 switch (action)
                 {
-                    case "Сделать основной":
+                    case "РќРµРіС–Р·РіС– РµС‚С–Рї Р¶Р°СЃР°Сѓ":
                         selectedCard.IsDefault = true;
                         await _databaseService.UpdatePaymentCardAsync(selectedCard);
                         await LoadPaymentCards();
-                        await DisplayAlert("Успех", "Карта установлена как основная", "OK");
+                        await DisplayAlert("РЎУ™С‚С‚С–", "РљР°СЂС‚Р° РЅРµРіС–Р·РіС– Р±РѕР»С‹Рї Р±РµР»РіС–Р»РµРЅРґС–", "OK");
                         break;
-                    case "Редактировать":
+                    case "УЁТЈРґРµСѓ":
                         await Navigation.PushAsync(new AddEditCardPage(_databaseService, _authService, selectedCard));
                         break;
-                    case "Удалить":
-                        bool confirm = await DisplayAlert("Подтверждение",
-                            "Вы уверены, что хотите удалить эту карту?", "Да", "Нет");
+                    case "Р–РѕСЋ":
+                        bool confirm = await DisplayAlert("Р Р°СЃС‚Р°Сѓ",
+                            "Р‘Т±Р» РєР°СЂС‚Р°РЅС‹ С€С‹РЅС‹РјРµРЅ Р¶РѕР№Т“С‹ТЈС‹Р· РєРµР»Рµ РјРµ?", "РУ™", "Р–РѕТ›");
                         if (confirm)
                         {
                             await _databaseService.DeletePaymentCardAsync(selectedCard.Id);
                             await LoadPaymentCards();
-                            await DisplayAlert("Успех", "Карта успешно удалена", "OK");
+                            await DisplayAlert("РЎУ™С‚С‚С–", "РљР°СЂС‚Р° СЃУ™С‚С‚С– Р¶РѕР№С‹Р»РґС‹.", "OK");
                         }
                         break;
                 }

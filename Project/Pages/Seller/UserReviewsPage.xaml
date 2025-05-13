@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.Client.UserReviewsPage"
-             Title="Мои отзывы">
+             Title="Менің пікірлерім">
 
     <ContentPage.Resources>
         <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
@@ -11,12 +11,12 @@
 
     <Grid RowDefinitions="Auto,*">
         <StackLayout Padding="10" Grid.Row="0">
-            <Label Text="Мои отзывы" FontSize="24" FontAttributes="Bold" Margin="0,0,0,10"/>
-            <Label Text="Здесь отображаются все оставленные вами отзывы о товарах" FontSize="14" TextColor="Gray" />
+            <Label Text="Менің пікірлерім" FontSize="24" FontAttributes="Bold" Margin="0,0,0,10"/>
+            <Label Text="Сіз қалдырған барлық тауар пікірлері осы жерде көрсетіледі." FontSize="14" TextColor="Gray" />
         </StackLayout>
 
         <CollectionView Grid.Row="1" ItemsSource="{Binding UserReviews}" 
-                        EmptyView="У вас пока нет отзывов о товарах">
+                        EmptyView="Сізде әлі тауар туралы пікірлер жоқ.">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Margin="10,5" Padding="10" CornerRadius="10" BorderColor="LightGray">

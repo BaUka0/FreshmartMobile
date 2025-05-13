@@ -1,4 +1,4 @@
-using Project.Services;
+ï»¿using Project.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Project.Pages;
@@ -18,7 +18,7 @@ public partial class SplashPage : ContentPage
 
     private async void StartLoadingAnimation()
     {
-        string baseText = "Çàãðóçêà";
+        string baseText = "Ð–Ò¯ÐºÑ‚ÐµÐ»ÑƒÐ´Ðµ";
         int dotCount = 0;
 
         while (_isAnimating)

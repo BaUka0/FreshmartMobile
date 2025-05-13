@@ -31,7 +31,7 @@ public partial class OrderSummaryPage : ContentPage
                 total += price * item.Quantity;
         }
 
-        TotalLabel.Text = $"Общая стоимость: {total} ₸";
+        TotalLabel.Text = $"Жалпы құны: {total} ₸";
 
         DeliveryPicker.SelectedIndexChanged += OnDeliveryChanged;
         PaymentPicker.SelectedIndexChanged += OnPaymentChanged;
@@ -46,7 +46,7 @@ public partial class OrderSummaryPage : ContentPage
         // Если у пользователя есть сохраненные карты, добавляем их в PaymentPicker
         if (_userCards != null && _userCards.Count > 0)
         {
-            List<string> paymentOptions = new List<string> { "Наличными", "Карта" };
+            List<string> paymentOptions = new List<string> { "Қолма-қол ақшамен", "Карта" };
 
             // Добавляем сохраненные карты
             foreach (var card in _userCards)
@@ -98,7 +98,7 @@ public partial class OrderSummaryPage : ContentPage
             }
             else
             {
-                await DisplayAlert("Ошибка", "Пожалуйста, заполните адрес доставки", "OK");
+                await DisplayAlert("Қате", "Жеткізу мекенжайын толтырыңыз", "OK");
                 return;
             }
         }
@@ -110,8 +110,8 @@ public partial class OrderSummaryPage : ContentPage
             !string.IsNullOrWhiteSpace(CardNumberEntry.Text) &&
             !string.IsNullOrWhiteSpace(ExpiryEntry.Text))
         {
-            bool saveCard = await DisplayAlert("Сохранить карту?",
-                "Хотите сохранить эту карту для будущих покупок?", "Да", "Нет");
+            bool saveCard = await DisplayAlert("Картаны сақтау керек пе?",
+                "Бұл картаны болашақ сатып алулар үшін сақтағыңыз келе ме?", "Иә", "Жоқ");
 
             if (saveCard)
             {
@@ -120,7 +120,7 @@ public partial class OrderSummaryPage : ContentPage
                     UserId = _authService.GetCurrentUserId(),
                     CardNumber = CardNumberEntry.Text,
                     ExpiryDate = ExpiryEntry.Text,
-                    CardHolderName = "Владелец", // По умолчанию
+                    CardHolderName = "Карта иесі", // По умолчанию
                     IsDefault = false
                 };
 
@@ -131,11 +131,11 @@ public partial class OrderSummaryPage : ContentPage
         var order = new Order
         {
             UserId = _authService.GetCurrentUserId(),
-            DeliveryMethod = DeliveryPicker.SelectedItem?.ToString() ?? "Самовывоз",
+            DeliveryMethod = DeliveryPicker.SelectedItem?.ToString() ?? "Ала кету",
             PaymentMethod = paymentMethod,
             Address = address,
             OrderDate = DateTime.Now,
-            OrderStatus = "Обработка"
+            OrderStatus = "Өңдеу"
         };
 
         // Вычисляем общую стоимость
@@ -169,7 +169,7 @@ public partial class OrderSummaryPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Ошибка", $"Не удалось сохранить заказ: {ex.Message}", "OK");
+            await DisplayAlert("Қате", $"Тапсырыс сақталмады: {ex.Message}", "OK");
             return;
         }
 
@@ -180,7 +180,7 @@ public partial class OrderSummaryPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Ошибка", $"Не удалось создать PDF-чек: {ex.Message}", "OK");
+            await DisplayAlert("Ошибка", $"PDF жасау сәтсіз аяқталды: {ex.Message}", "OK");
         }
 
         await Navigation.PopToRootAsync();
@@ -199,15 +199,15 @@ public partial class OrderSummaryPage : ContentPage
         var boldFont = new PdfTrueTypeFont(fontStream, 14, PdfFontStyle.Bold);
 
         // Заголовок
-        graphics.DrawString("Чек заказа", titleFont, PdfBrushes.DarkBlue, new PointF(0, y));
+        graphics.DrawString("Тапсырыс чегі", titleFont, PdfBrushes.DarkBlue, new PointF(0, y));
         y += 30;
 
         // Номер заказа
-        graphics.DrawString($"Заказ №{order.Id}", font, PdfBrushes.Black, new PointF(0, y));
+        graphics.DrawString($"Тапсырыс №{order.Id}", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
         // Дата заказа
-        graphics.DrawString($"Дата: {order.OrderDate:dd.MM.yyyy HH:mm}", font, PdfBrushes.Black, new PointF(0, y));
+        graphics.DrawString($"Күн: {order.OrderDate:dd.MM.yyyy HH:mm}", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
         // Статус заказа
@@ -215,29 +215,29 @@ public partial class OrderSummaryPage : ContentPage
         y += 20;
 
         // Способ доставки
-        graphics.DrawString($"Способ доставки: {order.DeliveryMethod}", font, PdfBrushes.Black, new PointF(0, y));
+        graphics.DrawString($"Жеткізу әдісі: {order.DeliveryMethod}", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
         // Способ оплаты
-        graphics.DrawString($"Способ оплаты: {order.PaymentMethod}", font, PdfBrushes.Black, new PointF(0, y));
+        graphics.DrawString($"Төлем әдісі: {order.PaymentMethod}", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
         // Адрес доставки (если есть)
         if (!string.IsNullOrEmpty(order.Address))
         {
-            graphics.DrawString($"Адрес доставки: {order.Address}", font, PdfBrushes.Black, new PointF(0, y));
+            graphics.DrawString($"Жеткізу мекенжайы: {order.Address}", font, PdfBrushes.Black, new PointF(0, y));
             y += 20;
         }
 
         // Заголовок таблицы товаров
-        graphics.DrawString("Список товаров:", font, PdfBrushes.Black, new PointF(0, y));
+        graphics.DrawString("Тауарлар реті бойынша:", font, PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
         // Заголовки столбцов
-        graphics.DrawString("Товар", font, PdfBrushes.Black, new PointF(0, y));
-        graphics.DrawString("Кол-во", font, PdfBrushes.Black, new PointF(200, y));
-        graphics.DrawString("Цена", font, PdfBrushes.Black, new PointF(300, y));
-        graphics.DrawString("Сумма", font, PdfBrushes.Black, new PointF(400, y));
+        graphics.DrawString("Тауар", font, PdfBrushes.Black, new PointF(0, y));
+        graphics.DrawString("Саны", font, PdfBrushes.Black, new PointF(200, y));
+        graphics.DrawString("Бағасы", font, PdfBrushes.Black, new PointF(300, y));
+        graphics.DrawString("Сомма", font, PdfBrushes.Black, new PointF(400, y));
         y += 20;
 
         // Строки с товарами
@@ -257,7 +257,7 @@ public partial class OrderSummaryPage : ContentPage
 
         // Итоговая стоимость
         y += 10;
-        graphics.DrawString($"Итого: {order.TotalPrice}", boldFont, PdfBrushes.Black, new PointF(0, y));
+        graphics.DrawString($"Барлығы: {order.TotalPrice}", boldFont, PdfBrushes.Black, new PointF(0, y));
 
         // Сохранение и открытие PDF
         var fileName = $"order_{order.Id}_{order.OrderDate:yyyyMMdd_HHmmss}.pdf";

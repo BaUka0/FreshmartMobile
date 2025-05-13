@@ -74,7 +74,7 @@ public partial class OrderHistoryPage : ContentPage
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", $"Не удалось создать PDF: {ex.Message}", "OK");
+                await DisplayAlert("Қате", $"PDF жасау сәтсіз аяқталды: {ex.Message}", "OK");
             }
         }
     }
@@ -89,41 +89,41 @@ public partial class OrderHistoryPage : ContentPage
         var fontStream = typeof(App).Assembly.GetManifestResourceStream("Project.Resources.Fonts.arial.ttf");
         var font = new PdfTrueTypeFont(fontStream, 12);
 
-        graphics.DrawString("Чек заказа", new PdfTrueTypeFont(fontStream, 18),
+        graphics.DrawString("Тапсырыс чегі", new PdfTrueTypeFont(fontStream, 18),
             PdfBrushes.DarkBlue, new PointF(0, y));
         y += 30;
 
-        graphics.DrawString($"Заказ №{order.Id}", font,
+        graphics.DrawString($"Тапсырыс №{order.Id}", font,
             PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
-        graphics.DrawString($"Дата: {order.OrderDate:dd.MM.yyyy HH:mm}", font,
+        graphics.DrawString($"Күн: {order.OrderDate:dd.MM.yyyy HH:mm}", font,
             PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
-        graphics.DrawString($"Способ доставки: {order.DeliveryMethod}", font,
+        graphics.DrawString($"Жеткізу әдісі: {order.DeliveryMethod}", font,
             PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
-        graphics.DrawString($"Способ оплаты: {order.PaymentMethod}", font,
+        graphics.DrawString($"Төлем әдісі: {order.PaymentMethod}", font,
             PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
         if (!string.IsNullOrEmpty(order.Address))
         {
-            graphics.DrawString($"Адрес доставки: {order.Address}", font,
+            graphics.DrawString($"Жеткізу мекенжайы: {order.Address}", font,
                 PdfBrushes.Black, new PointF(0, y));
             y += 20;
         }
 
-        graphics.DrawString("Список товаров:", font,
+        graphics.DrawString("Тауарлар реті бойынша:", font,
             PdfBrushes.Black, new PointF(0, y));
         y += 20;
 
-        graphics.DrawString("Товар", font, PdfBrushes.Black, new PointF(0, y));
-        graphics.DrawString("Кол-во", font, PdfBrushes.Black, new PointF(200, y));
-        graphics.DrawString("Цена", font, PdfBrushes.Black, new PointF(300, y));
-        graphics.DrawString("Сумма", font, PdfBrushes.Black, new PointF(400, y));
+        graphics.DrawString("Тауар", font, PdfBrushes.Black, new PointF(0, y));
+        graphics.DrawString("Саны", font, PdfBrushes.Black, new PointF(200, y));
+        graphics.DrawString("Бағасы", font, PdfBrushes.Black, new PointF(300, y));
+        graphics.DrawString("Сомма", font, PdfBrushes.Black, new PointF(400, y));
         y += 20;
 
         foreach (var item in order.Items)
@@ -141,7 +141,7 @@ public partial class OrderHistoryPage : ContentPage
         }
 
         y += 10;
-        graphics.DrawString($"Итого: {order.TotalPrice}", new PdfTrueTypeFont(fontStream, 14, PdfFontStyle.Bold),
+        graphics.DrawString($"Барлығы: {order.TotalPrice}", new PdfTrueTypeFont(fontStream, 14, PdfFontStyle.Bold),
             PdfBrushes.Black, new PointF(0, y));
 
         var fileName = $"order_{order.Id}_{order.OrderDate:yyyyMMdd}.pdf";

@@ -16,7 +16,7 @@
 
             <!-- Анимированный текст -->
             <Label x:Name="LoadingLabel"
-                   Text="Загрузка"
+                   Text="Жүктелуде"
                    FontSize="22"
                    TextColor="Black"
                    HorizontalOptions="Center"

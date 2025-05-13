@@ -1,4 +1,4 @@
-using Project.Services;
+п»їusing Project.Services;
 
 namespace Project.Pages;
 
@@ -31,7 +31,7 @@ public partial class EditProfilePage : ContentPage
         {
             var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
             {
-                Title = "Выберите фото профиля"
+                Title = "РџСЂРѕС„РёР»СЊ С„РѕС‚РѕСЃСѓСЂРµС‚С–РЅ С‚Р°ТЈРґР°ТЈС‹Р·"
             });
 
             if (result != null)
@@ -43,7 +43,7 @@ public partial class EditProfilePage : ContentPage
 
                 if (imageData.Length > 1000000)
                 {
-                    await DisplayAlert("Предупреждение", "Изображение слишком большое, выберите другое", "OK");
+                    await DisplayAlert("Р•СЃРєРµСЂС‚Сѓ", "РЎСѓСЂРµС‚ С‚С‹Рј ТЇР»РєРµРЅ, Р±Р°СЃТ›Р°СЃС‹РЅ С‚Р°ТЈРґР°ТЈС‹Р·", "OK");
                     return;
                 }
 
@@ -55,7 +55,7 @@ public partial class EditProfilePage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Ошибка", $"Не удалось загрузить изображение: {ex.Message}", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", $"РЎСѓСЂРµС‚ Р¶ТЇРєС‚РµР»РјРµРґС–: {ex.Message}", "OK");
         }
     }
 
@@ -63,13 +63,13 @@ public partial class EditProfilePage : ContentPage
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Email))
         {
-            await DisplayAlert("Ошибка", "Имя пользователя и Email обязательны для заполнения", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", "РџР°Р№РґР°Р»Р°РЅСѓС€С‹ Р°С‚С‹ РјРµРЅ СЌР»РµРєС‚СЂРѕРЅРґС‹Т› РїРѕС€С‚Р° Т›Р°Р¶РµС‚", "OK");
             return;
         }
 
         if (!Email.Contains('@') || !Email.Contains('.'))
         {
-            await DisplayAlert("Ошибка", "Введите корректный email", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", "Р–Р°СЂР°РјРґС‹ СЌР»РµРєС‚СЂРѕРЅРґС‹Т› РїРѕС€С‚Р°РЅС‹ РµРЅРіС–Р·С–ТЈС–Р·", "OK");
             return;
         }
 
@@ -77,12 +77,12 @@ public partial class EditProfilePage : ContentPage
 
         if (result)
         {
-            await DisplayAlert("Успех", "Профиль успешно обновлен", "OK");
+            await DisplayAlert("РЎУ™С‚С‚С–", "РџСЂРѕС„РёР»СЊ СЃУ™С‚С‚С– Р¶Р°ТЈР°СЂС‚С‹Р»РґС‹", "OK");
             await Navigation.PopAsync();
         }
         else
         {
-            await DisplayAlert("Ошибка", "Не удалось обновить профиль", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", "РџСЂРѕС„РёР»СЊРґС– Р¶Р°ТЈР°СЂС‚Сѓ РјТЇРјРєС–РЅ Р±РѕР»РјР°РґС‹", "OK");
         }
     }
 

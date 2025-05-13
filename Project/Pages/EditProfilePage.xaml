@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.EditProfilePage"
-             Title="Редактирование профиля">
+             Title="Профильді өңдеу">
     <ContentPage.Resources>
         <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
     </ContentPage.Resources>
@@ -38,20 +38,20 @@
 
             <Frame BorderColor="LightGray" Padding="15" Margin="0,0,0,10">
                 <StackLayout>
-                    <Label Text="Имя пользователя" FontSize="16"/>
-                    <Entry x:Name="UsernameEntry" Text="{Binding Username}" Placeholder="Введите имя пользователя" Margin="0,5,0,0"/>
+                    <Label Text="Қолданушы аты" FontSize="16"/>
+                    <Entry x:Name="UsernameEntry" Text="{Binding Username}" Placeholder="Қолданушы атын енгізіңіз" Margin="0,5,0,0"/>
                 </StackLayout>
             </Frame>
 
             <Frame BorderColor="LightGray" Padding="15" Margin="0,0,0,30">
                 <StackLayout>
                     <Label Text="Email" FontSize="16"/>
-                    <Entry x:Name="EmailEntry" Text="{Binding Email}" Placeholder="Введите email" Margin="0,5,0,0"/>
+                    <Entry x:Name="EmailEntry" Text="{Binding Email}" Placeholder="Email енгізіңіз" Margin="0,5,0,0"/>
                 </StackLayout>
             </Frame>
 
-            <Button Text="Сохранить" Clicked="OnSaveClicked" BackgroundColor="Green" TextColor="White" Margin="0,0,0,15"/>
-            <Button Text="Отмена" Clicked="OnCancelClicked" BackgroundColor="LightGray" TextColor="Black"/>
+            <Button Text="Сақтау" Clicked="OnSaveClicked" BackgroundColor="Green" TextColor="White" Margin="0,0,0,15"/>
+            <Button Text="Болдырмау" Clicked="OnCancelClicked" BackgroundColor="LightGray" TextColor="Black"/>
         </StackLayout>
     </Grid>
 </ContentPage>

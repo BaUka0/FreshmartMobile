@@ -4,7 +4,7 @@
              xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.SearchPage"
              BackgroundColor="White"
-             Title="Поиск товаров">
+             Title="Тауар іздеу">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -16,7 +16,7 @@
         <!-- Строка поиска -->
         <SearchBar Grid.Row="0" 
                    x:Name="searchBar"
-                   Placeholder="Поиск товаров..."
+                   Placeholder="Тауар іздеу..."
                    TextChanged="OnSearchTextChanged"
                    Margin="10,10,10,0"
                    HorizontalOptions="FillAndExpand" />
@@ -29,7 +29,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" 
-                   Text="Категории" 
+                   Text="Каталог" 
                    FontSize="18" 
                    FontAttributes="Bold"
                    Margin="0,10,0,5"/>
@@ -49,7 +49,7 @@
         <ScrollView Grid.Row="2">
             <VerticalStackLayout Padding="10" Spacing="10">
                 <Label x:Name="resultsCountLabel" 
-                       Text="Найдено товаров: 0"
+                       Text="Табылған тауарлар: 0"
                        FontSize="16"
                        TextColor="Gray"
                        Margin="0,0,0,10"/>
@@ -57,7 +57,7 @@
                 <CollectionView x:Name="SearchResultsCollectionView"
                                 ItemsSource="{Binding SearchResults}"
                                 SelectionMode="None"
-                                EmptyView="Нет результатов, соответствующих вашему запросу">
+                                EmptyView="Сұрауыңызға сәйкес нәтижелер жоқ.">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Span="2" Orientation="Vertical"/>
                     </CollectionView.ItemsLayout>
