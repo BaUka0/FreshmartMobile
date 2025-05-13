@@ -22,15 +22,20 @@ public partial class ProfilePage : ContentPage
 
         LoadUserData();
 
-        Options = new List<ProfileOption>
+        string userRole = _authService.GetCurrentUserRole();
+
+        Options = new List<ProfileOption>();
+
+        if (userRole == "client")
         {
-            new ProfileOption { Name = "Сатып алу тарихы", Icon = "history.png" },
-            new ProfileOption { Name = "Менің пікірлерім", Icon = "review.png" },
-            new ProfileOption { Name = "Төлем әдісі", Icon = "payment.png" },
-            new ProfileOption { Name = "Профильді өңдеу", Icon = "change_profile.png" },
-            new ProfileOption { Name = "Құпия сөзді өзгерту", Icon = "password.png" },
-            new ProfileOption { Name = "Шығу", Icon = "exit.png" },
-        };
+            Options.Add(new ProfileOption { Name = "Сатып алу тарихы", Icon = "history.png" });
+            Options.Add(new ProfileOption { Name = "Менің пікірлерім", Icon = "review.png" });
+            Options.Add(new ProfileOption { Name = "Төлем әдісі", Icon = "payment.png" });
+        }
+
+        Options.Add(new ProfileOption { Name = "Профильді өңдеу", Icon = "change_profile.png" });
+        Options.Add(new ProfileOption { Name = "Құпия сөзді өзгерту", Icon = "password.png" });
+        Options.Add(new ProfileOption { Name = "Шығу", Icon = "exit.png" });
 
         BindingContext = this;
     }
