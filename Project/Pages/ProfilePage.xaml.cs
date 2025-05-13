@@ -22,7 +22,9 @@ public partial class ProfilePage : ContentPage
 
         LoadUserData();
 
-        Options = new List<ProfileOption>
+        string userRole = _authService.GetCurrentUserRole();
+        Options = new List<ProfileOption>();
+        if (userRole == "client")
         {
             new ProfileOption { Name = "Сатып алу тарихы", Icon = "history.png" },
             new ProfileOption { Name = "Менің пікірлерім", Icon = "review.png" },
