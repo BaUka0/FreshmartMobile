@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.CatalogPage"
              xmlns:local="clr-namespace:Project.Pages"
-             Title="Каталог товаров">
+             Title="Тауар каталогы">
 
     <ScrollView>
         <VerticalStackLayout Padding="10">

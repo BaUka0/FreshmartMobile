@@ -23,22 +23,22 @@ public partial class EditProductPage : ContentPage
     private void LoadCategories()
     {
         Categories = new List<Category>
-            {
+        {
                 new Category { Name = "Сусындар", Icon = "drink_icon.png" },
                 new Category { Name = "Жемістер", Icon = "fruit_icon.png" },
                 new Category { Name = "Көкөністер", Icon = "vegetables_icon.png" },
                 new Category { Name = "Ет өнімдері", Icon = "meat_icon.png" },
-                new Category { Name = "Аспаздық өнімдер", Icon = "gastronomy.png" },
+                new Category { Name = "Гастрономия", Icon = "gastronomy.png" },
                 new Category { Name = "Сүт өнімдері", Icon = "dairy_icon.png" },
                 new Category { Name = "Бакалея", Icon = "grocery.png" },
                 new Category { Name = "Нан және тоқаштар", Icon = "bread_icon.png" },
                 new Category { Name = "Шай, кофе, какао", Icon = "tea.png" },
                 new Category { Name = "Кәмпиттер мен тәттілер", Icon = "candies_icon.png" },
-                new Category { Name = "Өз өндірісіміз", Icon = "cake.png" },
+                new Category { Name = "Өндірістік өнімдер", Icon = "cake.png" },
                 new Category { Name = "Консервілер", Icon = "canned.png" },
                 new Category { Name = "Мұздатылған өнімдер", Icon = "frozen_icon.png" },
                 new Category { Name = "Басқа тауарлар", Icon = "others.png" },
-            };
+        };
 
         CategoryPicker.ItemsSource = Categories;
     }
