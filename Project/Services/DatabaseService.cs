@@ -251,7 +251,6 @@ namespace Project.Services
                 var product = await GetProductAsync(review.ProductId);
                 if (product != null)
                 {
-                    // Добавим название продукта в свойство Ignore
                     review.UserName = product.Name;
                 }
             }
@@ -291,7 +290,6 @@ namespace Project.Services
                                            .Where(oi => oi.OrderId == order.Id)
                                            .ToListAsync();
 
-                // Загружаем данные о продуктах для отображения изображений
                 foreach (var item in order.Items)
                 {
                     var product = await GetProductAsync(item.ProductId);
@@ -316,7 +314,6 @@ namespace Project.Services
                                            .Where(oi => oi.OrderId == order.Id)
                                            .ToListAsync();
 
-                // Загружаем данные о продуктах для отображения изображений
                 foreach (var item in order.Items)
                 {
                     var product = await GetProductAsync(item.ProductId);
@@ -362,7 +359,6 @@ namespace Project.Services
 
         public async Task<int> AddPaymentCardAsync(PaymentCard card)
         {
-            // Если добавляемая карта помечена как основная, сбрасываем флаг у остальных карт
             if (card.IsDefault)
             {
                 var userCards = await GetPaymentCardsAsync(card.UserId);
@@ -381,7 +377,6 @@ namespace Project.Services
 
         public async Task<int> UpdatePaymentCardAsync(PaymentCard card)
         {
-            // Если обновляемая карта помечена как основная, сбрасываем флаг у остальных карт
             if (card.IsDefault)
             {
                 var userCards = await GetPaymentCardsAsync(card.UserId);

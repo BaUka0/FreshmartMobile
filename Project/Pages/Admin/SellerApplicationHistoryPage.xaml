@@ -51,17 +51,13 @@
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="Өтініш статусы: " FontAttributes="Bold"/>
-                                        <!-- Выбираем цвет текста в зависимости от статуса -->
                                         <Span Text="{Binding Status}">
                                             <Span.TextColor>
                                                 <MultiBinding Converter="{StaticResource StatusToColorConverter}">
                                                     <Binding Path="Status"/>
                                                     <Binding Source="{AppThemeBinding Light=Green, Dark=LightGreen}"/>
-                                                    <!-- Цвет для Accepted в светлой/темной теме -->
                                                     <Binding Source="{AppThemeBinding Light=Red, Dark=Salmon}"/>
-                                                    <!-- Цвет для Rejected в светлой/темной теме -->
                                                     <Binding Source="{AppThemeBinding Light=Blue, Dark=LightBlue}"/>
-                                                    <!-- Цвет для Pending в светлой/темной теме -->
                                                 </MultiBinding>
                                             </Span.TextColor>
                                         </Span>

@@ -30,18 +30,15 @@ public partial class CartPage : ContentPage
     {
         CartItems.Clear();
 
-        // Получаем все записи корзины пользователя
         var userId = _authService.GetCurrentUserId();
         var cartItems = await _databaseService.GetCartItemsAsync(userId);
 
         foreach (var ci in cartItems)
         {
-            // Для каждого CartItem достаем данные о товаре
             var product = await _databaseService.GetProductAsync(ci.ProductId);
             if (product == null)
                 continue;
 
-            // Создаем модель для отображения
             CartItems.Add(new CartDisplayItem
             {
                 CartItemId = ci.Id,
