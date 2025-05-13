@@ -29,7 +29,8 @@
                                                BackgroundColor="#D83B01" 
                                                IconImageSource="delete_icon.png"
                                                Invoked="OnDeleteSwipeItemInvoked"
-                                               CommandParameter="{Binding .}" />
+                                               CommandParameter="{Binding .}" 
+                                               IsVisible="{Binding CanDelete}" />
 
                                     <SwipeItem Text="Өзгерту" 
                                                BackgroundColor="DarkOrange" 

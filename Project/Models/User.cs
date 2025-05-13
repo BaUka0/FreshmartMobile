@@ -17,5 +17,6 @@ namespace Project.Models
         public string password { get; set; }
         public byte[] ProfileImage { get; set; }
         public string role { get; set; } = "client"; // "admin", "sales" or "client"
+        public bool CanDelete => !string.Equals(role, "admin", StringComparison.OrdinalIgnoreCase);
     }
 }
