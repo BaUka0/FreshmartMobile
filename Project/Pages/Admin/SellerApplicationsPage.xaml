@@ -2,13 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.Admin.SellerApplicationsPage"
-             Title="Заявки">
+             Title="Өтінімдер">
     <VerticalStackLayout Padding="10" Spacing="10">
 
         <CollectionView x:Name="ApplicationsCollectionView"
                     ItemsSource="{Binding Applications}">
             <CollectionView.EmptyView>
-                <Label Text="Новых заявок нет."
+                <Label Text="Жаңа өтініштер жоқ."
                    HorizontalOptions="Center"
                    VerticalOptions="CenterAndExpand" />
             </CollectionView.EmptyView>
@@ -23,7 +23,7 @@
                             <Label>
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="Пользователь: " FontAttributes="Bold"/>
+                                        <Span Text="Қолданушы: " FontAttributes="Bold"/>
                                         <Span Text="{Binding User.username}"/>
                                     </FormattedString>
                                 </Label.FormattedText>
@@ -39,7 +39,7 @@
                             <Label>
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="Текущая роль: " FontAttributes="Bold"/>
+                                        <Span Text="Ағымдағы рөл: " FontAttributes="Bold"/>
                                         <Span Text="{Binding User.role}"/>
                                     </FormattedString>
                                 </Label.FormattedText>
@@ -47,19 +47,19 @@
                             <Label>
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="Статус заявки: " FontAttributes="Bold"/>
+                                        <Span Text="Өтінім статусы: " FontAttributes="Bold"/>
                                         <Span Text="{Binding Status}" TextColor="Blue"/>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
 
                             <HorizontalStackLayout Spacing="10" HorizontalOptions="End" IsVisible="{Binding IsPending}">
-                                <Button Text="Принять"
+                                <Button Text="Қабылдау"
                                     BackgroundColor="Green"
                                     TextColor="White"
                                     WidthRequest="100"
                                     Clicked="OnAcceptButtonClicked"/>
-                                <Button Text="Отклонить"
+                                <Button Text="Қабылдамау"
                                     BackgroundColor="Red"
                                     TextColor="White"
                                     WidthRequest="100"
@@ -72,7 +72,7 @@
         </CollectionView>
         
         <HorizontalStackLayout HorizontalOptions="Fill" Padding="0,10,0,0">
-            <Button Text="Посмотреть историю заявок"
+            <Button Text="Өтініш тарихын қарау"
                 Clicked="OnViewHistoryButtonClicked"
                 HorizontalOptions="End"
                 WidthRequest="200"

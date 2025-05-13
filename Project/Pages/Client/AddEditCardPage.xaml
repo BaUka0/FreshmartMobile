@@ -2,15 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.Pages.Client.AddEditCardPage"
-             Title="Добавить карту">
+             Title="Картаны қосу">
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
-            <Label Text="Информация о карте" FontSize="22" FontAttributes="Bold" Margin="0,0,0,10"/>
+            <Label Text="Карта туралы мәлімет" FontSize="22" FontAttributes="Bold" Margin="0,0,0,10"/>
 
             <Frame BorderColor="LightGray" Padding="15" Margin="0,0,0,10">
                 <StackLayout>
-                    <Label Text="Номер карты" FontSize="16" />
+                    <Label Text="Карта нөмірі" FontSize="16" />
                     <Entry x:Name="CardNumberEntry" 
                            Placeholder="1234 5678 9012 3456" 
                            Keyboard="Numeric"
@@ -20,7 +20,7 @@
 
             <Frame BorderColor="LightGray" Padding="15" Margin="0,0,0,10">
                 <StackLayout>
-                    <Label Text="Имя держателя карты" FontSize="16" />
+                    <Label Text="Несие карточкасын иеленушісінің Аты" FontSize="16" />
                     <Entry x:Name="CardHolderEntry" 
                            Placeholder="IVAN IVANOV" />
                 </StackLayout>
@@ -28,7 +28,7 @@
 
             <Frame BorderColor="LightGray" Padding="15" Margin="0,0,0,10">
                 <StackLayout>
-                    <Label Text="Срок действия (MM/YY)" FontSize="16" />
+                    <Label Text="Жарамдылық мерзімі (MM/YY)" FontSize="16" />
                     <Entry x:Name="ExpiryDateEntry" 
                            Placeholder="05/25" 
                            MaxLength="5" />
@@ -38,10 +38,10 @@
             <Frame BorderColor="LightGray" CornerRadius="10" Padding="15" Margin="0,0,0,30">
                 <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
                     <VerticalStackLayout Spacing="5">
-                        <Label Text="Сделать основной картой" 
+                        <Label Text="Оны негізгі картаға айналдыру" 
                               FontSize="16"
                               FontAttributes="Bold" />
-                        <Label Text="Эта карта будет использоваться по умолчанию при оплате" 
+                        <Label Text="Төлеу кезінде бұл карта әдепкі бойынша пайдаланылады." 
                                FontSize="12"
                                TextColor="Gray" />
                     </VerticalStackLayout>
@@ -50,21 +50,21 @@
                 </Grid>
             </Frame>
 
-            <Button Text="Сохранить" 
+            <Button Text="Сақтау" 
                     BackgroundColor="Green"
                     TextColor="White"
                     Margin="0,0,0,15"
                     Clicked="OnSaveClicked" />
 
             <Button x:Name="CancelButton"
-                    Text="Отмена" 
+                    Text="Болдырмау" 
                     BackgroundColor="LightGray"
                     TextColor="Black"
                     Margin="0,0,0,15"
                     Clicked="OnCancelClicked" />
 
             <Button x:Name="DeleteButton"
-                    Text="Удалить карту" 
+                    Text="Картаны жою" 
                     BackgroundColor="#FF3B30"
                     TextColor="White"
                     Margin="0,0,0,0"

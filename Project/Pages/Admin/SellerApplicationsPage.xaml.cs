@@ -1,4 +1,4 @@
-using Project.Models;
+п»їusing Project.Models;
 using Project.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -35,7 +35,7 @@ public partial class SellerApplicationsPage : ContentPage
         }
         catch(Exception ex)
         {
-            await DisplayAlert("Ошибка", $"Не удалось загрузить заявки.{ex.Message}", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", $"УЁС‚С–РЅС–С€С‚РµСЂ Р¶ТЇРєС‚РµР»РјРµРґС–.{ex.Message}", "OK");
             Debug.WriteLine($"Error loading seller applications: {ex.Message}");
         }
     }
@@ -45,11 +45,11 @@ public partial class SellerApplicationsPage : ContentPage
         var application = (SellerApplication)button.BindingContext;
         if (application == null || application.User == null)
         {
-            await DisplayAlert("Ошибка", "Не удалось найти заявку.", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", "УЁС‚С–РЅС–РјРґС– С‚Р°Р±Сѓ РјТЇРјРєС–РЅ РµРјРµСЃ.", "OK");
             return;
         }
 
-        bool confirmed = await DisplayAlert("Подтверждение", "Вы уверены, что хотите одобрить эту заявку?", "Да", "Нет");
+        bool confirmed = await DisplayAlert("Р Р°СЃС‚Р°Сѓ", "Р‘Т±Р» У©С‚С–РЅС–РјРґС– СЂР°СЃС‚Р°Т“С‹ТЈС‹Р· РєРµР»РµС‚С–РЅС–РЅРµ СЃРµРЅС–РјРґС–СЃС–Р· Р±Рµ?", "РУ™", "Р–РѕТ›");
         if (confirmed)
         {
             try
@@ -62,12 +62,12 @@ public partial class SellerApplicationsPage : ContentPage
                     int applicationUpdateResult = await _databaseService.UpdateSellerApplicationAsync(application);
                     if (applicationUpdateResult > 0)
                     {
-                        await DisplayAlert("Успех", "Заявка одобрена.", "OK");
+                        await DisplayAlert("РЎУ™С‚С‚С–", "УЁС‚С–РЅС–Рј Т›Р°Р±С‹Р»РґР°РЅРґС‹.", "OK");
                         await LoadApplicationsAsync();
                     }
                     else
                     {
-                        await DisplayAlert("Ошибка", "Не удалось обновить статус заявки.", "OK");
+                        await DisplayAlert("ТљР°С‚Рµ", "УЁС‚С–РЅС–Рј СЃС‚Р°С‚СѓСЃС‹ Р¶Р°ТЈР°СЂС‚Сѓ РјТЇРјРєС–РЅ Р±РѕР»РјР°РґС‹.", "OK");
                         await LoadApplicationsAsync();
                     }
                 }
@@ -75,7 +75,7 @@ public partial class SellerApplicationsPage : ContentPage
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", $"Не удалось одобрить заявку.{ex.Message}", "OK");
+                await DisplayAlert("ТљР°С‚Рµ", $"УЁС‚С–РЅС–С€С‚С– РјР°Т›Т±Р»РґР°Сѓ РјТЇРјРєС–РЅ Р±РѕР»РјР°РґС‹.{ex.Message}", "OK");
                 Debug.WriteLine($"Error accepting seller application: {ex.Message}");
             }
         }
@@ -87,10 +87,10 @@ public partial class SellerApplicationsPage : ContentPage
         var application = (SellerApplication)button.BindingContext;
         if (application == null || application.User == null)
         {
-            await DisplayAlert("Ошибка", "Не удалось найти заявку.", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", "ТљРѕР»РґР°РЅР±Р°РЅС‹ С‚Р°Р±Сѓ РјТЇРјРєС–РЅ РµРјРµСЃ.", "OK");
             return;
         }
-        bool confirmed = await DisplayAlert("Подтверждение", "Вы уверены, что хотите отклонить эту заявку?", "Да", "Нет");
+        bool confirmed = await DisplayAlert("Р Р°СЃС‚Р°Сѓ", "Р‘Т±Р» СЃТ±СЂР°СѓРґС‹ С€С‹РЅС‹РјРµРЅ Р±Р°СЃ С‚Р°СЂС‚Т›С‹ТЈС‹Р· РєРµР»Рµ РјРµ?", "Р”Р°", "РќРµС‚");
         if (confirmed)
         {
             try
@@ -99,18 +99,18 @@ public partial class SellerApplicationsPage : ContentPage
                 int applicationUpdateResult = await _databaseService.UpdateSellerApplicationAsync(application);
                 if (applicationUpdateResult > 0)
                 {
-                    await DisplayAlert("Успех", "Заявка отклонена.", "OK");
+                    await DisplayAlert("РЈСЃРїРµС…", "УЁС‚С–РЅС–Рј Т›Р°Р±С‹Р»РґР°РЅР±Р°РґС‹.", "OK");
                     await LoadApplicationsAsync();
                 }
                 else
                 {
-                    await DisplayAlert("Ошибка", "Не удалось обновить статус заявки.", "OK");
+                    await DisplayAlert("ТљР°С‚Рµ", "УЁС‚С–РЅС–Рј СЃС‚Р°С‚СѓСЃС‹ Р¶Р°ТЈР°СЂС‚Сѓ РјТЇРјРєС–РЅ Р±РѕР»РјР°РґС‹.", "OK");
                     await LoadApplicationsAsync();
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", $"Не удалось отклонить заявку.{ex.Message}", "OK");
+                await DisplayAlert("ТљР°С‚Рµ", $"УЁС‚С–РЅС–РјРґС– Т›Р°Р±С‹Р»РґР°РјР°Сѓ РјТЇРјРєС–РЅ Р±РѕР»РјР°РґС‹.{ex.Message}", "OK");
                 Debug.WriteLine($"Error rejecting seller application: {ex.Message}");
             }
         }

@@ -1,4 +1,4 @@
-using Project.Models;
+п»їusing Project.Models;
 using Project.Services;
 
 namespace Project.Pages.Client
@@ -20,9 +20,9 @@ namespace Project.Pages.Client
             _editingCard = card;
             _isEditing = card != null;
 
-            Title = _isEditing ? "Редактировать карту" : "Добавить карту";
+            Title = _isEditing ? "РљР°СЂС‚Р°РЅС‹ У©ТЈРґРµСѓ" : "РљР°СЂС‚Р°РЅС‹ Т›РѕСЃСѓ";
 
-            // Кнопка удаления видна только при редактировании
+            // РљРЅРѕРїРєР° СѓРґР°Р»РµРЅРёСЏ РІРёРґРЅР° С‚РѕР»СЊРєРѕ РїСЂРё СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРё
             DeleteButton.IsVisible = _isEditing;
 
             if (_isEditing)
@@ -42,21 +42,21 @@ namespace Project.Pages.Client
                 string.IsNullOrWhiteSpace(CardHolderEntry.Text) ||
                 string.IsNullOrWhiteSpace(ExpiryDateEntry.Text))
             {
-                await DisplayAlert("Ошибка", "Пожалуйста, заполните все поля", "OK");
+                await DisplayAlert("ТљР°С‚Рµ", "Р‘Р°СЂР»С‹Т› У©СЂС–СЃС‚РµСЂРґС– С‚РѕР»С‚С‹СЂС‹ТЈС‹Р·", "OK");
                 return;
             }
 
-            // Базовая валидация номера карты
+            // Р‘Р°Р·РѕРІР°СЏ РІР°Р»РёРґР°С†РёСЏ РЅРѕРјРµСЂР° РєР°СЂС‚С‹
             if (CardNumberEntry.Text.Length < 16 || CardNumberEntry.Text.Length > 19)
             {
-                await DisplayAlert("Ошибка", "Неверный формат номера карты", "OK");
+                await DisplayAlert("ТљР°С‚Рµ", "Р–Р°СЂР°РјСЃС‹Р· РєР°СЂС‚Р° РЅУ©РјС–СЂС–РЅС–ТЈ РїС–С€С–РјС–", "OK");
                 return;
             }
 
-            // Базовая валидация срока действия
+            // Р‘Р°Р·РѕРІР°СЏ РІР°Р»РёРґР°С†РёСЏ СЃСЂРѕРєР° РґРµР№СЃС‚РІРёСЏ
             if (!ExpiryDateEntry.Text.Contains("/") || ExpiryDateEntry.Text.Length != 5)
             {
-                await DisplayAlert("Ошибка", "Неверный формат срока действия карты (MM/YY)", "OK");
+                await DisplayAlert("ТљР°С‚Рµ", "Р–Р°СЂР°РјСЃС‹Р· РєР°СЂС‚Р°РЅС‹ТЈ Р¶Р°СЂР°РјРґС‹Р»С‹Т› РјРµСЂР·С–РјС– РїС–С€С–РјС– (MM/YY)", "OK");
                 return;
             }
 
@@ -73,7 +73,7 @@ namespace Project.Pages.Client
                     card.IsDefault = DefaultCardSwitch.IsToggled;
 
                     await _databaseService.UpdatePaymentCardAsync(card);
-                    await DisplayAlert("Успех", "Карта успешно обновлена", "OK");
+                    await DisplayAlert("РЎУ™С‚С‚С–", "РљР°СЂС‚Р° СЃУ™С‚С‚С– Р¶Р°ТЈР°СЂС‚С‹Р»РґС‹.", "OK");
                 }
                 else
                 {
@@ -87,14 +87,14 @@ namespace Project.Pages.Client
                     };
 
                     await _databaseService.AddPaymentCardAsync(card);
-                    await DisplayAlert("Успех", "Новая карта добавлена", "OK");
+                    await DisplayAlert("РЎУ™С‚С‚С–", "Р–Р°ТЈР° РєР°СЂС‚Р° Т›РѕСЃС‹Р»РґС‹", "OK");
                 }
 
                 await Navigation.PopAsync();
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", $"Не удалось сохранить карту: {ex.Message}", "OK");
+                await DisplayAlert("ТљР°С‚Рµ", $"РљР°СЂС‚Р°РЅС‹ СЃР°Т›С‚Р°Сѓ РјТЇРјРєС–РЅ Р±РѕР»РјР°РґС‹: {ex.Message}", "OK");
             }
         }
 
@@ -109,22 +109,22 @@ namespace Project.Pages.Client
                 return;
 
             bool confirm = await DisplayAlert(
-                "Подтверждение удаления",
-                "Вы уверены, что хотите удалить эту карту?",
-                "Да, удалить",
-                "Отмена");
+                "Р–РѕСЋРґС‹ СЂР°СЃС‚Р°Сѓ",
+                "Р‘Т±Р» РєР°СЂС‚Р°РЅС‹ С€С‹РЅС‹РјРµРЅ Р¶РѕР№Т“С‹ТЈС‹Р· РєРµР»Рµ РјРµ?",
+                "РУ™, Р¶РѕСЋ",
+                "Р‘РѕР»РґС‹СЂРјР°Сѓ");
 
             if (confirm)
             {
                 try
                 {
                     await _databaseService.DeletePaymentCardAsync(_editingCard.Id);
-                    await DisplayAlert("Успех", "Карта успешно удалена", "OK");
+                    await DisplayAlert("РЎУ™С‚С‚С–", "РљР°СЂС‚Р° СЃУ™С‚С‚С– Р¶РѕР№С‹Р»РґС‹.", "OK");
                     await Navigation.PopAsync();
                 }
                 catch (Exception ex)
                 {
-                    await DisplayAlert("Ошибка", $"Не удалось удалить карту: {ex.Message}", "OK");
+                    await DisplayAlert("ТљР°С‚Рµ", $"РљР°СЂС‚Р°РЅС‹ Р¶РѕСЋ РјТЇРјРєС–РЅ Р±РѕР»РјР°РґС‹: {ex.Message}", "OK");
                 }
             }
         }

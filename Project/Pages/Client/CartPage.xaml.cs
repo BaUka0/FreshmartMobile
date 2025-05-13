@@ -112,7 +112,7 @@ public partial class CartPage : ContentPage
     {
         if (CartItems.Count == 0)
         {
-            await DisplayAlert("Корзина пуста", "Добавьте товары перед оформлением заказа.", "OK");
+            await DisplayAlert("Себет бос", "Тапсырыс жасамас бұрын тауарларды қосыңыз.", "OK");
             return;
         }
         var cartItemsCopy = new ObservableCollection<Product>(CartItems.Select(item => new Product
@@ -145,7 +145,7 @@ public partial class CartPage : ContentPage
             }
         }
 
-        SummaryLabel.Text = $"Товаров: {totalItems} | Итого: {totalPrice} ₸";
+        SummaryLabel.Text = $"Тауарлар: {totalItems} | Барлығы: {totalPrice} ₸";
 
         bool isCartEmpty = CartItems.Count == 0;
         CartCollectionView.IsVisible = !isCartEmpty;

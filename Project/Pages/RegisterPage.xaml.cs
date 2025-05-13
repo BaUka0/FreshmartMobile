@@ -1,4 +1,4 @@
-using Project.Models;
+п»їusing Project.Models;
 using Project.Services;
 
 namespace Project.Pages;
@@ -25,7 +25,7 @@ public partial class RegisterPage : ContentPage
 
             if (string.IsNullOrWhiteSpace(entryUsername.Text) || string.IsNullOrWhiteSpace(entryPassword.Text) || string.IsNullOrWhiteSpace(entryEmail.Text))
             {
-                await DisplayAlert("Ошибка", "Имя пользователя и пароль не могут быть пустыми.", "OK");
+                await DisplayAlert("ТљР°С‚Рµ", "РџР°Р№РґР°Р»Р°РЅСѓС€С‹ Р°С‚С‹, email Р¶У™РЅРµ Т›Т±РїРёСЏ СЃУ©Р· Р±РѕСЃ Р±РѕР»РјР°СѓС‹ РєРµСЂРµРє.", "OK");
                 return;
             }
 
@@ -35,7 +35,7 @@ public partial class RegisterPage : ContentPage
 
             if (result)
             {
-                await DisplayAlert("Успех", "Регистрация прошла успешно!", "OK");
+                await DisplayAlert("РЎУ™С‚С‚С–", "РўС–СЂРєРµСѓ СЃУ™С‚С‚С– У©С‚С‚С–!", "OK");
                 if (role == "seller")
                 {
                     var user = await _databaseService.GetUserByCredentialsAsync(entryUsername.Text, entryPassword.Text);
@@ -46,12 +46,12 @@ public partial class RegisterPage : ContentPage
                         Status = "Pending"
                     };
                     await _databaseService.CreateSellerApplicationAsync(application);
-                    await DisplayAlert("Успех", "Заявка на продавца отправлена на рассмотрение.", "OK");
+                    await DisplayAlert("РЎУ™С‚С‚С–", "РЎР°С‚СѓС€С‹ СЂРµС‚С–РЅРґРµ У©С‚С–РЅС–С€ Р¶С–Р±РµСЂС–Р»РґС–.", "OK");
                 }
             }
             else
             {
-                await DisplayAlert("Ошибка", "Пользователь с таким именем уже существует.", "OK");
+                await DisplayAlert("ТљР°С‚Рµ", "РњТ±РЅРґР°Р№ РїР°Р№РґР°Р»Р°РЅСѓС€С‹ Р°С‚С‹ Р±Р°СЂ.", "OK");
                 return;
             }
 
@@ -59,9 +59,9 @@ public partial class RegisterPage : ContentPage
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка при регистрации пользователя: {ex.Message}");
+            Console.WriteLine($"РўС–СЂРєРµСѓ РєРµР·С–РЅРґРµ Т›Р°С‚Рµ: {ex.Message}");
 
-            await DisplayAlert("Ошибка", "Произошла ошибка при регистрации. Попробуйте еще раз.", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", "РўС–СЂРєРµСѓ РєРµР·С–РЅРґРµ Т›Р°С‚Рµ РѕСЂС‹РЅ Р°Р»РґС‹. ТљР°Р№С‚Р°РґР°РЅ РєУ©СЂС–ТЈС–Р·.", "OK");
         }
     }
 }

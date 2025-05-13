@@ -1,4 +1,4 @@
-using Project.Models;
+п»їusing Project.Models;
 using Project.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -34,7 +34,7 @@ public partial class UserListPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Ошибка загрузки", $"Не удалось загрузить список пользователей: {ex.Message}", "OK");
+            await DisplayAlert("Р–ТЇРєС‚РµСѓ Т›Р°С‚РµСЃС–", $"РџР°Р№РґР°Р»Р°РЅСѓС€С‹ С‚С–Р·С–РјС– Р¶ТЇРєС‚РµР»РјРµРґС–: {ex.Message}", "OK");
             Debug.WriteLine($"Error loading users: {ex.Message}");
         }
     }
@@ -45,7 +45,7 @@ public partial class UserListPage : ContentPage
 
         if (user != null)
         {
-            bool confirmed = await DisplayAlert("Подтверждение", $"Вы уверены, что хотите удалить пользователя '{user.username}'?", "Да", "Нет");
+            bool confirmed = await DisplayAlert("Р Р°СЃС‚Р°Сѓ", $"ТљРѕР»РґР°РЅСѓС€С‹РЅС‹ С€С‹РЅС‹РјРµРЅ Р¶РѕР№Т“С‹ТЈС‹Р· РєРµР»Рµ РјРµ '{user.username}'?", "РУ™", "Р–РѕТ›");
             if (confirmed)
             {
                 try
@@ -53,11 +53,11 @@ public partial class UserListPage : ContentPage
                     await _databaseService.DeleteUserAsync(user);
                     Users.Remove(user);
 
-                    await DisplayAlert("Успех", "Пользователь успешно удалён.", "OK");
+                    await DisplayAlert("РЎУ™С‚С‚С–", "РџР°Р№РґР°Р»Р°РЅСѓС€С‹ СЃУ™С‚С‚С– Р¶РѕР№С‹Р»РґС‹.", "OK");
                 }
                 catch (Exception ex)
                 {
-                    await DisplayAlert("Ошибка", $"Не удалось удалить пользователя: {ex.Message}", "OK");
+                    await DisplayAlert("РћС€РёР±РєР°", $"РџР°Р№РґР°Р»Р°РЅСѓС€С‹ Р¶РѕР№С‹Р»РјР°РґС‹: {ex.Message}", "OK");
                     Debug.WriteLine($"Error deleting user: {ex.Message}");
                 }
             }
@@ -68,7 +68,7 @@ public partial class UserListPage : ContentPage
         var swipeItem = (SwipeItem)sender;
         var user = (User)swipeItem.BindingContext;
 
-        // Переход на страницу редактирования пользователя
+        // РџРµСЂРµС…РѕРґ РЅР° СЃС‚СЂР°РЅРёС†Сѓ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         await Navigation.PushAsync(new EditUserPage(user, _databaseService));
     }
 

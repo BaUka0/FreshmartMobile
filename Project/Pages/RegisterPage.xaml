@@ -25,7 +25,7 @@
                        HorizontalOptions="Center" />
 
                     <!-- Заголовок -->
-                    <Label Text="Регистрация"
+                    <Label Text="Тіркелу"
                        FontSize="32"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
@@ -33,7 +33,7 @@
 
                     <!-- Поля ввода -->
                     <Entry x:Name="entryUsername"
-                       Placeholder="Имя пользователя"
+                       Placeholder="Пайдаланушы аты"
                        HorizontalOptions="Fill" />
 
                     <Entry x:Name="entryEmail"
@@ -42,12 +42,12 @@
                        HorizontalOptions="Fill" />
 
                     <Entry x:Name="entryPassword"
-                       Placeholder="Пароль"
+                       Placeholder="Құпиясөз"
                        IsPassword="True"
                        HorizontalOptions="Fill" />
 
                     <!-- Выбор роли -->
-                    <Label Text="Выберите роль:"
+                    <Label Text="Рөлді таңдаңыз:"
                        FontAttributes="Bold"
                        HorizontalOptions="Start" />
 
@@ -57,12 +57,12 @@
                                  GroupName="role"
                                  IsChecked="True" />
                         <RadioButton x:Name="radioSeller"
-                                 Content="Продавец"
+                                 Content="Сатушы"
                                  GroupName="role" />
                     </HorizontalStackLayout>
 
                     <!-- Кнопка регистрации -->
-                    <Button Text="Регистрация"
+                    <Button Text="Тіркелу"
                         Clicked="OnRegisterClicked"
                         BackgroundColor="#4CAF50"
                         TextColor="White"

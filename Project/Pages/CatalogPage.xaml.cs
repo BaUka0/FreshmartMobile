@@ -1,4 +1,4 @@
-using Project.Services;
+п»їusing Project.Services;
 using System.Windows.Input;
 
 namespace Project.Pages;
@@ -24,23 +24,23 @@ public partial class CatalogPage : ContentPage
 
         Categories = new List<Category>
         {
-            new Category { Name = "Напитки", Icon = "drink_icon.png" },
-            new Category { Name = "Фрукты", Icon = "fruit_icon.png" },
-            new Category { Name = "Овощи", Icon = "vegetables_icon.png" },
-            new Category { Name = "Мясо", Icon = "meat_icon.png" },
-            new Category { Name = "Гастрономия", Icon = "gastronomy.png" },
-            new Category { Name = "Молочные продукты", Icon = "dairy_icon.png" },
-            new Category { Name = "Бакалея", Icon = "grocery.png" },
-            new Category { Name = "Хлеб и выпечка", Icon = "bread_icon.png" },
-            new Category { Name = "Чай, кофе, какао", Icon = "tea.png" },
-            new Category { Name = "Конфеты и сладости", Icon = "candies_icon.png" },
-            new Category { Name = "Собственное производство", Icon = "cake.png" },
-            new Category { Name = "Консервы", Icon = "canned.png" },
-            new Category { Name = "Замороженные продукты", Icon = "frozen_icon.png" },
-            new Category { Name = "Другие товары", Icon = "others.png" },
+            new Category { Name = "РЎСѓСЃС‹РЅРґР°СЂ", Icon = "drink_icon.png" },
+            new Category { Name = "Р–РµРјС–СЃС‚РµСЂ", Icon = "fruit_icon.png" },
+            new Category { Name = "РљУ©РєУ©РЅС–СЃС‚РµСЂ", Icon = "vegetables_icon.png" },
+            new Category { Name = "Р•С‚ У©РЅС–РјРґРµСЂС–\r\n", Icon = "meat_icon.png" },
+            new Category { Name = "Р“Р°СЃС‚СЂРѕРЅРѕРјРёСЏ", Icon = "gastronomy.png" },
+            new Category { Name = "РЎТЇС‚ У©РЅС–РјРґРµСЂС–\r\n", Icon = "dairy_icon.png" },
+            new Category { Name = "Р‘Р°РєР°Р»РµСЏ", Icon = "grocery.png" },
+            new Category { Name = "РќР°РЅ Р¶У™РЅРµ С‚РѕТ›Р°С€С‚Р°СЂ\r\n", Icon = "bread_icon.png" },
+            new Category { Name = "РЁР°Р№, РєРѕС„Рµ, РєР°РєР°Рѕ", Icon = "tea.png" },
+            new Category { Name = "РљУ™РјРїРёС‚С‚РµСЂ РјРµРЅ С‚У™С‚С‚С–Р»РµСЂ\r\n", Icon = "candies_icon.png" },
+            new Category { Name = "\tУЁРЅРґС–СЂС–СЃС‚С–Рє У©РЅС–РјРґРµСЂ\r\n", Icon = "cake.png" },
+            new Category { Name = "РљРѕРЅСЃРµСЂРІС–Р»РµСЂ", Icon = "canned.png" },
+            new Category { Name = "\tРњТ±Р·РґР°С‚С‹Р»Т“Р°РЅ У©РЅС–РјРґРµСЂ\r\n", Icon = "frozen_icon.png" },
+            new Category { Name = "\tР‘Р°СЃТ›Р° С‚Р°СѓР°СЂР»Р°СЂ", Icon = "others.png" },
         };
 
-        // Создаем команду для обработки нажатия на категорию
+        // РЎРѕР·РґР°РµРј РєРѕРјР°РЅРґСѓ РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё РЅР°Р¶Р°С‚РёСЏ РЅР° РєР°С‚РµРіРѕСЂРёСЋ
         CategoryCommand = new Command<Category>(OnCategorySelected);
 
         BindingContext = this;
@@ -50,7 +50,7 @@ public partial class CatalogPage : ContentPage
     {
         if (selectedCategory == null) return;
 
-        // Переход на страницу ProductList с выбранной категорией
+        // РџРµСЂРµС…РѕРґ РЅР° СЃС‚СЂР°РЅРёС†Сѓ ProductList СЃ РІС‹Р±СЂР°РЅРЅРѕР№ РєР°С‚РµРіРѕСЂРёРµР№
         await Navigation.PushAsync(new ProductListPage(selectedCategory, _databaseService, _authService));
     }
     private async void OnCategoryTapped(object sender, EventArgs e)
@@ -58,7 +58,7 @@ public partial class CatalogPage : ContentPage
         var frame = sender as Frame;
         if (frame != null)
         {
-            // Анимация уменьшения и увеличения
+            // РђРЅРёРјР°С†РёСЏ СѓРјРµРЅСЊС€РµРЅРёСЏ Рё СѓРІРµР»РёС‡РµРЅРёСЏ
             await frame.ScaleTo(0.9, 100, Easing.CubicIn);
             await frame.ScaleTo(1, 100, Easing.CubicOut);
         }

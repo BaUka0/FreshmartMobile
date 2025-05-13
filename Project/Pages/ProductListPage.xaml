@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.ProductListPage"
-             Title="Список товаров">
+             Title="Тауар тізімі">
 
     <ContentPage.Resources>
         <ResourceDictionary>

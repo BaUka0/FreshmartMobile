@@ -1,4 +1,4 @@
-using Project.Models;
+п»їusing Project.Models;
 using Project.Services;
 using System.Collections.ObjectModel;
 
@@ -23,15 +23,15 @@ public partial class ProductDetail : ContentPage
         ProductDescriptionLabel.Text = _product.Description;
         ProductPriceLabel.Text = _product.Price;
 
-        // Получаем роль пользователя
+        // РџРѕР»СѓС‡Р°РµРј СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         var userRole = _authService.GetCurrentUserRole();
         var isClient = userRole == "client";
 
-        // Показываем кнопки действий и возможность оставить отзыв только клиентам
+        // РџРѕРєР°Р·С‹РІР°РµРј РєРЅРѕРїРєРё РґРµР№СЃС‚РІРёР№ Рё РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РѕСЃС‚Р°РІРёС‚СЊ РѕС‚Р·С‹РІ С‚РѕР»СЊРєРѕ РєР»РёРµРЅС‚Р°Рј
         ActionButtonsSection.IsVisible = isClient;
         AddReviewSection.IsVisible = isClient;
 
-        // Если пользователь клиент, проверяем статус избранного и корзины
+        // Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РєР»РёРµРЅС‚, РїСЂРѕРІРµСЂСЏРµРј СЃС‚Р°С‚СѓСЃ РёР·Р±СЂР°РЅРЅРѕРіРѕ Рё РєРѕСЂР·РёРЅС‹
         if (isClient)
         {
             InitializeClientButtons();
@@ -44,11 +44,11 @@ public partial class ProductDetail : ContentPage
     {
         var userId = _authService.GetCurrentUserId();
 
-        // Проверяем, находится ли товар в избранном
+        // РџСЂРѕРІРµСЂСЏРµРј, РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё С‚РѕРІР°СЂ РІ РёР·Р±СЂР°РЅРЅРѕРј
         var isFavorite = await _databaseService.IsProductFavoriteAsync(userId, _product.Id);
         FavoriteButton.Source = isFavorite ? "favourite_green.png" : "favourite_grey.png";
 
-        // Проверяем, находится ли товар в корзине
+        // РџСЂРѕРІРµСЂСЏРµРј, РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё С‚РѕРІР°СЂ РІ РєРѕСЂР·РёРЅРµ
         var cartItems = await _databaseService.GetCartItemsAsync(userId);
         var isInCart = cartItems.Any(ci => ci.ProductId == _product.Id);
         CartButton.Source = isInCart ? "basket_green.png" : "basket_grey.png";
@@ -63,13 +63,13 @@ public partial class ProductDetail : ContentPage
         {
             await _databaseService.RemoveFavoriteProductAsync(userId, _product.Id);
             FavoriteButton.Source = "favourite_grey.png";
-            await DisplayAlert("Избранное", "Товар удален из избранного", "Ок");
+            await DisplayAlert("РўР°ТЈРґР°СѓР»С‹Р»Р°СЂ", "РўР°СѓР°СЂ С‚Р°ТЈРґР°СѓР»С‹Р»Р°СЂРґР°РЅ Р¶РѕР№С‹Р»РґС‹", "РћРє");
         }
         else
         {
             await _databaseService.AddFavoriteProductAsync(userId, _product.Id);
             FavoriteButton.Source = "favourite_green.png";
-            await DisplayAlert("Избранное", "Товар добавлен в избранное", "Ок");
+            await DisplayAlert("РўР°ТЈРґР°СѓР»С‹Р»Р°СЂ", "РўР°СѓР°СЂ С‚Р°ТЈРґР°СѓР»С‹Р»Р°СЂС‹ТЈС‹Р·Т“Р° Т›РѕСЃС‹Р»РґС‹", "РћРє");
         }
     }
 
@@ -77,19 +77,19 @@ public partial class ProductDetail : ContentPage
     {
         var userId = _authService.GetCurrentUserId();
 
-        // Проверяем, находится ли продукт в корзине
+        // РџСЂРѕРІРµСЂСЏРµРј, РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё РїСЂРѕРґСѓРєС‚ РІ РєРѕСЂР·РёРЅРµ
         var cartItems = await _databaseService.GetCartItemsAsync(userId);
         var isInCart = cartItems.Any(ci => ci.ProductId == _product.Id);
 
         if (isInCart)
         {
-            await DisplayAlert("Корзина", "Товар уже находится в корзине!", "Ок");
+            await DisplayAlert("РЎРµР±РµС‚", "РўР°СѓР°СЂ Т›Р°Р·С–СЂРґС–ТЈ У©Р·С–РЅРґРµ СЃРµР±РµС‚РєРµ СЃР°Р»С‹РЅТ“Р°РЅ!", "РћРє");
         }
         else
         {
             await _databaseService.AddToCartAsync(userId, _product.Id, 1);
             CartButton.Source = "basket_green.png";
-            await DisplayAlert("Добавлено", "Товар добавлен в корзину!", "Ок");
+            await DisplayAlert("ТљРѕСЃС‹Р»РґС‹", "РўР°СѓР°СЂ СЃРµР±РµС‚РєРµ Т›РѕСЃС‹Р»РґС‹!", "РћРє");
         }
     }
 
@@ -97,15 +97,15 @@ public partial class ProductDetail : ContentPage
     {
         var reviews = await _databaseService.GetProductReviewsAsync(_product.Id);
 
-        // Очищаем контейнер с отзывами
+        // РћС‡РёС‰Р°РµРј РєРѕРЅС‚РµР№РЅРµСЂ СЃ РѕС‚Р·С‹РІР°РјРё
         ReviewsContainer.Children.Clear();
 
         if (reviews.Count == 0)
         {
-            // Добавляем сообщение об отсутствии отзывов
+            // Р”РѕР±Р°РІР»СЏРµРј СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС‚СЃСѓС‚СЃС‚РІРёРё РѕС‚Р·С‹РІРѕРІ
             ReviewsContainer.Children.Add(new Label
             {
-                Text = "Отзывов пока нет. Будьте первым!",
+                Text = "УР·С–СЂРіРµ РїС–РєС–СЂР»РµСЂ Р¶РѕТ›. Р‘С–СЂС–РЅС€С– Р±РѕР»С‹ТЈС‹Р·!",
                 TextColor = Colors.Gray,
                 FontSize = 16,
                 Margin = new Thickness(0, 5, 0, 10)
@@ -113,7 +113,7 @@ public partial class ProductDetail : ContentPage
         }
         else
         {
-            // Отображаем все отзывы
+            // РћС‚РѕР±СЂР°Р¶Р°РµРј РІСЃРµ РѕС‚Р·С‹РІС‹
             foreach (var review in reviews)
             {
                 var reviewFrame = new Frame
@@ -129,7 +129,7 @@ public partial class ProductDetail : ContentPage
 
                 var userNameLabel = new Label
                 {
-                    Text = review.UserName ?? "Пользователь",
+                    Text = review.UserName ?? "ТљРѕР»РґР°РЅСѓС€С‹",
                     FontAttributes = FontAttributes.Bold,
                     FontSize = 16,
                     TextColor = Colors.Black
@@ -160,25 +160,25 @@ public partial class ProductDetail : ContentPage
         }
     }
 
-    // Обработчик кнопки отправки отзыва
+    // РћР±СЂР°Р±РѕС‚С‡РёРє РєРЅРѕРїРєРё РѕС‚РїСЂР°РІРєРё РѕС‚Р·С‹РІР°
     private async void OnSubmitReviewClicked(object sender, EventArgs e)
     {
         string reviewText = ReviewEditor.Text?.Trim();
 
         if (string.IsNullOrEmpty(reviewText))
         {
-            await DisplayAlert("Ошибка", "Пожалуйста, введите текст отзыва.", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", "РџС–РєС–СЂ РјУ™С‚С–РЅС–РЅ РµРЅРіС–Р·С–ТЈС–Р·.", "OK");
             return;
         }
 
-        // Проверяем, авторизован ли пользователь и является ли он клиентом
+        // РџСЂРѕРІРµСЂСЏРµРј, Р°РІС‚РѕСЂРёР·РѕРІР°РЅ Р»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ Рё СЏРІР»СЏРµС‚СЃСЏ Р»Рё РѕРЅ РєР»РёРµРЅС‚РѕРј
         if (_authService.CurrentUser == null || _authService.GetCurrentUserRole() != "client")
         {
-            await DisplayAlert("Ошибка", "Только клиенты могут оставлять отзывы.", "OK");
+            await DisplayAlert("ТљР°С‚Рµ", "РўРµРє РєР»РёРµРЅС‚С‚РµСЂ РїС–РєС–СЂ Т›Р°Р»РґС‹СЂР° Р°Р»Р°РґС‹.", "OK");
             return;
         }
 
-        // Создаем и сохраняем новый отзыв
+        // РЎРѕР·РґР°РµРј Рё СЃРѕС…СЂР°РЅСЏРµРј РЅРѕРІС‹Р№ РѕС‚Р·С‹РІ
         var review = new Review
         {
             ProductId = _product.Id,
@@ -187,12 +187,12 @@ public partial class ProductDetail : ContentPage
         };
 
         await _databaseService.AddReviewAsync(review);
-        await DisplayAlert("Отзыв отправлен", "Спасибо за ваш отзыв!", "OK");
+        await DisplayAlert("РџС–РєС–СЂ Р¶С–Р±РµСЂС–Р»РґС–", "РџС–РєС–СЂС–ТЈС–Р·РіРµ СЂР°С…РјРµС‚!", "OK");
 
-        // Очищаем поле
+        // РћС‡РёС‰Р°РµРј РїРѕР»Рµ
         ReviewEditor.Text = string.Empty;
 
-        // Обновляем список отзывов
+        // РћР±РЅРѕРІР»СЏРµРј СЃРїРёСЃРѕРє РѕС‚Р·С‹РІРѕРІ
         LoadReviews();
     }
 }

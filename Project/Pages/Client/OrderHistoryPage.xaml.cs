@@ -47,7 +47,7 @@ public partial class OrderHistoryPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Ошибка", $"Не удалось загрузить историю заказов: {ex.Message}", "OK");
+            await DisplayAlert("Қате", $"Тапсырыс журналы жүктелмеді: {ex.Message}", "OK");
         }
         finally
         {

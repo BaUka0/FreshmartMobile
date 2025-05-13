@@ -1,4 +1,4 @@
-using Project.Models;
+п»їusing Project.Models;
 using Project.Services;
 using Project.Pages;
 using System.Collections.ObjectModel;
@@ -11,7 +11,7 @@ public partial class FavouritePage : ContentPage
     private readonly DatabaseService _databaseService;
     private readonly AuthService _authService;
 
-    // Используем ObservableCollection для автоматического обновления интерфейса
+    // РСЃРїРѕР»СЊР·СѓРµРј ObservableCollection РґР»СЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРіРѕ РѕР±РЅРѕРІР»РµРЅРёСЏ РёРЅС‚РµСЂС„РµР№СЃР°
     public ObservableCollection<Product> FavoriteProducts { get; set; }
 
     public FavouritePage(DatabaseService databaseService, AuthService authService)
@@ -34,7 +34,7 @@ public partial class FavouritePage : ContentPage
     {
         var userId = _authService.CurrentUser.Id;
 
-        // Получаем все товары в корзине текущего пользователя
+        // РџРѕР»СѓС‡Р°РµРј РІСЃРµ С‚РѕРІР°СЂС‹ РІ РєРѕСЂР·РёРЅРµ С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         var cartItems = await _databaseService.GetCartItemsAsync(userId);
         var cartProductIds = cartItems.Select(ci => ci.ProductId).ToHashSet();
 
@@ -43,14 +43,14 @@ public partial class FavouritePage : ContentPage
         FavoriteProducts.Clear();
         foreach (var product in favoriteProducts)
         {
-            // Проверяем, находится ли продукт в корзине
+            // РџСЂРѕРІРµСЂСЏРµРј, РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё РїСЂРѕРґСѓРєС‚ РІ РєРѕСЂР·РёРЅРµ
             product.CartIcon = cartProductIds.Contains(product.Id) ? "basket_green.png" : "basket_grey.png";
 
             FavoriteProducts.Add(product);
         }
     }
 
-    // Новый обработчик нажатия на продукт
+    // РќРѕРІС‹Р№ РѕР±СЂР°Р±РѕС‚С‡РёРє РЅР°Р¶Р°С‚РёСЏ РЅР° РїСЂРѕРґСѓРєС‚
     private async void OnProductTapped(object sender, TappedEventArgs e)
     {
         if (sender is Grid grid && grid.BindingContext is Product product)
@@ -66,7 +66,7 @@ public partial class FavouritePage : ContentPage
             var userId = _authService.GetCurrentUserId();
 
             await _databaseService.RemoveFavoriteProductAsync(userId, product.Id);
-            await DisplayAlert("Избранное", "Товар удален из избранного", "Ок");
+            await DisplayAlert("РўР°ТЈРґР°СѓР»С‹Р»Р°СЂ", "РўР°СѓР°СЂ С‚Р°ТЈРґР°СѓР»С‹Р»Р°СЂРґР°РЅ Р¶РѕР№С‹Р»РґС‹", "РћРє");
 
             FavoriteProducts.Remove(product);
         }
@@ -78,19 +78,19 @@ public partial class FavouritePage : ContentPage
         {
             var userId = _authService.GetCurrentUserId();
 
-            // Проверяем, находится ли продукт в корзине
+            // РџСЂРѕРІРµСЂСЏРµРј, РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё РїСЂРѕРґСѓРєС‚ РІ РєРѕСЂР·РёРЅРµ
             var cartItems = await _databaseService.GetCartItemsAsync(userId);
             var isInCart = cartItems.Any(ci => ci.ProductId == product.Id);
 
             if (isInCart)
             {
-                await DisplayAlert("Корзина", "Товар уже находится в корзине!", "Ок");
+                await DisplayAlert("РЎРµР±РµС‚", "РўР°СѓР°СЂ Т›Р°Р·С–СЂРґС–ТЈ У©Р·С–РЅРґРµ СЃРµР±РµС‚РєРµ СЃР°Р»С‹РЅТ“Р°РЅ!", "РћРє");
             }
             else
             {
                 await _databaseService.AddToCartAsync(userId, product.Id, 1);
                 product.CartIcon = "basket_green.png";
-                await DisplayAlert("Добавлено", "Товар добавлен в корзину!", "Ок");
+                await DisplayAlert("ТљРѕСЃС‹Р»РґС‹", "РўР°СѓР°СЂ СЃРµР±РµС‚РєРµ Т›РѕСЃС‹Р»РґС‹!", "РћРє");
             }
         }
     }

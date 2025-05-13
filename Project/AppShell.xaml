@@ -24,7 +24,7 @@
         <ShellContent
             x:Name="homeTab"
             Route="home"
-            Title="Главная"
+            Title="Басты бет"
             Icon="home_gray.png"
             ContentTemplate="{DataTemplate pages:HomePage}" />
 
@@ -36,13 +36,13 @@
         
         <ShellContent
             x:Name="favouriteTab"
-            Title="Избранное"
+            Title="Таңдаулылар"
             Icon="favourite_grey.png"
             ContentTemplate="{DataTemplate pages_client:FavouritePage}" />
 
         <ShellContent
             x:Name="cartTab"
-            Title="Корзина"
+            Title="Себет"
             Icon="basket_grey.png"
             ContentTemplate="{DataTemplate pages_client:CartPage}" />
 
@@ -60,12 +60,12 @@
 
         <ShellContent
             x:Name="userList"
-            Title="Пользователи"
+            Title="Қолданушылар"
             Icon="users_green.png"
             ContentTemplate="{DataTemplate pages_admin:UserListPage}" />
         <ShellContent
             x:Name="applicationList"
-            Title="Заявки"
+            Title="Өтінімдер"
             Icon="mail_green.png"
             ContentTemplate="{DataTemplate pages_admin:SellerApplicationsPage}" />
         <ShellContent

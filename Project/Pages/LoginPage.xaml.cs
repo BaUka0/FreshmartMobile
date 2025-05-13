@@ -1,4 +1,4 @@
-
+п»ї
 using Project.Models;
 using Project.Services;
 namespace Project.Pages;
@@ -23,7 +23,7 @@ public partial class LoginPage : ContentPage
         {
             if (string.IsNullOrWhiteSpace(entryEmail.Text) || string.IsNullOrWhiteSpace(entryPassword.Text))
             {
-                await DisplayAlert("Ошибка", "Имя пользователя и пароль не могут быть пустыми.", "OK");
+                await DisplayAlert("ТљР°С‚Рµ!", "РџР°Р№РґР°Р»Р°РЅСѓС€С‹ Р°С‚С‹ РјРµРЅ Т›Т±РїРёСЏ СЃУ©Р· Р±РѕСЃ Р±РѕР»РјР°СѓС‹ РєРµСЂРµРє.", "OK");
                 return;
             }
 
@@ -35,18 +35,18 @@ public partial class LoginPage : ContentPage
                 {
                     appShell.OnUserLoggedIn();
                 }
-                await DisplayAlert("Успех", "Вход выполнен успешно!", "OK");
+                await DisplayAlert("РЎУ™С‚С‚С–!", "РЎС–Р· Р¶ТЇР№РµРіРµ СЃУ™С‚С‚С– РєС–СЂРґС–ТЈС–Р·!", "OK");
                 //await Shell.Current.GoToAsync("/home");
             }
             else
             {
-                await DisplayAlert("Ошибка", "Неверное имя пользователя или пароль.", "OK");
+                await DisplayAlert("ТљР°С‚Рµ!", "РџР°Р№РґР°Р»Р°РЅСѓС€С‹ Р°С‚С‹ РЅРµРјРµСЃРµ Т›Т±РїРёСЏСЃУ©Р· РґТ±СЂС‹СЃ РµРјРµСЃ.", "OK");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка при входе: {ex.Message}");
-            await DisplayAlert("Ошибка", "Произошла ошибка при входе. Попробуйте еще раз.", "OK");
+            Console.WriteLine($"РљС–СЂСѓ РєРµР·С–РЅРґРµ Т›Р°С‚Рµ: {ex.Message}");
+            await DisplayAlert("ТљР°С‚Рµ", "РљС–СЂСѓ РєРµР·С–РЅРґРµ Т›Р°С‚Рµ РѕСЂС‹РЅ Р°Р»РґС‹. ТљР°Р№С‚Р°РґР°РЅ РєУ©СЂС–ТЈС–Р·.", "OK");
         }
     }
     private async void OnRegisterTapped(object sender, EventArgs e)

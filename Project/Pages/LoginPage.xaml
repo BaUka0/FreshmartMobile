@@ -24,18 +24,18 @@
                 <Image Source="logo.png" HeightRequest="100" Margin="0,10" HorizontalOptions="Center" />
 
                 <!-- Заголовок -->
-                <Label Text="Вход"
+                <Label Text="Кіру"
                        FontSize="32"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center" />
 
                 <!-- Поля ввода -->
-                <Entry x:Name="entryEmail" Placeholder="Имя пользователя" Keyboard="Email" />
-                <Entry x:Name="entryPassword" Placeholder="Пароль" IsPassword="True" />
+                <Entry x:Name="entryEmail" Placeholder="Пайдаланушы аты" Keyboard="Email" />
+                <Entry x:Name="entryPassword" Placeholder="Құпиясөз" IsPassword="True" />
 
                 <!-- Кнопка входа -->
-                <Button Text="Вход" Clicked="OnLoginClicked" BackgroundColor="#009c00" TextColor="White" CornerRadius="10" />
+                <Button Text="Кіру" Clicked="OnLoginClicked" BackgroundColor="#009c00" TextColor="White" CornerRadius="10" />
 
                 <!-- Сообщение об ошибке -->
                 <Label x:Name="lblMessage" TextColor="Red" IsVisible="False" HorizontalOptions="Center" />
@@ -44,8 +44,8 @@
                 <Label HorizontalOptions="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="У вас нет аккаунта? " />
-                            <Span Text="Регистрация" TextColor="Blue">
+                            <Span Text="Аккаунтыңыз жоқ па? " />
+                            <Span Text="Тіркелу" TextColor="Blue">
                                 <Span.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnRegisterTapped" />
                                 </Span.GestureRecognizers>

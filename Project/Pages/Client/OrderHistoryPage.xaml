@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.Client.OrderHistoryPage"
-             Title="История заказов">
+             Title="Тапсырыс тарихы">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -14,7 +14,7 @@
     <Grid>
         <CollectionView x:Name="OrdersCollectionView" 
                         SelectionMode="None"
-                        EmptyView="У вас еще нет заказов">
+                        EmptyView="Сізде әлі тапсырыс жоқ.">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame BorderColor="LightGray" 
@@ -26,11 +26,11 @@
                         <VerticalStackLayout Spacing="10">
                             <Grid ColumnDefinitions="*,Auto">
                                 <VerticalStackLayout Grid.Column="0">
-                                    <Label Text="{Binding OrderDate, StringFormat='Заказ от {0:dd.MM.yyyy HH:mm}'}"
+                                    <Label Text="{Binding OrderDate, StringFormat='Тапсырыс беру уақыты: {0:dd.MM.yyyy HH:mm}'}"
                                            FontSize="18"
                                            FontAttributes="Bold" />
 
-                                    <Label Text="{Binding TotalPrice, StringFormat='Сумма заказа: {0}'}"
+                                    <Label Text="{Binding TotalPrice, StringFormat='Тапсырыс сомасы: {0}'}"
                                            FontSize="16"
                                            TextColor="Green" />
 
@@ -40,7 +40,7 @@
                                 </VerticalStackLayout>
 
                                 <Button Grid.Column="1"
-                                        Text="Скачать чек"
+                                        Text="Чек жүктеу"
                                         BackgroundColor="Green"
                                         TextColor="White"
                                         Clicked="OnDownloadReceiptClicked"
@@ -52,7 +52,7 @@
 
                             <BoxView HeightRequest="1" BackgroundColor="#e0e0e0" />
 
-                            <Label Text="Товары в заказе:" 
+                            <Label Text="Тауарлар реті бойынша:" 
                                    FontSize="16"
                                    FontAttributes="Bold" />
 
@@ -86,7 +86,7 @@
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
 
-                            <Button Text="Подробнее"
+                            <Button Text="Толығырақ"
                                     BackgroundColor="Green"
                                     Clicked="OnOrderDetailClicked"
                                     HorizontalOptions="Center" />

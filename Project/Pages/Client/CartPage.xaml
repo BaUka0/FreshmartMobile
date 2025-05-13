@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Project.Converters"
              x:Class="Project.Pages.Client.CartPage"
-             Title="Корзина">
+             Title="Себет">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -17,7 +17,7 @@
             <VerticalStackLayout Spacing="15">
 
                 <Label x:Name="EmptyCartLabel"
-                   Text="Ваша корзина пуста. Добавьте товары!"
+                   Text="Сіздің себетініз бос. Элементтерді қосыңыз!"
                    FontSize="22"
                    TextColor="Gray"
                    HorizontalOptions="Center"
@@ -75,7 +75,7 @@
                                             Clicked="OnIncreaseQuantityClicked"
                                             BackgroundColor="LightGray" />
 
-                                        <Button Text="Удалить"
+                                        <Button Text="Жою"
                                             Clicked="OnDeleteItemClicked"
                                             BackgroundColor="Red"
                                             TextColor="White"
