@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Project.Services
 {
-    public class DatabaseService : IDisposable
+    public class DatabaseService : IDatabaseService
     {
         private SQLiteAsyncConnection _database;
         private bool _disposed = false;
@@ -77,6 +77,12 @@ namespace Project.Services
         }
         public async Task<int> AddUserAsync(User user) 
         {
+            // Validate required fields
+            if (string.IsNullOrWhiteSpace(user.username) || string.IsNullOrWhiteSpace(user.password) || string.IsNullOrWhiteSpace(user.email))
+            {
+                throw new ArgumentException("Username, password, and email are required.");
+            }
+            
             user.password = HashPassword(user.password);
             return await _database.InsertAsync(user);
         }
@@ -219,6 +225,12 @@ namespace Project.Services
         // корзина
         public async Task AddToCartAsync(int userId, int productId, int quantity = 1)
         {
+            // Validate input parameters
+            if (userId <= 0 || productId <= 0 || quantity <= 0)
+            {
+                throw new ArgumentException("Invalid userId, productId, or quantity.");
+            }
+
             var existingCartItem = await _database.Table<CartItem>()
                 .FirstOrDefaultAsync(ci => ci.UserId == userId && ci.ProductId == productId);
 
@@ -255,6 +267,12 @@ namespace Project.Services
 
         public async Task UpdateCartItemQuantityAsync(int cartItemId, int newQuantity)
         {
+            // Validate input
+            if (cartItemId <= 0 || newQuantity < 0)
+            {
+                throw new ArgumentException("Invalid cartItemId or quantity.");
+            }
+
             var item = await _database.Table<CartItem>()
                 .FirstOrDefaultAsync(ci => ci.Id == cartItemId);
 
@@ -262,6 +280,11 @@ namespace Project.Services
             {
                 item.Quantity = newQuantity;
                 await _database.UpdateAsync(item);
+            }
+            else if (item != null && newQuantity == 0)
+            {
+                // Remove item if quantity is 0
+                await _database.DeleteAsync(item);
             }
         }
         public async Task ClearCartAsync(int userId)

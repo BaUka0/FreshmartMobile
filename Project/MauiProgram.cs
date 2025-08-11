@@ -25,7 +25,7 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
         // Dependency Injection Services
-        builder.Services.AddSingleton<DatabaseService>();
+        builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
 		builder.Services.AddSingleton<IAuthService, AuthService>();
 
         // Registering Pages

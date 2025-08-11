@@ -9,12 +9,12 @@ namespace Project.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IDatabaseService _databaseService;
         private User _currentUser;
 
         public User CurrentUser => _currentUser;
 
-        public AuthService(DatabaseService databaseService)
+        public AuthService(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
@@ -48,6 +48,18 @@ namespace Project.Services
         {
             try
             {
+                // Basic validation
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+                {
+                    return false;
+                }
+
+                // Password strength validation (minimum 6 characters)
+                if (password.Length < 6)
+                {
+                    return false;
+                }
+
                 // Check if username already exists
                 if (await _databaseService.UsernameExistsAsync(username))
                 {
