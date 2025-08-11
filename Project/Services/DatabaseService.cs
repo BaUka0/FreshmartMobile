@@ -4,14 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Services
 {
-    public class DatabaseService
+    public class DatabaseService : IDisposable
     {
         private SQLiteAsyncConnection _database;
+        private bool _disposed = false;
 
         public async Task InitAsync()
         {
@@ -36,13 +38,71 @@ namespace Project.Services
             await _database.CreateTableAsync<PaymentCard>();
         }
 
+        // Helper method for password hashing
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(hashedBytes);
+            }
+        }
+
+        // Helper method to verify password
+        private bool VerifyPassword(string password, string hashedPassword)
+        {
+            var hashedInput = HashPassword(password);
+            return hashedInput == hashedPassword;
+        }
+
         public async Task<List<User>> GetUsersAsync() => await _database.Table<User>().ToListAsync();
         public async Task<User> GetUserAsync(int id) => await _database.Table<User>().Where(i => i.Id == id).FirstOrDefaultAsync();
-        public async Task<User> GetUserByCredentialsAsync(string username, string password) => await _database.Table<User>().FirstOrDefaultAsync(u => u.username == username && u.password == password);
-        public async Task<User> GetUserByEmailAsync(string email, string password) => await _database.Table<User>().FirstOrDefaultAsync(u => u.email == email && u.password == password);
-        public async Task<int> AddUserAsync(User user) => await _database.InsertAsync(user);
+        public async Task<User> GetUserByCredentialsAsync(string username, string password) 
+        {
+            var user = await _database.Table<User>().FirstOrDefaultAsync(u => u.username == username);
+            if (user != null && VerifyPassword(password, user.password))
+            {
+                return user;
+            }
+            return null;
+        }
+        public async Task<User> GetUserByEmailAsync(string email, string password) 
+        {
+            var user = await _database.Table<User>().FirstOrDefaultAsync(u => u.email == email);
+            if (user != null && VerifyPassword(password, user.password))
+            {
+                return user;
+            }
+            return null;
+        }
+        public async Task<int> AddUserAsync(User user) 
+        {
+            user.password = HashPassword(user.password);
+            return await _database.InsertAsync(user);
+        }
         public async Task<int> UpdateUserAsync(User user) => await _database.UpdateAsync(user);
         public async Task<int> DeleteUserAsync(User user) => await _database.DeleteAsync(user);
+
+        // Method for updating user password (with hashing)
+        public async Task<int> UpdateUserPasswordAsync(User user, string newPassword)
+        {
+            user.password = HashPassword(newPassword);
+            return await _database.UpdateAsync(user);
+        }
+
+        // Helper method to check if username exists (for registration)
+        public async Task<bool> UsernameExistsAsync(string username)
+        {
+            var user = await _database.Table<User>().FirstOrDefaultAsync(u => u.username == username);
+            return user != null;
+        }
+
+        // Helper method to check if email exists (for registration)
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            var user = await _database.Table<User>().FirstOrDefaultAsync(u => u.email == email);
+            return user != null;
+        }
 
 
         //заявки
@@ -261,20 +321,32 @@ namespace Project.Services
         //Заказы
         public async Task<int> CreateOrderAsync(Order order)
         {
-            order.OrderDate = DateTime.Now;
-            order.OrderStatus = "Обработка";
-            var orderId = await _database.InsertAsync(order);
-
-            if (order.Items != null && order.Items.Count > 0)
+            try
             {
-                foreach (var item in order.Items)
+                // Use transaction to ensure data consistency
+                return await _database.RunInTransactionAsync(db =>
                 {
-                    item.OrderId = order.Id;
-                    await _database.InsertAsync(item);
-                }
-            }
+                    order.OrderDate = DateTime.Now;
+                    order.OrderStatus = "Обработка";
+                    var orderId = db.Insert(order);
 
-            return orderId;
+                    if (order.Items != null && order.Items.Count > 0)
+                    {
+                        foreach (var item in order.Items)
+                        {
+                            item.OrderId = order.Id;
+                            db.Insert(item);
+                        }
+                    }
+
+                    return orderId;
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error creating order: {ex.Message}");
+                throw; // Re-throw to let caller handle
+            }
         }
 
         public async Task<List<Order>> GetUserOrdersAsync(int userId)
@@ -359,38 +431,70 @@ namespace Project.Services
 
         public async Task<int> AddPaymentCardAsync(PaymentCard card)
         {
-            if (card.IsDefault)
+            try
             {
-                var userCards = await GetPaymentCardsAsync(card.UserId);
-                foreach (var userCard in userCards)
+                if (card.IsDefault)
                 {
-                    if (userCard.IsDefault)
+                    // Use transaction to ensure consistency when setting default card
+                    return await _database.RunInTransactionAsync(db =>
                     {
-                        userCard.IsDefault = false;
-                        await _database.UpdateAsync(userCard);
-                    }
-                }
-            }
+                        // Remove default flag from other cards
+                        var userCards = db.Table<PaymentCard>().Where(c => c.UserId == card.UserId).ToList();
+                        foreach (var userCard in userCards)
+                        {
+                            if (userCard.IsDefault)
+                            {
+                                userCard.IsDefault = false;
+                                db.Update(userCard);
+                            }
+                        }
 
-            return await _database.InsertAsync(card);
+                        // Insert new card
+                        return db.Insert(card);
+                    });
+                }
+
+                return await _database.InsertAsync(card);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error adding payment card: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<int> UpdatePaymentCardAsync(PaymentCard card)
         {
-            if (card.IsDefault)
+            try
             {
-                var userCards = await GetPaymentCardsAsync(card.UserId);
-                foreach (var userCard in userCards)
+                if (card.IsDefault)
                 {
-                    if (userCard.Id != card.Id && userCard.IsDefault)
+                    // Use transaction to ensure consistency when setting default card
+                    return await _database.RunInTransactionAsync(db =>
                     {
-                        userCard.IsDefault = false;
-                        await _database.UpdateAsync(userCard);
-                    }
-                }
-            }
+                        // Remove default flag from other cards
+                        var userCards = db.Table<PaymentCard>().Where(c => c.UserId == card.UserId).ToList();
+                        foreach (var userCard in userCards)
+                        {
+                            if (userCard.Id != card.Id && userCard.IsDefault)
+                            {
+                                userCard.IsDefault = false;
+                                db.Update(userCard);
+                            }
+                        }
 
-            return await _database.UpdateAsync(card);
+                        // Update the card
+                        return db.Update(card);
+                    });
+                }
+
+                return await _database.UpdateAsync(card);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error updating payment card: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<int> DeletePaymentCardAsync(int cardId)
@@ -402,6 +506,25 @@ namespace Project.Services
                 return await _database.DeleteAsync(card);
             }
             return 0;
+        }
+
+        // IDisposable implementation for proper resource cleanup
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _database?.CloseAsync()?.Wait();
+                }
+                _disposed = true;
+            }
         }
     }
 }

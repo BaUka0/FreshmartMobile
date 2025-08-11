@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Project.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private readonly DatabaseService _databaseService;
         private User _currentUser;
@@ -21,44 +21,61 @@ namespace Project.Services
 
         public async Task<bool> LoginAsync(string username, string password)
         {
-            var user = await _databaseService.GetUserByCredentialsAsync(username, password);
-
-            if (user == null)
+            try
             {
-                user = await _databaseService.GetUserByEmailAsync(username, password);
-            }
+                var user = await _databaseService.GetUserByCredentialsAsync(username, password);
 
-            if (user != null)
-            {
-                _currentUser = user;
-                return true;
+                if (user == null)
+                {
+                    user = await _databaseService.GetUserByEmailAsync(username, password);
+                }
+
+                if (user != null)
+                {
+                    _currentUser = user;
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                // Log error but don't expose details to user
+                System.Diagnostics.Debug.WriteLine($"Login error: {ex.Message}");
+                return false;
+            }
         }
         public async Task<bool> RegisterAsync(string username, string email, string password)
         {
-            var existingUser = await _databaseService.GetUserByCredentialsAsync(username, password);
-
-            if (existingUser == null)
+            try
             {
-                existingUser = await _databaseService.GetUserByEmailAsync(email, password);
-
-                if (existingUser != null)
+                // Check if username already exists
+                if (await _databaseService.UsernameExistsAsync(username))
                 {
-                    return false;
+                    return false; // Username already exists
                 }
+
+                // Check if email already exists
+                if (await _databaseService.EmailExistsAsync(email))
+                {
+                    return false; // Email already exists
+                }
+
                 var newUser = new User
                 {
                     username = username,
-                    password = password,
+                    password = password, // Will be hashed in AddUserAsync
                     email = email,
                     role = "client"
                 };
                 await _databaseService.AddUserAsync(newUser);
                 return true;
             }
-
-            return false;
+            catch (Exception ex)
+            {
+                // Log error but don't expose details to user
+                System.Diagnostics.Debug.WriteLine($"Registration error: {ex.Message}");
+                return false;
+            }
         }
         public async Task<bool> ChangePasswordAsync(string oldPassword, string newPassword)
         {
@@ -67,13 +84,15 @@ namespace Project.Services
                 return false;
             }
 
-            if (_currentUser.password != oldPassword)
+            // Verify old password using the database service method  
+            var verifiedUser = await _databaseService.GetUserByCredentialsAsync(_currentUser.username, oldPassword);
+            if (verifiedUser == null)
             {
                 return false;
             }
 
-            _currentUser.password = newPassword;
-            await _databaseService.UpdateUserAsync(_currentUser);
+            // Update password using the dedicated method that handles hashing
+            await _databaseService.UpdateUserPasswordAsync(_currentUser, newPassword);
 
             return true;
         }
